@@ -6,7 +6,7 @@
 
 ## Members:
 
-Yining Qin, 2024213629, 241118382, qinyining@qq.com
+Yining Qin, 2024213629, 241118382, 3029970043@qq.com
 
 Yafei Yang, 2024213628, 241118692, Email
 
