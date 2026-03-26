@@ -45,7 +45,6 @@ A static interactive website for learning GCSE circle theorems, including Homepa
 - `game/` – game related files
 - `quiz/` – quiz related files
 - `assets/` – images and shared resources
-- `wireframes/` – wireframe files
 - `README.md` – project documentation
 
 ## How to Run
