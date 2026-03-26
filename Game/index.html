@@ -1,1 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circle Theorem Quest</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="top-tools">
+      <div class="tool-group font-tools">
+        <span class="tool-label">font size:</span>
+        <button class="mini-btn" type="button">-</button>
+        <span class="tool-value">8px</span>
+        <input type="range" min="8" max="24" value="16" class="font-slider" />
+        <span class="tool-value">24px +</span>
+      </div>
 
+      <div class="tool-group lang-tools">
+        <button class="tool-btn active" type="button">EN</button>
+        <button class="tool-btn" type="button">中</button>
+      </div>
+
+      <div class="tool-group mode-tools">
+        <button class="tool-btn active" type="button">Default</button>
+        <button class="tool-btn" type="button">Dark</button>
+        <button class="tool-btn" type="button">Eye-friendly</button>
+        <button class="tool-btn" type="button">Subtitles</button>
+      </div>
+    </div>
+
+    <div class="main-nav">
+      <a href="homepage.html" class="brand">Geometry Escape Lab</a>
+
+      <nav class="nav-links">
+        <a href="homepage.html">Home</a>
+        <a href="index.html" class="active" aria-current="page">Game</a>
+        <a href="#">Quiz</a>
+        <a href="#">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb">
+      <a href="homepage.html">Home</a>
+      <span>›</span>
+      <strong>Game</strong>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="page-header center">
+      <h1>Game Rooms</h1>
+      <p class="subtitle">Each room focuses on one circle theorem.</p>
+    </section>
+
+    <section class="card progress-box">
+      <h3>Your Progress</h3>
+      <p id="stars" class="stars">☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆</p>
+      <p id="progressText">Room 1 available</p>
+
+      <div class="progress-actions">
+        <button class="btn" onclick="location.href='theorems.html'">
+          View Theorem Collection
+        </button>
+        <button class="btn secondary" onclick="resetGameProgress()">
+          Play Again
+        </button>
+      </div>
+
+      <p id="resetMessage" class="reset-message" aria-live="polite"></p>
+    </section>
+
+    <section class="rooms-section">
+      <div class="room-grid">
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 1 preview">
+              <circle cx="110" cy="76" r="52" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="76.6" y1="115.9" x2="110" y2="76" stroke="#999" stroke-width="2"/>
+              <line x1="143.4" y1="115.9" x2="110" y2="76" stroke="#999" stroke-width="2"/>
+              <line x1="76.6" y1="115.9" x2="110" y2="24" stroke="#aaa" stroke-width="2"/>
+              <line x1="143.4" y1="115.9" x2="110" y2="24" stroke="#aaa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 1</h3>
+            <p class="room-name">Angle at the Centre</p>
+            <p class="room-small">Show that the centre angle is twice the angle at the circumference.</p>
+            <a id="roomBtn1" class="btn primary room-open-btn" href="play.html?level=1">Open Room</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 2 preview">
+              <circle cx="110" cy="76" r="52" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="58" y1="76" x2="162" y2="76" stroke="#999" stroke-width="2"/>
+              <line x1="58" y1="76" x2="110" y2="24" stroke="#aaa" stroke-width="2"/>
+              <line x1="162" y1="76" x2="110" y2="24" stroke="#aaa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 2</h3>
+            <p class="room-name">Angles in a Semicircle</p>
+            <p class="room-small">Investigate the angle subtended by a diameter.</p>
+            <a id="roomBtn2" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 3 preview">
+              <circle cx="110" cy="76" r="52" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="76.6" y1="115.9" x2="110" y2="32" stroke="#aaa" stroke-width="2"/>
+              <line x1="143.4" y1="115.9" x2="110" y2="32" stroke="#aaa" stroke-width="2"/>
+              <line x1="76.6" y1="115.9" x2="150.6" y2="43.5" stroke="#999" stroke-width="2"/>
+              <line x1="143.4" y1="115.9" x2="69.4" y2="43.5" stroke="#999" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 3</h3>
+            <p class="room-name">Angles in the Same Segment</p>
+            <p class="room-small">Compare two angles standing on the same chord.</p>
+            <a id="roomBtn3" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 4 preview">
+              <circle cx="110" cy="76" r="52" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <polygon points="78,108 73,52 142,32 158,103" fill="none" stroke="#999" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 4</h3>
+            <p class="room-name">Cyclic Quadrilateral</p>
+            <p class="room-small">Explore opposite angles in a quadrilateral on a circle.</p>
+            <a id="roomBtn4" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 5 preview">
+              <circle cx="110" cy="84" r="42" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="64" y1="34" x2="176" y2="22" stroke="#999" stroke-width="2"/>
+              <line x1="106" y1="42" x2="110" y2="84" stroke="#aaa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 5</h3>
+            <p class="room-name">Radius to a Tangent</p>
+            <p class="room-small">Check the angle between a radius and a tangent line.</p>
+            <a id="roomBtn5" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 6 preview">
+              <circle cx="92" cy="82" r="38" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="160" y1="82" x2="116.4" y2="50.2" stroke="#999" stroke-width="2"/>
+              <line x1="160" y1="82" x2="116.4" y2="113.8" stroke="#999" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 6</h3>
+            <p class="room-name">Tangents from a Point are Equal</p>
+            <p class="room-small">Compare the lengths of two tangents from one external point.</p>
+            <a id="roomBtn6" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 7 preview">
+              <circle cx="92" cy="82" r="38" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="160" y1="82" x2="116.4" y2="50.2" stroke="#999" stroke-width="2"/>
+              <line x1="160" y1="82" x2="116.4" y2="113.8" stroke="#999" stroke-width="2"/>
+              <line x1="92" y1="82" x2="116.4" y2="50.2" stroke="#aaa" stroke-width="2"/>
+              <line x1="92" y1="82" x2="116.4" y2="113.8" stroke="#aaa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 7</h3>
+            <p class="room-name">Angle Between Two Tangents</p>
+            <p class="room-small">Relate the tangent angle to the central angle.</p>
+            <a id="roomBtn7" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+
+        <article class="room-tile">
+          <div class="room-preview">
+            <svg viewBox="0 0 220 160" aria-label="Room 8 preview">
+              <circle cx="110" cy="76" r="52" fill="none" stroke="#c8c8c8" stroke-width="2"/>
+              <line x1="76" y1="24" x2="170" y2="14" stroke="#999" stroke-width="2"/>
+              <line x1="104" y1="24" x2="145" y2="110" stroke="#aaa" stroke-width="2"/>
+              <line x1="104" y1="24" x2="70" y2="108" stroke="#aaa" stroke-width="2"/>
+              <line x1="70" y1="108" x2="145" y2="110" stroke="#aaa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="room-content">
+            <h3>Room 8</h3>
+            <p class="room-name">Alternate Segment Theorem</p>
+            <p class="room-small">Compare the angle between a tangent and a chord with the opposite angle in the segment.</p>
+            <a id="roomBtn8" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Interactive Geometry Learning Platform</footer>
+
+  <script>
+    function getProgressData() {
+      const unlockedLevel = parseInt(localStorage.getItem("unlockedLevel") || "1", 10);
+      const highestCleared = parseInt(localStorage.getItem("highestCleared") || "0", 10);
+      return { unlockedLevel, highestCleared };
+    }
+
+    function updateProgressUI() {
+      const { unlockedLevel, highestCleared } = getProgressData();
+      const stars = document.getElementById("stars");
+      const progressText = document.getElementById("progressText");
+
+      if (stars) {
+        stars.textContent = `${"⭐ ".repeat(highestCleared)}${"☆ ".repeat(8 - highestCleared)}`.trim();
+      }
+
+      if (progressText) {
+        progressText.textContent = highestCleared >= 8
+          ? "All rooms cleared"
+          : `Room ${unlockedLevel} available`;
+      }
+    }
+
+    function updateRoomLocks() {
+      const { unlockedLevel, highestCleared } = getProgressData();
+
+      for (let i = 1; i <= 8; i += 1) {
+        const btn = document.getElementById(`roomBtn${i}`);
+        if (!btn) continue;
+
+        if (i <= unlockedLevel) {
+          btn.textContent = i <= highestCleared ? "Replay Room" : "Open Room";
+          btn.href = `play.html?level=${i}`;
+          btn.classList.remove("locked-btn");
+          btn.classList.add("primary");
+        } else {
+          btn.href = "javascript:void(0)";
+          btn.textContent = "Locked";
+          btn.classList.add("locked-btn");
+          btn.classList.remove("primary");
+          btn.onclick = function (e) {
+            e.preventDefault();
+            alert(`Complete Room ${i - 1} first.`);
+          };
+        }
+      }
+    }
+
+    function resetGameProgress() {
+      localStorage.setItem("unlockedLevel", "1");
+      localStorage.setItem("highestCleared", "0");
+
+      updateProgressUI();
+      updateRoomLocks();
+
+      const resetMessage = document.getElementById("resetMessage");
+      if (resetMessage) {
+        resetMessage.textContent = "All rooms have been reset. Start again from Room 1.";
+      }
+    }
+
+    updateProgressUI();
+    updateRoomLocks();
+  </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Rooms Completed - Circle Theorem Quest</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="top-tools">
+      <div class="tool-group font-tools">
+        <span class="tool-label">font size:</span>
+        <button class="mini-btn" type="button">-</button>
+        <span class="tool-value">8px</span>
+        <input type="range" min="8" max="24" value="16" class="font-slider" />
+        <span class="tool-value">24px +</span>
+      </div>
+
+      <div class="tool-group lang-tools">
+        <button class="tool-btn active" type="button">EN</button>
+        <button class="tool-btn" type="button">中</button>
+      </div>
+
+      <div class="tool-group mode-tools">
+        <button class="tool-btn active" type="button">Default</button>
+        <button class="tool-btn" type="button">Dark</button>
+        <button class="tool-btn" type="button">Eye-friendly</button>
+        <button class="tool-btn" type="button">Subtitles</button>
+      </div>
+    </div>
+
+    <div class="main-nav">
+      <a href="homepage.html" class="brand">Geometry Escape Lab</a>
+
+      <nav class="nav-links">
+        <a href="homepage.html">Home</a>
+        <a href="index.html" class="active" aria-current="page">Game</a>
+        <a href="#">Quiz</a>
+        <a href="#">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb">
+      <a href="homepage.html">Home</a>
+      <span>›</span>
+      <a href="index.html">Game</a>
+      <span>›</span>
+      <strong>Completion</strong>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="card complete-card center">
+      <h1>🎉 You completed all 8 rooms.</h1>
+      <p class="subtitle">Great job! You can go back to the game page or open the theorem collection.</p>
+
+      <div class="complete-actions">
+        <button class="btn" onclick="location.href='index.html'">Back to Game</button>
+        <button class="btn primary" onclick="location.href='theorems.html'">Go to Theorems</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Interactive Geometry Learning Platform</footer>
+</body>
+</html>
