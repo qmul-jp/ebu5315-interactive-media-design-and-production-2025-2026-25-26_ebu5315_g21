@@ -56,3 +56,39 @@ You may also use the Live Server extension in VS Code for easier local preview.
 
 ## Version Control
 Each team member works on their own branch and contributes to the project through GitHub version control.
+
+# Shared Template for Geometry Escape Lab
+
+This repository stores the shared template used by all three sections: Homepage, Game, and Quiz.
+
+## Included Files
+
+### 1. shared.css
+Common visual styles for the whole website:
+- colour variables
+- light mode / dark mode
+- font size scaling
+- accessibility styles
+- shared navigation bar
+- modal window
+- footer
+- shared button and card styles
+
+### 2. shared.js
+Common interactive functions for the whole website:
+- navigation button links
+- settings modal
+- theme switching
+- font size slider
+- colour-friendly mode
+- high contrast mode
+- reduced motion mode
+- localStorage preference saving
+
+## How to Use
+
+Each section page should include these two files:
+
+```html
+<link rel="stylesheet" href="shared.css" />
+<script src="shared.js"></script>
