@@ -40,12 +40,9 @@ A static interactive website for learning GCSE circle theorems, including Homepa
 - GitHub
 
 ## Repository Structure
-- `index.html` – main entry page
-- `homepage/` – homepage related files
-- `game/` – game related files
-- `quiz/` – quiz related files
-- `assets/` – images and shared resources
-- `README.md` – project documentation
+shared.css
+shared.js
+README.md
 
 ## How to Run
 1. Clone the repository
@@ -57,7 +54,7 @@ You may also use the Live Server extension in VS Code for easier local preview.
 ## Version Control
 Each team member works on their own branch and contributes to the project through GitHub version control.
 
-# Shared Template for Geometry Escape Lab
+## Shared Files
 
 This repository stores the shared template used by all three sections: Homepage, Game, and Quiz.
 
