@@ -40,9 +40,9 @@ A static interactive website for learning GCSE circle theorems, including Homepa
 - GitHub
 
 ## Repository Structure
-shared.css
-shared.js
-README.md
+- shared.css
+- shared.js
+- README.md
 
 ## How to Run
 1. Clone the repository
