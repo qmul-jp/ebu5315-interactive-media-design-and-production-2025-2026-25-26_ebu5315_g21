@@ -1,6 +1,6 @@
-# EBU6305
+# EBU5315
 
-## Group Number: 2020EBU6305G21
+## Group Number: 2026EBU5315G21
 
 ## Project Title: Circle Conquer: Play & Learn Geo Theorems
 
