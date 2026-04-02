@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theorem Collection</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <h1>Geometry Escape Lab</h1>
+      <div class="breadcrumb">
+        <a href="homepage.html">Home</a> &nbsp;›&nbsp;
+        <a href="index.html">Game</a> &nbsp;›&nbsp; <span>Theorem Collection</span>
+      </div>
+    </div>
+    <nav>
+      <button id="navHomeBtn">Home</button>
+      <button id="navGameBtn" class="active-nav">Game</button>
+      <button id="navQuizBtn">Quiz</button>
+      <button type="button" id="settingsBtn">Settings</button>
+      <div class="nav-group">
+        <button class="dropbtn">About ▼</button>
+        <div class="dropdown-content">
+          <a href="#" id="contactBtn">Contact us</a>
+          <a href="#" id="supportBtn">About this project</a>
+          <a href="#" id="accessibilityBtn">Accessibility help</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card theorem-hero center">
+      <span class="eyebrow">Archive</span>
+      <h1>Theorem Collection</h1>
+      <p class="small-text">Collected properties unlock room by room, so the archive grows with your progress.</p>
+    </section>
+    <section class="card theorem-list-wrap"><div id="theoremList"></div></section>
+    <div class="center" style="margin-top:18px;"><button class="btn primary" onclick="location.href='index.html'">Back to Game</button></div>
+  </main>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="Close">&times;</button>
+      <h2 id="modal-title">Settings</h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><span>Interactive Geometry Learning Platform</span><span>Theorem Collection</span></div></footer>
+  <script>
+    const highestCleared = parseInt(localStorage.getItem("highestCleared") || "0", 10);
+    const theoremData = [
+      {title:"Angle at the Centre",property:"The angle at the centre is twice the angle at the circumference standing on the same arc."},
+      {title:"Angles in a Semicircle",property:"The angle in a semicircle is 90°."},
+      {title:"Angles in the Same Segment",property:"Angles in the same segment are equal."},
+      {title:"Cyclic Quadrilateral",property:"Opposite angles in a cyclic quadrilateral sum to 180°."},
+      {title:"Radius to a Tangent",property:"A radius to the point of tangency is perpendicular to the tangent."},
+      {title:"Tangents from a Point are Equal",property:"Tangents drawn from the same external point are equal in length."},
+      {title:"Angle Between Two Tangents",property:"The angle between two tangents and the central angle sum to 180°."},
+      {title:"Alternate Segment Theorem",property:"The angle between a tangent and a chord equals the angle in the alternate segment."}
+    ];
+    const theoremList = document.getElementById("theoremList");
+    theoremData.forEach((item, index) => {
+      const unlocked = index + 1 <= highestCleared;
+      const box = document.createElement("div");
+      box.className = `theorem-item panel-box ${unlocked ? "unlocked" : "locked"}`;
+      box.innerHTML = `
+        <div>
+          <span class="theorem-badge">${unlocked ? "Unlocked theorem" : "Locked theorem"}</span>
+          <h3>${unlocked ? "✓" : "🔒"} ${item.title}</h3>
+          <p>${unlocked ? item.property : "Clear the corresponding room to unlock this theorem."}</p>
+        </div>
+        <button class="btn ${unlocked ? "primary" : "secondary"}" ${unlocked ? "" : "disabled"}>
+          ${unlocked ? "Unlocked" : "Locked"}
+        </button>`;
+      theoremList.appendChild(box);
+    });
+  </script>
+  <script src="shared.js"></script>
+</body>
+</html>
