@@ -3,67 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>All Rooms Completed - Circle Theorem Quest</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>All Rooms Completed</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="game.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="top-tools">
-      <div class="tool-group font-tools">
-        <span class="tool-label">font size:</span>
-        <button class="mini-btn" type="button">-</button>
-        <span class="tool-value">8px</span>
-        <input type="range" min="8" max="24" value="16" class="font-slider" />
-        <span class="tool-value">24px +</span>
-      </div>
 
-      <div class="tool-group lang-tools">
-        <button class="tool-btn active" type="button">EN</button>
-        <button class="tool-btn" type="button">中</button>
-      </div>
-
-      <div class="tool-group mode-tools">
-        <button class="tool-btn active" type="button">Default</button>
-        <button class="tool-btn" type="button">Dark</button>
-        <button class="tool-btn" type="button">Eye-friendly</button>
-        <button class="tool-btn" type="button">Subtitles</button>
+  <header>
+    <div class="header-left">
+      <h1>Geometry Escape Lab</h1>
+      <div class="breadcrumb">
+        <a href="homepage.html">Home</a> &nbsp;›&nbsp;
+        <a href="index.html">Game</a> &nbsp;›&nbsp; <span>Completion</span>
       </div>
     </div>
-
-    <div class="main-nav">
-      <a href="homepage.html" class="brand">Geometry Escape Lab</a>
-
-      <nav class="nav-links">
-        <a href="homepage.html">Home</a>
-        <a href="index.html" class="active" aria-current="page">Game</a>
-        <a href="#">Quiz</a>
-        <a href="#">About</a>
-      </nav>
-    </div>
+    <nav>
+      <button id="navHomeBtn">Home</button>
+      <button id="navGameBtn" class="active-nav">Game</button>
+      <button id="navQuizBtn">Quiz</button>
+      <button type="button" id="settingsBtn">Settings</button>
+      <div class="nav-group">
+        <button class="dropbtn">About ▼</button>
+        <div class="dropdown-content">
+          <a href="#" id="contactBtn">Contact us</a>
+          <a href="#" id="supportBtn">About this project</a>
+          <a href="#" id="accessibilityBtn">Accessibility help</a>
+        </div>
+      </div>
+    </nav>
   </header>
-
-  <div class="breadcrumb-bar">
-    <div class="breadcrumb">
-      <a href="homepage.html">Home</a>
-      <span>›</span>
-      <a href="index.html">Game</a>
-      <span>›</span>
-      <strong>Completion</strong>
-    </div>
-  </div>
 
   <main class="container">
     <section class="card complete-card center">
       <h1>🎉 You completed all 8 rooms.</h1>
-      <p class="subtitle">Great job! You can go back to the game page or open the theorem collection.</p>
-
+      <p class="small-text">Great job! You can go back to the game page or open the theorem collection.</p>
       <div class="complete-actions">
-        <button class="btn" onclick="location.href='index.html'">Back to Game</button>
+        <button class="btn secondary" onclick="location.href='index.html'">Back to Game</button>
         <button class="btn primary" onclick="location.href='theorems.html'">Go to Theorems</button>
       </div>
     </section>
   </main>
 
-  <footer class="footer">Interactive Geometry Learning Platform</footer>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="Close">&times;</button>
+      <h2 id="modal-title">Settings</h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><span>Interactive Geometry Learning Platform</span><span>Completion</span></div></footer>
+  <script src="shared.js"></script>
 </body>
 </html>

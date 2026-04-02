@@ -3,107 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game Play - Circle Theorem Quest</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Geometry Escape Lab - Play</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="game.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="top-tools">
-      <div class="tool-group font-tools">
-        <span class="tool-label">font size:</span>
-        <button class="mini-btn" type="button">-</button>
-        <span class="tool-value">8px</span>
-        <input type="range" min="8" max="24" value="16" class="font-slider" />
-        <span class="tool-value">24px +</span>
-      </div>
 
-      <div class="tool-group lang-tools">
-        <button class="tool-btn active" type="button">EN</button>
-        <button class="tool-btn" type="button">中</button>
-      </div>
-
-      <div class="tool-group mode-tools">
-        <button class="tool-btn active" type="button">Default</button>
-        <button class="tool-btn" type="button">Dark</button>
-        <button class="tool-btn" type="button">Eye-friendly</button>
-        <button class="tool-btn" type="button">Subtitles</button>
+  <header>
+    <div class="header-left">
+      <h1>Geometry Escape Lab</h1>
+      <div class="breadcrumb">
+        <a href="homepage.html">Home</a> &nbsp;›&nbsp;
+        <a href="index.html">Game</a> &nbsp;›&nbsp; <span id="breadcrumbRoom">Room 1</span>
       </div>
     </div>
-
-    <div class="main-nav">
-      <a href="homepage.html" class="brand">Geometry Escape Lab</a>
-
-      <nav class="nav-links">
-        <a href="homepage.html">Home</a>
-        <a href="index.html" class="active" aria-current="page">Game</a>
-        <a href="#">Quiz</a>
-        <a href="#">About</a>
-      </nav>
-    </div>
+    <nav>
+      <button id="navHomeBtn">Home</button>
+      <button id="navGameBtn" class="active-nav">Game</button>
+      <button id="navQuizBtn">Quiz</button>
+      <button type="button" id="settingsBtn">Settings</button>
+      <div class="nav-group">
+        <button class="dropbtn">About ▼</button>
+        <div class="dropdown-content">
+          <a href="#" id="contactBtn">Contact us</a>
+          <a href="#" id="supportBtn">About this project</a>
+          <a href="#" id="accessibilityBtn">Accessibility help</a>
+        </div>
+      </div>
+    </nav>
   </header>
 
-  <div class="breadcrumb-bar">
-    <div class="breadcrumb">
-      <a href="homepage.html">Home</a>
-      <span>›</span>
-      <a href="index.html">Game</a>
-      <span>›</span>
-      <strong id="breadcrumbRoom">Room 1</strong>
-    </div>
-  </div>
-
   <main class="container">
-    <section class="page-header">
-      <h1 id="levelTitle">Room 1</h1>
-      <p id="statusText">Status: In Progress</p>
-    </section>
-
-    <section class="card">
-      <h3>Mission</h3>
-      <p id="missionText">Move the point and observe the theorem.</p>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h3>Interactive Diagram</h3>
-        <p id="diagramDesc" class="diagram-desc">Drag the point anywhere inside the diagram box.</p>
-        <div class="diagram-wrap">
-          <svg id="svg" viewBox="0 0 400 260" aria-label="Interactive theorem diagram"></svg>
+    <section class="play-hero">
+      <div class="play-hero-main">
+        <span class="eyebrow">Room Challenge</span>
+        <h1 id="levelTitle">Room 1</h1>
+        <p id="statusText" class="play-status">Status: In Progress</p>
+        <p class="play-story">Drag the marked point, observe the geometric relationship, and unlock the chamber.</p>
+      </div>
+      <div class="play-guide">
+        <div class="card guide-card compact">
+          <div class="guide-avatar">🧭</div>
+          <div>
+            <p class="guide-name">Field Guide</p>
+            <p class="guide-line">Watch how the angle changes as you move the red point.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h3>Puzzle Challenge</h3>
-        <p class="small-heading">Objective</p>
+    <section class="mission-strip">
+      <div class="card mission-block">
+        <span class="mission-label">Mission</span>
+        <p id="missionText">Move the point and observe the theorem.</p>
+      </div>
+      <div class="card mission-block">
+        <span class="mission-label">Goal</span>
         <p id="objectiveText">Adjust the point to satisfy the theorem relationship.</p>
+      </div>
+    </section>
 
-        <div class="stats">
-          <p><strong>Target:</strong> <span id="targetAngle">--</span></p>
-          <p id="current"><strong>Current:</strong> --</p>
-          <p><strong>Attempts Left:</strong> <span id="attempts">3</span></p>
-        </div>
+    <section class="grid play-grid">
+      <div class="card diagram-card">
+        <div class="card-topline"><h3>Interactive Diagram</h3><span class="status-chip">Live Geometry</span></div>
+        <p id="diagramDesc" class="diagram-desc">Drag the point anywhere inside the diagram box.</p>
+        <div class="diagram-wrap diagram-wrap-enhanced"><svg id="svg" viewBox="0 0 400 260" aria-label="Interactive theorem diagram"></svg></div>
+        <div class="card diagram-note"><span>Tip:</span><p>Move slowly and watch how the labelled angles or lengths change in real time.</p></div>
+      </div>
 
-        <div class="action-row">
-          <button class="btn primary" id="checkBtn">Check</button>
-          <button class="btn primary" id="nextBtn" disabled>Next Room →</button>
+      <div class="card challenge-panel">
+        <div class="card-topline"><h3>Puzzle Console</h3><span class="status-chip secondary-chip">Chamber Lock</span></div>
+        <div class="challenge-box"><p class="small-heading">Target Relationship</p><p class="challenge-target" id="targetAngle">--</p></div>
+        <div class="stats enhanced-stats">
+          <div class="stat-item"><span class="stat-label">Current</span><p id="current"><strong>Current:</strong> --</p></div>
+          <div class="stat-item"><span class="stat-label">Attempts Left</span><p class="attempt-number" id="attempts">3</p></div>
         </div>
-
-        <div id="feedback" class="feedback-box">
-          Move the point, then press Check.
+        <div class="action-row action-row-vertical">
+          <button class="btn primary big-btn" id="checkBtn">Check Chamber</button>
+          <button class="btn secondary big-btn" id="nextBtn" disabled>Next Room →</button>
+          <button class="btn subtle-btn" type="button" onclick="location.href='index.html'">← Back to Room Map</button>
         </div>
+        <div id="feedback" class="feedback-box enhanced-feedback">Move the point, then press Check.</div>
+        <div class="reward-preview panel-box"><div class="reward-icon">🔷</div><div><p class="reward-title">Reward</p><p class="reward-text">Clear this room to unlock a theorem fragment in the archive.</p></div></div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">Interactive Geometry Learning Platform</footer>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="Close">&times;</button>
+      <h2 id="modal-title">Settings</h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
 
-  <script>
-    const roomParam = new URLSearchParams(window.location.search).get("level") || "1";
-    const breadcrumbRoom = document.getElementById("breadcrumbRoom");
-    if (breadcrumbRoom) {
-      breadcrumbRoom.textContent = `Room ${roomParam}`;
-    }
-  </script>
+  <footer class="footer"><div class="footer-inner"><span>Interactive Geometry Learning Platform</span><span>Room Challenge Interface</span></div></footer>
+  <script src="shared.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

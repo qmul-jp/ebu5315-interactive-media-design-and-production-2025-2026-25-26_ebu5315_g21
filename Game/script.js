@@ -89,8 +89,6 @@ const rooms = [
   }
 ];
 
-/* ---------- room state ---------- */
-
 const state = {
   room1: { aAngle: 135, bAngle: 35, cAngle: 265 },
   room2: { cAngle: 270 },
@@ -135,8 +133,6 @@ function getDiagramDescription(level) {
   return "All red points move anywhere on the circle.";
 }
 
-/* ---------- input ---------- */
-
 function onPointerDown(e) {
   const role = e.target?.dataset?.role;
   if (!role || solved) return;
@@ -180,25 +176,21 @@ function updateCircleConstrainedRoom(angle) {
       if (draggingPoint === "B") state.room1.bAngle = angle;
       if (draggingPoint === "C") state.room1.cAngle = angle;
       break;
-
     case 2:
       if (draggingPoint === "C") state.room2.cAngle = angle;
       break;
-
     case 3:
       if (draggingPoint === "A") state.room3.aAngle = angle;
       if (draggingPoint === "B") state.room3.bAngle = angle;
       if (draggingPoint === "C") state.room3.cAngle = angle;
       if (draggingPoint === "D") state.room3.dAngle = angle;
       break;
-
     case 4:
       if (draggingPoint === "A") state.room4.aAngle = angle;
       if (draggingPoint === "B") state.room4.bAngle = angle;
       if (draggingPoint === "C") state.room4.cAngle = angle;
       if (draggingPoint === "D") state.room4.dAngle = angle;
       break;
-
     case 5:
       if (draggingPoint === "T") state.room5.tAngle = angle;
       break;
@@ -210,8 +202,6 @@ function pointToCircleAngle(pt) {
   const dy = center.y - pt.y;
   return normalizeAngle(radToDeg(Math.atan2(dy, dx)));
 }
-
-/* ---------- render ---------- */
 
 function renderRoom() {
   let data;
@@ -247,8 +237,6 @@ function renderRoom() {
   svg.innerHTML = data.svg;
   currentText.innerHTML = `<strong>Current:</strong> ${data.current}`;
 }
-
-/* ---------- room renderers ---------- */
 
 function renderRoom1() {
   const O = center;
@@ -406,21 +394,23 @@ function renderRoom7() {
   const [A, B] = tangentPointsFromExternalPointSafe(P);
   const angleAPB = angleAt(P, A, B);
   const angleAOB = angleAt(O, A, B);
+  const sum = angleAPB + angleAOB;
 
   return {
-    current: `∠APB = ${fmt(angleAPB)}°, ∠AOB = ${fmt(angleAOB)}°`,
+    current: `∠APB = ${fmt(angleAPB)}°, ∠AOB = ${fmt(angleAOB)}°, sum = ${fmt(sum)}°`,
     svg: `
       ${circleBase()}
       ${line(P, A)}
       ${line(P, B)}
-      ${line(O, A, "#9a9a9a", 2)}
-      ${line(O, B, "#9a9a9a", 2)}
+      ${line(O, A)}
+      ${line(O, B)}
       ${fixedPointSvg(O, "O")}
       ${fixedPointSvg(A, "A")}
       ${fixedPointSvg(B, "B")}
       ${dragPointSvg(P, "P", "P")}
-      ${angleLabelAtVertex(P, A, B, `∠APB ${fmt(angleAPB)}°`, 28)}
-      ${angleLabelBetweenRays(O, A, B, `∠AOB ${fmt(angleAOB)}°`, 34)}
+      ${angleLabelAtVertex(P, A, B, `∠APB ${fmt(angleAPB)}°`, 24)}
+      ${angleLabelBetweenRays(O, A, B, `∠AOB ${fmt(angleAOB)}°`, 32)}
+      ${freeLabel(18, 240, `sum = ${fmt(sum)}°`)}
     `
   };
 }
@@ -429,65 +419,81 @@ function renderRoom8() {
   const A = pointOnCircle(state.room8.aAngle);
   const B = pointOnCircle(state.room8.bAngle);
   const C = pointOnCircle(state.room8.cAngle);
-  const tangent = tangentLineAt(A, 190);
 
-  const tangentAngle = acuteAngleBetween(
-    { x: tangent.p2.x - tangent.p1.x, y: tangent.p2.y - tangent.p1.y },
-    { x: B.x - A.x, y: B.y - A.y }
-  );
-  const oppositeAngle = angleAt(C, A, B);
+  const tangent = tangentLineAt(B, 180);
+  const tangentAngle = angleBetweenLineAndChordAtPoint(B, tangent.direction, A);
+  const segmentAngle = angleAt(C, A, B);
 
   return {
-    current: `Tangent-chord angle = ${fmt(tangentAngle)}°, ∠ACB = ${fmt(oppositeAngle)}°`,
+    current: `Tangent-chord angle = ${fmt(tangentAngle)}°, ∠ACB = ${fmt(segmentAngle)}°`,
     svg: `
       ${circleBase()}
-      ${line(tangent.p1, tangent.p2)}
       ${line(A, B)}
       ${line(A, C)}
       ${line(B, C)}
+      ${line(tangent.p1, tangent.p2)}
       ${dragPointSvg(A, "A", "A")}
       ${dragPointSvg(B, "B", "B")}
       ${dragPointSvg(C, "C", "C")}
-      ${tangentChordAngleLabel(A, tangent.direction, B, `Tan-Chord ${fmt(tangentAngle)}°`, 28)}
-      ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(oppositeAngle)}°`, 24)}
+      ${angleLabelTangentChord(B, tangent.direction, A, `tan ${fmt(tangentAngle)}°`, 24)}
+      ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(segmentAngle)}°`, 24)}
     `
   };
 }
 
-/* ---------- checking ---------- */
-
 function checkRoom() {
-  if (solved) {
-    feedback.innerHTML = "This room is already cleared. Click Next Room.";
+  if (solved) return;
+
+  const passed = evaluateRoom();
+
+  if (passed) {
+    solved = true;
+    statusText.textContent = "Status: Cleared";
+    feedback.innerHTML = "Great! The chamber is unlocked.";
+    checkBtn.disabled = true;
+    nextBtn.disabled = false;
+
+    highestCleared = Math.max(highestCleared, currentLevel);
+    unlockedLevel = Math.max(unlockedLevel, Math.min(8, currentLevel + 1));
+
+    localStorage.setItem("highestCleared", String(highestCleared));
+    localStorage.setItem("unlockedLevel", String(unlockedLevel));
+
+    if (currentLevel === 8) {
+      nextBtn.textContent = "Finish Adventure →";
+    }
     return;
   }
 
-  let passed = false;
-  let message = "";
+  attempts -= 1;
+  attemptsText.textContent = String(attempts);
 
+  if (attempts <= 0) {
+    feedback.innerHTML = "Almost there. Try moving the point again.";
+    checkBtn.disabled = true;
+    return;
+  }
+
+  feedback.innerHTML = `Not quite yet. ${attempts} attempt${attempts === 1 ? "" : "s"} left.`;
+}
+
+function evaluateRoom() {
   switch (currentLevel) {
     case 1: {
-      const O = center;
       const A = pointOnCircle(state.room1.aAngle);
       const B = pointOnCircle(state.room1.bAngle);
       const C = pointOnCircle(state.room1.cAngle);
-      const centreAngle = angleAt(O, A, B);
+      const centreAngle = angleAt(center, A, B);
       const circumAngle = angleAt(C, A, B);
-      passed = Math.abs(centreAngle - 2 * circumAngle) <= 5;
-      message = `∠AOB = ${fmt(centreAngle)}°, 2×∠ACB = ${fmt(2 * circumAngle)}°`;
-      break;
+      return approxEqual(centreAngle, circumAngle * 2, 2);
     }
-
     case 2: {
       const A = pointOnCircle(180);
       const B = pointOnCircle(0);
       const C = pointOnCircle(state.room2.cAngle);
       const angle = angleAt(C, A, B);
-      passed = Math.abs(angle - 90) <= 5;
-      message = `∠ACB = ${fmt(angle)}°`;
-      break;
+      return approxEqual(angle, 90, 2);
     }
-
     case 3: {
       const A = pointOnCircle(state.room3.aAngle);
       const B = pointOnCircle(state.room3.bAngle);
@@ -495,11 +501,8 @@ function checkRoom() {
       const D = pointOnCircle(state.room3.dAngle);
       const angle1 = angleAt(C, A, B);
       const angle2 = angleAt(D, A, B);
-      passed = Math.abs(angle1 - angle2) <= 5;
-      message = `∠ACB = ${fmt(angle1)}°, ∠ADB = ${fmt(angle2)}°`;
-      break;
+      return approxEqual(angle1, angle2, 2);
     }
-
     case 4: {
       const A = pointOnCircle(state.room4.aAngle);
       const B = pointOnCircle(state.room4.bAngle);
@@ -507,99 +510,46 @@ function checkRoom() {
       const D = pointOnCircle(state.room4.dAngle);
       const angleABC = angleAt(B, A, C);
       const angleADC = angleAt(D, A, C);
-      passed = Math.abs(angleABC + angleADC - 180) <= 6;
-      message = `∠ABC + ∠ADC = ${fmt(angleABC + angleADC)}°`;
-      break;
+      return approxEqual(angleABC + angleADC, 180, 2);
     }
-
-    case 5: {
-      passed = true;
-      message = "The radius is perpendicular to the tangent.";
-      break;
-    }
-
+    case 5:
+      return true;
     case 6: {
       const P = keepPointOutsideCircle(state.room6.P);
-      state.room6.P = P;
       const [A, B] = tangentPointsFromExternalPointSafe(P);
       const PA = distance(P, A);
       const PB = distance(P, B);
-      passed = Math.abs(PA - PB) <= 2;
-      message = `PA = ${fmt(PA)}, PB = ${fmt(PB)}`;
-      break;
+      return approxEqual(PA, PB, 1);
     }
-
     case 7: {
-      const O = center;
       const P = keepPointOutsideCircle(state.room7.P);
-      state.room7.P = P;
       const [A, B] = tangentPointsFromExternalPointSafe(P);
       const angleAPB = angleAt(P, A, B);
-      const angleAOB = angleAt(O, A, B);
-      passed = Math.abs(angleAPB + angleAOB - 180) <= 5;
-      message = `∠APB + ∠AOB = ${fmt(angleAPB + angleAOB)}°`;
-      break;
+      const angleAOB = angleAt(center, A, B);
+      return approxEqual(angleAPB + angleAOB, 180, 2);
     }
-
     case 8: {
       const A = pointOnCircle(state.room8.aAngle);
       const B = pointOnCircle(state.room8.bAngle);
       const C = pointOnCircle(state.room8.cAngle);
-      const tangent = tangentLineAt(A, 180);
-      const tangentAngle = acuteAngleBetween(
-        { x: tangent.p2.x - tangent.p1.x, y: tangent.p2.y - tangent.p1.y },
-        { x: B.x - A.x, y: B.y - A.y }
-      );
-      const oppositeAngle = angleAt(C, A, B);
-      passed = Math.abs(tangentAngle - oppositeAngle) <= 5;
-      message = `Tangent-chord angle = ${fmt(tangentAngle)}°, ∠ACB = ${fmt(oppositeAngle)}°`;
-      break;
+      const tangent = tangentLineAt(B, 180);
+      const tangentAngle = angleBetweenLineAndChordAtPoint(B, tangent.direction, A);
+      const segmentAngle = angleAt(C, A, B);
+      return approxEqual(tangentAngle, segmentAngle, 2);
     }
-  }
-
-  attempts -= 1;
-  attemptsText.textContent = String(Math.max(attempts, 0));
-
-  if (passed) {
-    solved = true;
-    statusText.textContent = "Status: Completed ✅";
-    nextBtn.disabled = false;
-
-    highestCleared = Math.max(highestCleared, currentLevel);
-    localStorage.setItem("highestCleared", String(highestCleared));
-
-    if (currentLevel < 8) {
-      unlockedLevel = Math.max(unlockedLevel, currentLevel + 1);
-      localStorage.setItem("unlockedLevel", String(unlockedLevel));
-      feedback.innerHTML = `🎉 Room Cleared!<br>${message}<br>The corresponding theorem has been unlocked in Theorem Collection.`;
-    } else {
-      localStorage.setItem("unlockedLevel", "8");
-      feedback.innerHTML = `🎉 Room 8 Cleared!<br>${message}<br>Opening the completion page...`;
-      setTimeout(() => {
-        window.location.href = "complete.html";
-      }, 600);
-    }
-  } else if (attempts > 0) {
-    feedback.innerHTML = `Not quite yet.<br>${message}<br>${attempts} attempt(s) left.`;
-  } else {
-    feedback.innerHTML = `No attempts left.<br>${message}<br>You can still move the point and observe the diagram.`;
+    default:
+      return false;
   }
 }
 
 function goNextRoom() {
-  if (!solved) {
-    feedback.innerHTML = "Complete this room first.";
+  if (!solved) return;
+  if (currentLevel >= 8) {
+    window.location.href = "complete.html";
     return;
   }
-
-  if (currentLevel < 8) {
-    window.location.href = `play.html?level=${currentLevel + 1}`;
-  } else {
-    window.location.href = "complete.html";
-  }
+  window.location.href = `play.html?level=${currentLevel + 1}`;
 }
-
-/* ---------- geometry ---------- */
 
 function pointOnCircle(angleDeg) {
   const rad = degToRad(angleDeg);
@@ -609,298 +559,237 @@ function pointOnCircle(angleDeg) {
   };
 }
 
-function keepPointOutsideCircle(p) {
-  const dx = p.x - center.x;
-  const dy = p.y - center.y;
-  const d = Math.sqrt(dx * dx + dy * dy);
-
-  if (d >= radius + OUTSIDE_PADDING) {
-    return p;
-  }
-
-  const safeDistance = radius + OUTSIDE_PADDING;
-  const scale = safeDistance / (d || 1);
-  return {
-    x: center.x + dx * scale,
-    y: center.y + dy * scale
-  };
+function degToRad(deg) {
+  return (deg * Math.PI) / 180;
 }
 
-function tangentPointsFromExternalPointSafe(P) {
-  const safeP = keepPointOutsideCircle(P);
-
-  let dx = safeP.x - center.x;
-  let dy = safeP.y - center.y;
-  let d = Math.sqrt(dx * dx + dy * dy);
-
-  if (d <= radius + 1) {
-    d = radius + OUTSIDE_PADDING;
-    dx = d;
-    dy = 0;
-  }
-
-  const base = Math.atan2(dy, dx);
-  const offset = Math.acos(radius / d);
-
-  const a1 = base + offset;
-  const a2 = base - offset;
-
-  return [
-    { x: center.x + radius * Math.cos(a1), y: center.y + radius * Math.sin(a1) },
-    { x: center.x + radius * Math.cos(a2), y: center.y + radius * Math.sin(a2) }
-  ];
+function radToDeg(rad) {
+  return (rad * 180) / Math.PI;
 }
 
-function tangentLineAt(T, halfLength = 180) {
-  const rx = T.x - center.x;
-  const ry = T.y - center.y;
-  const len = Math.sqrt(rx * rx + ry * ry) || 1;
-
-  const dx = -ry / len;
-  const dy = rx / len;
-
-  return {
-    p1: { x: T.x - dx * halfLength, y: T.y - dy * halfLength },
-    p2: { x: T.x + dx * halfLength, y: T.y + dy * halfLength },
-    direction: { x: dx, y: dy }
-  };
+function normalizeAngle(angle) {
+  let result = angle % 360;
+  if (result < 0) result += 360;
+  return result;
 }
 
-function angleAt(vertex, p1, p2) {
-  const v1 = { x: p1.x - vertex.x, y: p1.y - vertex.y };
-  const v2 = { x: p2.x - vertex.x, y: p2.y - vertex.y };
-  const dot = v1.x * v2.x + v1.y * v2.y;
-  const m1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y) || 1;
-  const m2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y) || 1;
-
-  let c = dot / (m1 * m2);
-  c = Math.max(-1, Math.min(1, c));
-  return radToDeg(Math.acos(c));
+function distance(p1, p2) {
+  return Math.hypot(p2.x - p1.x, p2.y - p1.y);
 }
 
-function acuteAngleBetween(v1, v2) {
-  const dot = v1.x * v2.x + v1.y * v2.y;
-  const m1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y) || 1;
-  const m2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y) || 1;
-
-  let c = dot / (m1 * m2);
-  c = Math.max(-1, Math.min(1, c));
-  let angle = radToDeg(Math.acos(c));
-  if (angle > 180) angle = 360 - angle;
-  if (angle > 90) angle = 180 - angle;
-  return angle;
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
-function getSvgPoint(evt) {
-  const pt = svg.createSVGPoint();
-  pt.x = evt.clientX;
-  pt.y = evt.clientY;
-  const transformed = pt.matrixTransform(svg.getScreenCTM().inverse());
-  return { x: transformed.x, y: transformed.y };
-}
-
-/* ---------- svg helpers ---------- */
-
-function circleBase() {
-  return `<circle cx="${center.x}" cy="${center.y}" r="${radius}" stroke="#c8c8c8" stroke-width="2" fill="none"/>`;
-}
-
-function line(p1, p2, color = "#8f8f8f", width = 2) {
-  return `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${color}" stroke-width="${width}"/>`;
-}
-
-function polyline(points, color = "#8f8f8f", width = 2) {
-  const pts = points.map((p) => `${p.x},${p.y}`).join(" ");
-  return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="${width}"/>`;
-}
-
-function fixedPointSvg(p, label) {
-  return `
-    <circle cx="${p.x}" cy="${p.y}" r="5.5" fill="#9aa3b2"/>
-    <text x="${p.x + 8}" y="${p.y - 8}" font-size="14" fill="#333">${label}</text>
-  `;
-}
-
-function dragPointSvg(p, label, role) {
-  return `
-    <circle cx="${p.x}" cy="${p.y}" r="6.5" fill="#d64545" data-role="${role}" style="cursor:pointer;"/>
-    <text x="${p.x + 8}" y="${p.y - 8}" font-size="14" fill="#333">${label}</text>
-  `;
-}
-
-function freeLabel(x, y, text) {
-  return `<text x="${x}" y="${y}" font-size="15" fill="#111">${text}</text>`;
-}
-
-function angleLabelAtVertex(vertex, p1, p2, text, offset = 24) {
-  const dir1 = unitVector(vertex, p1);
-  const dir2 = unitVector(vertex, p2);
-  const sum = { x: dir1.x + dir2.x, y: dir1.y + dir2.y };
-
-  let labelPos;
-  if (Math.abs(sum.x) < 0.001 && Math.abs(sum.y) < 0.001) {
-    labelPos = { x: vertex.x, y: vertex.y - offset };
-  } else {
-    const u = normalizeVector(sum);
-    labelPos = {
-      x: vertex.x + u.x * offset,
-      y: vertex.y + u.y * offset
-    };
-  }
-
-  return `<text x="${labelPos.x}" y="${labelPos.y}" font-size="13" fill="#111">${text}</text>`;
-}
-
-function angleLabelBetweenRays(vertex, p1, p2, text, offset = 34) {
-  const dir1 = unitVector(vertex, p1);
-  const dir2 = unitVector(vertex, p2);
-  const mid = normalizeVector({ x: dir1.x + dir2.x, y: dir1.y + dir2.y });
-
-  const labelPos = {
-    x: vertex.x + mid.x * offset,
-    y: vertex.y + mid.y * offset
-  };
-
-  return `<text x="${labelPos.x}" y="${labelPos.y}" font-size="13" fill="#111">${text}</text>`;
-}
-
-function tangentChordAngleLabel(A, tangentDir, B, text, offset = 28) {
-  const t1 = normalizeVector(tangentDir);
-  const chord = unitVector(A, B);
-  const mid = normalizeVector({ x: t1.x + chord.x, y: t1.y + chord.y });
-
-  const labelPos = {
-    x: A.x + mid.x * offset,
-    y: A.y + mid.y * offset
-  };
-
-  return `<text x="${labelPos.x}" y="${labelPos.y}" font-size="13" fill="#111">${text}</text>`;
-}
-
-function segmentMidLabel(p1, p2, text) {
-  const mx = (p1.x + p2.x) / 2;
-  const my = (p1.y + p2.y) / 2;
-  return `<text x="${mx + 6}" y="${my - 6}" font-size="13" fill="#111">${text}</text>`;
-}
-
-function rightAngleMark(T, O, tangentDir) {
-  const d = distance(T, O) || 1;
-  const ux = (O.x - T.x) / d;
-  const uy = (O.y - T.y) / d;
-  const vx = tangentDir.x;
-  const vy = tangentDir.y;
-  const s = 14;
-
-  const p1 = { x: T.x + ux * s, y: T.y + uy * s };
-  const p2 = { x: p1.x + vx * s, y: p1.y + vy * s };
-  const p3 = { x: T.x + vx * s, y: T.y + vy * s };
-
-  return `<polyline points="${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}" fill="none" stroke="#4f8f5f" stroke-width="2"/>`;
-}
-
-/* ---------- vector helpers ---------- */
-
-function unitVector(from, to) {
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const len = Math.sqrt(dx * dx + dy * dy) || 1;
-  return { x: dx / len, y: dy / len };
-}
-
-function normalizeVector(v) {
-  const len = Math.sqrt(v.x * v.x + v.y * v.y) || 1;
-  return { x: v.x / len, y: v.y / len };
-}
-
-/* ---------- utilities ---------- */
-
-function distance(a, b) {
-  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+function approxEqual(a, b, tolerance = 1) {
+  return Math.abs(a - b) <= tolerance;
 }
 
 function fmt(n) {
   return Number(n).toFixed(1);
 }
 
-function degToRad(d) {
-  return (d * Math.PI) / 180;
+function getSvgPoint(evt) {
+  const rect = svg.getBoundingClientRect();
+  const viewBox = svg.viewBox.baseVal;
+  const x = ((evt.clientX - rect.left) / rect.width) * viewBox.width + viewBox.x;
+  const y = ((evt.clientY - rect.top) / rect.height) * viewBox.height + viewBox.y;
+  return { x, y };
 }
 
-function radToDeg(r) {
-  return (r * 180) / Math.PI;
+function angleAt(vertex, p1, p2) {
+  const v1x = p1.x - vertex.x;
+  const v1y = p1.y - vertex.y;
+  const v2x = p2.x - vertex.x;
+  const v2y = p2.y - vertex.y;
+
+  const dot = v1x * v2x + v1y * v2y;
+  const mag1 = Math.hypot(v1x, v1y);
+  const mag2 = Math.hypot(v2x, v2y);
+
+  if (mag1 === 0 || mag2 === 0) return 0;
+
+  const cosTheta = clamp(dot / (mag1 * mag2), -1, 1);
+  return radToDeg(Math.acos(cosTheta));
 }
 
-function restrictToUpperSemicircle(angle) {
-  let a = normalizeAngle(angle);
-  if (a > 180) {
-    a = a < 270 ? 180 : 0;
-  }
-  return a;
-}
+function keepPointOutsideCircle(P) {
+  const dx = P.x - center.x;
+  const dy = P.y - center.y;
+  const d = Math.hypot(dx, dy);
 
-function restrictRoom3Point(angle) {
-  const a = normalizeAngle(angle);
-  const A = normalizeAngle(state.room3.aAngle);
-  const B = normalizeAngle(state.room3.bAngle);
-
-  return restrictToMajorArc(a, A, B, 6);
-}
-
-function restrictToMajorArc(testAngle, angle1, angle2, padding = 6) {
-  const cw = clockwiseDistance(angle1, angle2);
-
-  // 从 angle1 顺时针到 angle2 是劣弧
-  if (cw <= 180) {
-    const minorStart = angle1;
-    const minorEnd = angle2;
-    return snapOutsideArc(testAngle, minorStart, minorEnd, padding);
-  }
-
-  // 否则从 angle2 顺时针到 angle1 是劣弧
-  const minorStart = angle2;
-  const minorEnd = angle1;
-  return snapOutsideArc(testAngle, minorStart, minorEnd, padding);
-}
-
-function snapOutsideArc(testAngle, arcStart, arcEnd, padding = 6) {
-  const t = normalizeAngle(testAngle);
-  const start = normalizeAngle(arcStart + padding);
-  const end = normalizeAngle(arcEnd - padding);
-
-  // 如果这个角不在受限劣弧内，直接允许
-  if (!isAngleOnClockwiseArc(t, start, end)) {
-    return t;
+  if (d < radius + OUTSIDE_PADDING) {
+    const safeD = radius + OUTSIDE_PADDING;
+    const ux = d === 0 ? 1 : dx / d;
+    const uy = d === 0 ? 0 : dy / d;
+    return {
+      x: center.x + ux * safeD,
+      y: center.y + uy * safeD
+    };
   }
 
-  // 如果落进劣弧，就吸附到最近边界
-  const toStart = angularDistance(t, start);
-  const toEnd = angularDistance(t, end);
-
-  return toStart < toEnd ? start : end;
+  return P;
 }
 
-function clockwiseDistance(from, to) {
-  return normalizeAngle(to - from);
+function tangentPointsFromExternalPointSafe(P) {
+  const dx = P.x - center.x;
+  const dy = P.y - center.y;
+  const d = Math.hypot(dx, dy);
+  const safeD = Math.max(d, radius + OUTSIDE_PADDING);
+
+  const base = Math.atan2(dy, dx);
+  const alpha = Math.acos(radius / safeD);
+
+  const t1 = base + alpha;
+  const t2 = base - alpha;
+
+  return [
+    { x: center.x + radius * Math.cos(t1), y: center.y + radius * Math.sin(t1) },
+    { x: center.x + radius * Math.cos(t2), y: center.y + radius * Math.sin(t2) }
+  ];
 }
 
-function angularDistance(a, b) {
-  const d = Math.abs(normalizeAngle(a - b));
-  return Math.min(d, 360 - d);
+function tangentLineAt(point, halfLength = 160) {
+  const rx = point.x - center.x;
+  const ry = point.y - center.y;
+  const len = Math.hypot(rx, ry) || 1;
+
+  const dx = -ry / len;
+  const dy = rx / len;
+
+  return {
+    p1: { x: point.x - dx * halfLength, y: point.y - dy * halfLength },
+    p2: { x: point.x + dx * halfLength, y: point.y + dy * halfLength },
+    direction: { x: dx, y: dy }
+  };
 }
 
-function isAngleOnClockwiseArc(test, start, end) {
-  const total = clockwiseDistance(start, end);
-  const part = clockwiseDistance(start, test);
-  return part >= 0 && part <= total;
+function angleBetweenLineAndChordAtPoint(vertex, lineDirection, otherPoint) {
+  const chord = {
+    x: otherPoint.x - vertex.x,
+    y: otherPoint.y - vertex.y
+  };
+
+  const dot = lineDirection.x * chord.x + lineDirection.y * chord.y;
+  const mag1 = Math.hypot(lineDirection.x, lineDirection.y);
+  const mag2 = Math.hypot(chord.x, chord.y);
+
+  if (mag1 === 0 || mag2 === 0) return 0;
+
+  const angle = radToDeg(Math.acos(clamp(dot / (mag1 * mag2), -1, 1)));
+  return Math.min(angle, 180 - angle);
 }
 
-function normalizeAngle(deg) {
-  let a = deg;
-  while (a < 0) a += 360;
-  while (a >= 360) a -= 360;
-  return a;
+/* ---------- 关键修复：全部 SVG 颜色改为 CSS 变量 ---------- */
+
+function circleBase() {
+  return `
+    <rect x="8" y="8" width="384" height="244" rx="20" fill="transparent"></rect>
+    <circle cx="${center.x}" cy="${center.y}" r="${radius}" fill="none" stroke="var(--diagram-circle)" stroke-width="2.8"></circle>
+  `;
 }
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
+function line(p1, p2, color = "var(--diagram-line)", width = 2.4) {
+  return `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${color}" stroke-width="${width}" stroke-linecap="round" />`;
+}
+
+function polyline(points, color = "var(--diagram-line)", width = 2.4) {
+  const pts = points.map((p) => `${p.x},${p.y}`).join(" ");
+  return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linejoin="round" />`;
+}
+
+function fixedPointSvg(p, label) {
+  return `
+    <circle cx="${p.x}" cy="${p.y}" r="6" fill="var(--diagram-fixed-point)"></circle>
+    ${pointLabel(p, label, 12, -12)}
+  `;
+}
+
+function dragPointSvg(p, label, role) {
+  return `
+    <circle cx="${p.x}" cy="${p.y}" r="8" fill="var(--diagram-drag-point)" stroke="var(--diagram-drag-stroke)" stroke-width="2.4" data-role="${role}" style="cursor:pointer;"></circle>
+    ${pointLabel(p, label, 12, -12)}
+  `;
+}
+
+function pointLabel(p, label, dx = 10, dy = -10) {
+  return `<text x="${p.x + dx}" y="${p.y + dy}" font-size="15" font-weight="800" fill="var(--diagram-text)">${label}</text>`;
+}
+
+function freeLabel(x, y, text) {
+  return `<text x="${x}" y="${y}" font-size="15" font-weight="800" fill="var(--diagram-accent-text)">${text}</text>`;
+}
+
+function segmentMidLabel(p1, p2, text) {
+  const mx = (p1.x + p2.x) / 2;
+  const my = (p1.y + p2.y) / 2;
+  return `<text x="${mx + 8}" y="${my - 6}" font-size="13.5" font-weight="800" fill="var(--diagram-accent-text)">${text}</text>`;
+}
+
+function angleLabelAtVertex(vertex, p1, p2, text, offset = 22) {
+  const mid = unitBisector(vertex, p1, p2);
+  const lx = vertex.x + mid.x * offset;
+  const ly = vertex.y + mid.y * offset;
+  return `<text x="${lx}" y="${ly}" font-size="13.5" font-weight="800" fill="var(--diagram-angle-text)">${text}</text>`;
+}
+
+function angleLabelBetweenRays(vertex, p1, p2, text, offset = 30) {
+  const mid = unitBisector(vertex, p1, p2);
+  const lx = vertex.x + mid.x * offset;
+  const ly = vertex.y + mid.y * offset;
+  return `<text x="${lx}" y="${ly}" font-size="13.5" font-weight="800" fill="var(--diagram-angle-text)">${text}</text>`;
+}
+
+function angleLabelTangentChord(vertex, tangentDir, otherPoint, text, offset = 24) {
+  const chordDir = normalizeVector({
+    x: otherPoint.x - vertex.x,
+    y: otherPoint.y - vertex.y
+  });
+  const tanDir = normalizeVector(tangentDir);
+  const mid = normalizeVector({
+    x: chordDir.x + tanDir.x,
+    y: chordDir.y + tanDir.y
+  });
+  const lx = vertex.x + mid.x * offset;
+  const ly = vertex.y + mid.y * offset;
+  return `<text x="${lx}" y="${ly}" font-size="13.5" font-weight="800" fill="var(--diagram-angle-text)">${text}</text>`;
+}
+
+function rightAngleMark(vertex, centerPoint, tangentDir, size = 16) {
+  const r = normalizeVector({
+    x: centerPoint.x - vertex.x,
+    y: centerPoint.y - vertex.y
+  });
+  const t = normalizeVector(tangentDir);
+
+  const p1 = { x: vertex.x + r.x * size, y: vertex.y + r.y * size };
+  const p2 = { x: p1.x + t.x * size, y: p1.y + t.y * size };
+  const p3 = { x: vertex.x + t.x * size, y: vertex.y + t.y * size };
+
+  return `
+    <polyline
+      points="${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}"
+      fill="none"
+      stroke="var(--diagram-accent-text)"
+      stroke-width="2.2"
+    />
+  `;
+}
+
+function normalizeVector(v) {
+  const mag = Math.hypot(v.x, v.y) || 1;
+  return { x: v.x / mag, y: v.y / mag };
+}
+
+function unitBisector(vertex, p1, p2) {
+  const v1 = normalizeVector({ x: p1.x - vertex.x, y: p1.y - vertex.y });
+  const v2 = normalizeVector({ x: p2.x - vertex.x, y: p2.y - vertex.y });
+  const sum = { x: v1.x + v2.x, y: v1.y + v2.y };
+  const mag = Math.hypot(sum.x, sum.y);
+
+  if (mag < 1e-6) {
+    return { x: 1, y: 0 };
+  }
+
+  return { x: sum.x / mag, y: sum.y / mag };
 }
