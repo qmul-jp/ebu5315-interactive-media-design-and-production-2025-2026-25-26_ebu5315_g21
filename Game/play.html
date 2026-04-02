@@ -34,25 +34,13 @@
   </header>
 
   <main class="container">
-    <section class="play-hero">
-      <div class="play-hero-main">
-        <span class="eyebrow">Room Challenge</span>
-        <h1 id="levelTitle">Room 1</h1>
-        <p id="statusText" class="play-status">Status: In Progress</p>
-        <p class="play-story">Drag the marked point, observe the geometric relationship, and unlock the chamber.</p>
-      </div>
-      <div class="play-guide">
-        <div class="card guide-card compact">
-          <div class="guide-avatar">🧭</div>
-          <div>
-            <p class="guide-name">Field Guide</p>
-            <p class="guide-line">Watch how the angle changes as you move the red point.</p>
-          </div>
-        </div>
-      </div>
+    <section class="card play-hero" style="display:block; text-align:center; padding:30px 28px 22px;">
+      <span class="eyebrow">Room Challenge</span>
+      <h1 id="levelTitle" style="margin:8px 0 10px;">Room 1</h1>
+      <p id="statusText" class="play-status" style="margin:0;">Status: In Progress</p>
     </section>
 
-    <section class="mission-strip">
+    <section class="mission-strip" style="margin-top: 18px;">
       <div class="card mission-block">
         <span class="mission-label">Mission</span>
         <p id="missionText">Move the point and observe the theorem.</p>
@@ -65,26 +53,57 @@
 
     <section class="grid play-grid">
       <div class="card diagram-card">
-        <div class="card-topline"><h3>Interactive Diagram</h3><span class="status-chip">Live Geometry</span></div>
-        <p id="diagramDesc" class="diagram-desc">Drag the point anywhere inside the diagram box.</p>
-        <div class="diagram-wrap diagram-wrap-enhanced"><svg id="svg" viewBox="0 0 400 260" aria-label="Interactive theorem diagram"></svg></div>
-        <div class="card diagram-note"><span>Tip:</span><p>Move slowly and watch how the labelled angles or lengths change in real time.</p></div>
+        <div class="card-topline">
+          <h3>Interactive Diagram</h3>
+          <span class="status-chip">Live Geometry</span>
+        </div>
+        <p id="diagramDesc" class="diagram-desc"></p>
+        <div class="diagram-wrap diagram-wrap-enhanced">
+          <svg id="svg" viewBox="0 0 400 260" aria-label="Interactive theorem diagram"></svg>
+        </div>
+        <div class="card diagram-note">
+          <span>Tip:</span>
+          <p>Move slowly and watch how the diagram changes in real time.</p>
+        </div>
       </div>
 
       <div class="card challenge-panel">
-        <div class="card-topline"><h3>Puzzle Console</h3><span class="status-chip secondary-chip">Chamber Lock</span></div>
-        <div class="challenge-box"><p class="small-heading">Target Relationship</p><p class="challenge-target" id="targetAngle">--</p></div>
-        <div class="stats enhanced-stats">
-          <div class="stat-item"><span class="stat-label">Current</span><p id="current"><strong>Current:</strong> --</p></div>
-          <div class="stat-item"><span class="stat-label">Attempts Left</span><p class="attempt-number" id="attempts">3</p></div>
+        <div class="card-topline">
+          <h3>Puzzle Console</h3>
+          <span class="status-chip secondary-chip">Chamber Lock</span>
         </div>
+
+        <div class="challenge-box">
+          <p class="small-heading">Target Relationship</p>
+          <p class="challenge-target" id="targetAngle">--</p>
+        </div>
+
+        <div class="stats enhanced-stats">
+          <div class="stat-item">
+            <span class="stat-label">Current</span>
+            <p id="current"><strong>Current:</strong> --</p>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Attempts Left</span>
+            <p class="attempt-number" id="attempts">3</p>
+          </div>
+        </div>
+
         <div class="action-row action-row-vertical">
           <button class="btn primary big-btn" id="checkBtn">Check Chamber</button>
           <button class="btn secondary big-btn" id="nextBtn" disabled>Next Room →</button>
           <button class="btn subtle-btn" type="button" onclick="location.href='index.html'">← Back to Room Map</button>
         </div>
+
         <div id="feedback" class="feedback-box enhanced-feedback">Move the point, then press Check.</div>
-        <div class="reward-preview panel-box"><div class="reward-icon">🔷</div><div><p class="reward-title">Reward</p><p class="reward-text">Clear this room to unlock a theorem fragment in the archive.</p></div></div>
+
+        <div class="reward-preview panel-box">
+          <div class="reward-icon">🔷</div>
+          <div>
+            <p class="reward-title">Reward</p>
+            <p class="reward-text">Clear this room to unlock a theorem fragment in the archive.</p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -97,8 +116,14 @@
     </div>
   </div>
 
-  <footer class="footer"><div class="footer-inner"><span>Interactive Geometry Learning Platform</span><span>Room Challenge Interface</span></div></footer>
-  <script src="shared.js"></script>
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>Interactive Geometry Learning Platform</span>
+      <span>Play Room</span>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
+  <script src="shared.js"></script>
 </body>
 </html>

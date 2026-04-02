@@ -124,13 +124,7 @@ function init() {
 }
 
 function getDiagramDescription(level) {
-  if (level >= 1 && level <= 5) {
-    return "Red points move anywhere on the circle. Grey points are fixed.";
-  }
-  if (level === 6 || level === 7) {
-    return "The red point moves anywhere in the diagram box, but stays outside the circle.";
-  }
-  return "All red points move anywhere on the circle.";
+  return "";
 }
 
 function onPointerDown(e) {
