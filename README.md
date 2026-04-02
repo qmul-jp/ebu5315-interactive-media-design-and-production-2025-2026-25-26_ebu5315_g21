@@ -58,7 +58,7 @@ Each team member works on their own branch and contributes to the project throug
 Major updates are developed in individual branches before being merged into the main branch for version releases.
 
 ## Development Progress
-- **V1**: Initial repository setup and first development version
+- **V1**: Initial development version. In this version, each team member built the basic framework for their own section separately. The three sections had not yet been fully connected.
 - **V2**: To be updated
 - **V3**: To be updated
 - **V4**: To be updated
