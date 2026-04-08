@@ -350,9 +350,7 @@
     <div class="header-left">
       <h1>Geometry Escape Lab</h1>
       <div class="breadcrumb">
-        <a href="homepage.html">Home</a> &nbsp;›&nbsp;
-        <a href="index.html">Game</a> &nbsp;›&nbsp;
-        <span id="breadcrumbPage">Current Page</span>
+        <span>Home</span>
       </div>
     </div>
 
@@ -626,13 +624,7 @@
           window.location.href = 'quiz.html';
         });
       }
-
-      // ----- Breadcrumb update (set current page name) -----
-      const breadcrumbSpan = document.getElementById('breadcrumbPage');
-      if (breadcrumbSpan) {
-        breadcrumbSpan.textContent = 'Home';
-      }
-
+      
       // ----- Ensure any leftover darkmode/localstorage from old script is ignored; shared.js handles themes.
       if (localStorage.getItem('fontSize')) {
         document.body.style.fontSize = '';
