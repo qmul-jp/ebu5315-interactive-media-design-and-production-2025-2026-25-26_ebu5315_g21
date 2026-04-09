@@ -1,3 +1,4 @@
+<!-- homepage.html - 移除冲突的内联样式，保留核心功能 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Geometry Escape Lab | Home</title>
   <link rel="stylesheet" href="shared.css">
-  <!-- homepage additional styles (carousel, assistant, hero, etc) + expandable AI assistant -->
   <style>
-    /* ========== homepage additional styles (migrated from original index_2) ========== */
+    /* ========== homepage additional styles (carousel, hero, etc) ========== */
     .hero {
       background: var(--bg-elevated);
       padding: 36px 24px;
@@ -157,172 +157,13 @@
       transition: background 0.2s;
     }
 
-    /* ----- Collapsible AI Assistant (Icon -> Expand on hover) ----- */
-    /* Fixed position: stays at bottom-right corner while scrolling */
-    .assistant {
-      /* Fixed positioning – always visible on screen */
-      position: fixed !important;
-      bottom: 24px !important;
-      right: 20px !important;
-      z-index: 1000 !important;
-      
-      /* Circular icon by default */
-      width: 56px !important;
-      height: 56px !important;
-      padding: 0 !important;
-      background: var(--primary) !important;
-      backdrop-filter: none !important;
-      border-radius: 50% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      cursor: pointer;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      border: none !important;
-      box-shadow: var(--shadow-md);
-    }
-
-    /* Hidden content wrapper – not visible when collapsed */
-    .assistant .assistant-content {
-      display: none;
-      width: 100%;
-    }
-
-    /* Icon styling – always visible when collapsed */
-    .assistant .assistant-icon {
-      font-size: 2rem;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.2s ease;
-    }
-
-    /* Hover state: expand to full assistant window */
-    .assistant:hover {
-      width: min(320px, 88vw) !important;
-      height: auto !important;
-      background: var(--bg-elevated) !important;
-      backdrop-filter: blur(8px) !important;
-      border-radius: 28px !important;
-      padding: 16px 18px !important;
-      border: 1px solid var(--border) !important;
-      box-shadow: var(--shadow-md) !important;
-      cursor: default;
-    }
-
-    /* On hover: hide the icon, show the content */
-    .assistant:hover .assistant-icon {
-      display: none;
-    }
-
-    .assistant:hover .assistant-content {
-      display: block;
-    }
-
-    /* Keep original assistant inner styles intact */
-    .assistant .assistant-content .assistant-header {
-      font-weight: 700;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      color: var(--heading);
-    }
-
-    .assistant .assistant-content .assistant-header span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .assistant .assistant-content .lang-selector {
-      background: var(--bg-soft);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 5px 12px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .assistant .assistant-content .lang-selector:hover {
-      background: var(--primary);
-      color: var(--nav-hover-text);
-    }
-
-    .assistant .assistant-content p {
-      font-size: 0.8rem;
-      margin: 4px 0 10px;
-      color: var(--text-soft);
-    }
-
-    .assistant .assistant-content .assistant-input-group {
-      display: flex;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .assistant .assistant-content input {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 40px;
-      border: 1px solid var(--border);
-      background: var(--bg-soft);
-      color: var(--text);
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .assistant .assistant-content input:focus {
-      border-color: var(--primary);
-    }
-
-    .assistant .assistant-content button {
-      padding: 8px 16px;
-      border-radius: 40px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .assistant .assistant-content button:hover {
-      background: var(--primary-strong);
-      transform: scale(0.97);
-    }
-
-    /* Dark mode fine-tuning for assistant */
-    .dark-mode .assistant:hover {
-      background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
-    }
-
-    /* Mobile adjustments: keep fixed position but slightly smaller margins */
     @media (max-width: 640px) {
-      .hero {
-        padding: 28px 16px;
-      }
-
       .buttons button {
         padding: 14px 12px;
       }
-
       .card {
         padding: 24px 16px;
       }
-
-      .assistant {
-        bottom: 16px !important;
-        right: 12px !important;
-      }
-
       .prev,
       .next {
         font-size: 22px;
@@ -330,12 +171,9 @@
       }
     }
 
-    /* Make root font size follow --font-scale, so all rem units scale together */
     html {
       font-size: calc(16px * var(--font-scale));
     }
-
-    /* Override body font setting from shared.css, make it inherit from html to avoid double calculation */
     body {
       font-size: 1rem;
     }
@@ -346,7 +184,6 @@
 <body>
 
   <header>
-    <!-- Left: Title + Breadcrumb -->
     <div class="header-left">
       <h1>Geometry Escape Lab</h1>
       <div class="breadcrumb">
@@ -354,16 +191,11 @@
       </div>
     </div>
 
-    <!-- Right: Navigation Buttons -->
     <nav>
       <button id="navHomeBtn">Home</button>
       <button id="navGameBtn">Game</button>
       <button id="navQuizBtn">Quiz</button>
-
-      <!-- Settings Button -->
       <button type="button" id="settingsBtn">Settings</button>
-
-      <!-- About Dropdown Menu -->
       <div class="nav-group">
         <button class="dropbtn">About ▼</button>
         <div class="dropdown-content">
@@ -375,7 +207,6 @@
     </nav>
   </header>
 
-  <!-- Modal Container (used by shared.js for dialogs) -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <button class="close" type="button">&times;</button>
@@ -384,7 +215,6 @@
     </div>
   </div>
 
-  <!-- MAIN CONTENT: migrated from index_2_original.html (excluding header/nav/modals) -->
   <div class="container">
     <div class="hero">
       <h2 id="heroTitle">Circle Conquer: Play & Learn Geo Theorems</h2>
@@ -419,44 +249,13 @@
     </div>
   </div>
 
-  <!-- AI Assistant – Fixed position at bottom-right, expands on hover -->
-  <div class="assistant">
-    <!-- Always‑visible circular icon -->
-    <div class="assistant-icon">🤖</div>
-    
-    <!-- Hidden content – appears only when hovering over the assistant -->
-    <div class="assistant-content">
-      <div class="assistant-header">
-        <span>🤖 AI Assistant</span>
-        <select id="langSwitcher" class="lang-selector" aria-label="Language switch">
-          <option value="en">🇬🇧 English</option>
-          <option value="zh">🇨🇳 中文</option>
-        </select>
-      </div>
-      <p>Ask me about circle theorems!</p>
-      <div class="assistant-input-group">
-        <input type="text" id="assistantInput" placeholder="e.g., semicircle theorem">
-        <button id="assistantSendBtn">Send</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // ========== HOMEPAGE INTEGRATION SCRIPT ==========
-    // (carousel, AI assistant, language switcher, main buttons navigation)
-    // No conflict with shared.js — only adds extra features.
-
     (function () {
-      // ----- DOM elements -----
       const heroTitle = document.getElementById('heroTitle');
       const heroSub = document.getElementById('heroSub');
-      const langSwitcher = document.getElementById('langSwitcher');
-      const assistantInput = document.getElementById('assistantInput');
-      const assistantSendBtn = document.getElementById('assistantSendBtn');
       const gameMainBtn = document.getElementById('gameMainBtn');
       const quizMainBtn = document.getElementById('quizMainBtn');
 
-      // ----- Carousel (slider) elements -----
       const slides = document.querySelectorAll('.slide');
       const prevBtn = document.querySelector('.prev');
       const nextBtn = document.querySelector('.next');
@@ -512,19 +311,14 @@
         });
       }
 
-      // ----- Language & UI texts (bilingual support) -----
       const translations = {
         en: {
           heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
-          heroSub: "GCSE Math Interactive Learning | Chinese & English",
-          assistantPlaceholder: "e.g., semicircle theorem",
-          assistantHelp: "Ask me about circle theorems!"
+          heroSub: "GCSE Math Interactive Learning | Chinese & English"
         },
         zh: {
           heroTitle: "⚡ 圆形征服：边玩边学几何定理",
-          heroSub: "🎓 GCSE 数学互动学习 | 中英双语 | 圆定理实验室",
-          assistantPlaceholder: "例如：半圆定理",
-          assistantHelp: "问我任何圆定理问题！"
+          heroSub: "🎓 GCSE 数学互动学习 | 中英双语 | 圆定理实验室"
         }
       };
 
@@ -532,88 +326,11 @@
         const t = translations[lang] || translations.en;
         if (heroTitle) heroTitle.innerText = t.heroTitle;
         if (heroSub) heroSub.innerText = t.heroSub;
-        if (assistantInput) assistantInput.placeholder = t.assistantPlaceholder;
-        const assistantHint = document.querySelector('.assistant .assistant-content p');
-        if (assistantHint && t.assistantHelp) assistantHint.innerText = t.assistantHelp;
       }
 
-      // Load saved language or default 'en'
       let currentLanguage = localStorage.getItem('homepageLang') || 'en';
-      if (langSwitcher) {
-        langSwitcher.value = currentLanguage;
-        langSwitcher.addEventListener('change', (e) => {
-          currentLanguage = e.target.value;
-          localStorage.setItem('homepageLang', currentLanguage);
-          updateLanguageUI(currentLanguage);
-          const msg = currentLanguage === 'zh' ? '语言已切换为中文' : 'Language switched to English';
-          if (localStorage.getItem('subtitles') !== 'false') {
-            console.log(msg);
-          }
-        });
-      }
       updateLanguageUI(currentLanguage);
 
-      // ----- AI Assistant logic (bilingual replies) -----
-      function getAIReply(question, lang) {
-        const lowerQ = question.toLowerCase();
-        if (lang === 'zh') {
-          if (lowerQ.includes('圆心角') || lowerQ.includes('中心角') || lowerQ.includes('center')) {
-            return "📐 圆心角定理：圆心角是圆周角的两倍。∠AOB = 2∠ACB";
-          } else if (lowerQ.includes('半圆') || lowerQ.includes('semicircle')) {
-            return "🔵 半圆定理：直径所对的圆周角是90°（直角）。";
-          } else if (lowerQ.includes('切线') || lowerQ.includes('tangent')) {
-            return "🌀 半径垂直于切线。半径与切点连线垂直于切线。";
-          } else if (lowerQ.includes('弦') || lowerQ.includes('chord')) {
-            return "🎵 垂径定理：垂直于弦的直径平分弦。";
-          } else {
-            return "✨ 我可以解释：圆心角定理、半圆定理、切线与半径、圆内接四边形、弦切角等。再问我更多吧！";
-          }
-        } else {
-          // English responses
-          if (lowerQ.includes('center') || lowerQ.includes('centre') || lowerQ.includes('圆心角')) {
-            return "📐 Theorem: The angle at the center is twice the angle at the circumference. ∠AOB = 2∠ACB";
-          } else if (lowerQ.includes('semicircle') || lowerQ.includes('半圆')) {
-            return "🔵 Angle in a semicircle is always 90° (right angle).";
-          } else if (lowerQ.includes('tangent') || lowerQ.includes('切线')) {
-            return "🌀 The radius to a point of tangency is perpendicular to the tangent.";
-          } else if (lowerQ.includes('chord') || lowerQ.includes('弦')) {
-            return "🎵 Perpendicular from center to chord bisects the chord.";
-          } else {
-            return "✨ I can explain: angle at center, semicircle theorem, tangent-radius, cyclic quadrilateral, alternate segment. Ask me!";
-          }
-        }
-      }
-
-      function showAssistantNotification(message) {
-        const subtitlesEnabled = localStorage.getItem('subtitles') !== 'false';
-        if (subtitlesEnabled) {
-          alert(`🤖 AI: ${message}`);
-        } else {
-          console.log(`AI: ${message}`);
-        }
-      }
-
-      if (assistantSendBtn && assistantInput) {
-        assistantSendBtn.addEventListener('click', () => {
-          const question = assistantInput.value.trim();
-          if (!question) {
-            const emptyMsg = currentLanguage === 'zh' ? '请输入一个关于圆定理的问题！' : 'Please ask something about circle theorems!';
-            showAssistantNotification(emptyMsg);
-            return;
-          }
-          const reply = getAIReply(question, currentLanguage);
-          showAssistantNotification(reply);
-          assistantInput.value = '';
-        });
-        assistantInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            assistantSendBtn.click();
-          }
-        });
-      }
-
-      // ----- Main Buttons: Navigate to actual Game / Quiz pages -----
       if (gameMainBtn) {
         gameMainBtn.addEventListener('click', () => {
           window.location.href = 'index.html';
@@ -625,10 +342,6 @@
         });
       }
       
-      // ----- Ensure any leftover darkmode/localstorage from old script is ignored; shared.js handles themes.
-      if (localStorage.getItem('fontSize')) {
-        document.body.style.fontSize = '';
-      }
       if (localStorage.getItem('subtitles') === null) {
         localStorage.setItem('subtitles', 'true');
       }
@@ -638,7 +351,6 @@
     })();
   </script>
 
-  <!-- optional footer area (consistent with shared design) -->
   <div class="site-footer">
     <div class="footer-inner">
       <span>© Geometry Escape Lab — interactive circle theorems</span>
