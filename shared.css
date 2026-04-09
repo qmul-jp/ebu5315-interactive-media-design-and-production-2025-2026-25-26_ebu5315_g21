@@ -1,9 +1,7 @@
-/* =========================================================
-   shared.css
-   Shared theme, navigation, modal and accessibility system
-   ========================================================= */
-
-* { box-sizing: border-box; }
+/* shared.css - 修复AI助手样式语法错误 */
+* {
+  box-sizing: border-box;
+}
 
 :root {
   --diagram-circle: #d9dde5;
@@ -59,7 +57,9 @@
   --nav-hover-text: #ffffff;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -171,12 +171,31 @@ body.dark-mode.high-contrast {
   --svg-label: #ffffff;
 }
 
-body.large-font { --font-scale: 1.1; }
-body.small-font { --font-scale: 0.93; }
+body.large-font {
+  --font-scale: 1.1;
+}
 
-a { color: inherit; text-decoration: none; }
-button, input, select { font: inherit; }
-img, svg, video { display: block; max-width: 100%; }
+body.small-font {
+  --font-scale: 0.93;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
 
 header {
   position: sticky;
@@ -334,10 +353,21 @@ body.dark-mode .dropbtn.active-nav {
   border-radius: 24px;
 }
 
-.card { padding: 22px; }
-.panel-box { padding: 18px; }
-.center { text-align: center; }
-.small-text { color: var(--text-soft); }
+.card {
+  padding: 22px;
+}
+
+.panel-box {
+  padding: 18px;
+}
+
+.center {
+  text-align: center;
+}
+
+.small-text {
+  color: var(--text-soft);
+}
 
 .btn {
   appearance: none;
@@ -353,14 +383,18 @@ body.dark-mode .dropbtn.active-nav {
   text-align: center;
 }
 
-.btn:hover { transform: translateY(-1px); }
+.btn:hover {
+  transform: translateY(-1px);
+}
 
 .btn.primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-strong));
   color: #fff;
 }
 
-body.dark-mode .btn.primary { color: #101724; }
+body.dark-mode .btn.primary {
+  color: #101724;
+}
 
 .btn.secondary {
   background: var(--bg-soft);
@@ -402,7 +436,8 @@ button:disabled,
   color: var(--accent);
 }
 
-.footer, .site-footer {
+.footer,
+.site-footer {
   margin-top: 30px;
   padding: 18px 24px;
   border-top: 1px solid var(--border);
@@ -423,13 +458,17 @@ button:disabled,
   display: none;
   position: fixed;
   z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,.58);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .58);
   backdrop-filter: blur(4px);
 }
 
-.modal.show { display: block; }
+.modal.show {
+  display: block;
+}
 
 .modal-content {
   background-color: var(--bg-elevated);
@@ -481,7 +520,7 @@ button:disabled,
 }
 
 .settings-copy,
-.info-row > div {
+.info-row>div {
   display: grid;
   gap: 4px;
 }
@@ -532,27 +571,26 @@ body.dark-mode .toggle-btn.active {
     flex-direction: column;
     align-items: stretch;
   }
-
-  .control-row { justify-content: flex-start; }
+  .control-row {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
   header {
     padding: 12px 14px;
   }
-
   .container {
     width: min(var(--content-max), calc(100% - 20px));
     padding-top: 20px;
   }
-
-  .card { padding: 18px; }
-
+  .card {
+    padding: 18px;
+  }
   nav {
     width: 100%;
     justify-content: flex-start;
   }
-
   nav button,
   .dropbtn {
     padding: 9px 14px;
@@ -617,4 +655,148 @@ body.dark-mode .toggle-btn.active {
   color: var(--text-soft);
   font-size: 0.92rem;
   font-weight: 600;
+}
+
+/* ========== AI Assistant Widget (shared) - Fixed ========== */
+.assistant {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 20px !important;
+  z-index: 1000 !important;
+  width: 56px !important;
+  height: 56px !important;
+  padding: 0 !important;
+  background: var(--primary) !important;
+  backdrop-filter: none !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border: none !important;
+  box-shadow: var(--shadow-md);
+}
+
+.assistant .assistant-content {
+  display: none;
+  width: 100%;
+}
+
+.assistant .assistant-icon {
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.assistant:hover {
+  width: min(320px, 88vw) !important;
+  height: auto !important;
+  background: var(--bg-elevated) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 28px !important;
+  padding: 16px 18px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-md) !important;
+  cursor: default;
+}
+
+.assistant:hover .assistant-icon {
+  display: none;
+}
+
+.assistant:hover .assistant-content {
+  display: block;
+}
+
+.assistant .assistant-content .assistant-header {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--heading);
+}
+
+.assistant .assistant-content .assistant-header span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.assistant .assistant-content .lang-selector {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.assistant .assistant-content .lang-selector:hover {
+  background: var(--primary);
+  color: var(--nav-hover-text);
+}
+
+.assistant .assistant-content p {
+  font-size: 0.8rem;
+  margin: 4px 0 10px;
+  color: var(--text-soft);
+}
+
+.assistant .assistant-content .assistant-input-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.assistant .assistant-content input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.assistant .assistant-content input:focus {
+  border-color: var(--primary);
+}
+
+.assistant .assistant-content button {
+  padding: 8px 16px;
+  border-radius: 40px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.assistant .assistant-content button:hover {
+  background: var(--primary-strong);
+  transform: scale(0.97);
+}
+
+body.dark-mode .assistant:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
+}
+
+@media (max-width: 640px) {
+  .assistant {
+    bottom: 16px !important;
+    right: 12px !important;
+  }
 }
