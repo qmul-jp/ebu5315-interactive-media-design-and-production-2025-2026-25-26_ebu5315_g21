@@ -65,32 +65,47 @@ Major updates are developed in individual branches before being merged into the 
 
 ## Shared Files
 
-The project includes two shared files used across Homepage, Game, and Quiz.
+This project includes two shared files that are used across the Homepage, Game, and Quiz sections. Their purpose is to maintain a consistent visual style and provide common interactive functions throughout the website.
 
 ### `shared.css`
-Provides common visual styles for the whole website, including:
-- colour variables
-- light mode / dark mode
-- font size scaling
-- accessibility styles
-- shared navigation bar
-- modal window
-- footer
-- shared button and card styles
+
+This file provides the shared visual styling for the whole website, including:
+
+- colour variables  
+- light mode and dark mode  
+- font size scaling  
+- accessibility styles  
+- shared navigation bar  
+- dropdown menu styles  
+- modal window  
+- footer  
+- shared button and card styles  
+- responsive layout support  
+- diagram and SVG colour settings for different themes  
 
 ### `shared.js`
-Provides common interactive functions for the whole website, including:
-- navigation button links
-- settings modal
-- theme switching
-- font size slider
-- colour-friendly mode
-- high contrast mode
-- reduced motion mode
-- localStorage preference saving
 
-Pages in each section should include both files:
+This file provides the shared interactive functions for the whole website, including:
 
-```html
+- navigation button links  
+- settings modal  
+- theme switching  
+- language switching between English and Chinese  
+- font size slider  
+- colour-friendly mode  
+- high contrast mode  
+- reduced motion mode  
+- contact, project, and accessibility information panels  
+- localStorage preference saving  
+- automatic preference restoration when the page reloads  
+
+### How to Use
+
+Each page in the Homepage, Game, and Quiz sections should include both shared files:
+
 <link rel="stylesheet" href="shared.css" />
 <script src="shared.js"></script>
+
+### Purpose
+
+These shared files help ensure that all sections of the project remain visually consistent and functionally connected. They also improve usability by supporting accessibility options and saving user preferences across pages.
