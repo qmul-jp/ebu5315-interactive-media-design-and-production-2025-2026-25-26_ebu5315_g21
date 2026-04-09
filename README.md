@@ -59,7 +59,7 @@ Major updates are developed in individual branches before being merged into the 
 
 ## Development Progress
 - **V1**: Initial development version. In this version, each team member built the basic framework for their own section separately. The three sections had not yet been fully connected.
-- **V2**: To be updated
+- **V2**: Added bilingual switching between English and Chinese, completed navigation links across the Homepage, Game, and Quiz sections, and deployed the AI assistant across all pages as a floating widget in the bottom right corner.  
 - **V3**: To be updated
 - **V4**: To be updated
 
