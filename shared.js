@@ -1,3 +1,5 @@
+// shared.js - 添加AI助手创建调用，修复语言同步
+/* global I18N */
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modal-title');
 const modalTextContainer = document.getElementById('modal-text');
@@ -67,7 +69,12 @@ const I18N = {
     accessibilityHeading: 'Inclusive options included',
     accessibilityDesc: 'Adjustable font size, dark mode, colour-friendly palette, high contrast and reduced motion are all available in Settings.',
     accessibilityTipHeading: 'Best viewing tip',
-    accessibilityTipDesc: 'If colours are hard to distinguish, turn on Colour-friendly mode and High contrast together.'
+    accessibilityTipDesc: 'If colours are hard to distinguish, turn on Colour-friendly mode and High contrast together.',
+    
+    assistantTitle: "🤖 AI Assistant",
+    assistantPlaceholder: "e.g., semicircle theorem",
+    assistantHelp: "Ask me about circle theorems!",
+    assistantSend: "Send"
   },
 
   zh: {
@@ -121,7 +128,12 @@ const I18N = {
     accessibilityHeading: '已包含的无障碍选项',
     accessibilityDesc: '设置中提供了字体大小调整、深色模式、色彩友好模式、高对比度和减少动态效果。',
     accessibilityTipHeading: '最佳使用建议',
-    accessibilityTipDesc: '如果颜色不容易区分，可以同时开启色彩友好模式和高对比度。'
+    accessibilityTipDesc: '如果颜色不容易区分，可以同时开启色彩友好模式和高对比度。',
+  
+    assistantTitle: "🤖 AI 助手",
+    assistantPlaceholder: "例如：半圆定理",
+    assistantHelp: "问我任何圆定理问题！",
+    assistantSend: "发送"
   }
 };
 
@@ -193,6 +205,9 @@ function applyLanguage(lang) {
   if (modal && modal.classList.contains('show')) {
     openSettingsPanel();
   }
+  
+  // Update assistant UI if it exists
+  if (assistantWidget) updateAssistantLanguageUI(lang);
 }
 
 function restorePreferences() {
@@ -505,8 +520,118 @@ if (modal) {
   });
 }
 
+// ---------- AI Assistant Widget ----------
+let assistantWidget = null;
+
+function createAssistantWidget() {
+  if (document.querySelector('.assistant')) return;
+
+  const assistantDiv = document.createElement('div');
+  assistantDiv.className = 'assistant';
+  assistantDiv.innerHTML = `
+    <div class="assistant-icon">🤖</div>
+    <div class="assistant-content">
+      <div class="assistant-header">
+        <span>🤖 AI Assistant</span>
+        <select class="lang-selector" aria-label="Language switch">
+          <option value="en">🇬🇧 English</option>
+          <option value="zh">🇨🇳 中文</option>
+        </select>
+      </div>
+      <p>Ask me about circle theorems!</p>
+      <div class="assistant-input-group">
+        <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem">
+        <button class="assistant-send-btn">Send</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(assistantDiv);
+  assistantWidget = assistantDiv;
+  bindAssistantEvents();
+  updateAssistantLanguageUI(getCurrentLanguage());
+}
+
+function bindAssistantEvents() {
+  if (!assistantWidget) return;
+
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+  const input = assistantWidget.querySelector('.assistant-input');
+  const sendBtn = assistantWidget.querySelector('.assistant-send-btn');
+
+  langSelector.addEventListener('change', (e) => {
+    const newLang = e.target.value;
+    applyLanguage(newLang);
+  });
+
+  const sendMessage = () => {
+    const question = input.value.trim();
+    if (!question) {
+      const emptyMsg = getCurrentLanguage() === 'zh' ? '请输入一个关于圆定理的问题！' : 'Please ask something about circle theorems!';
+      alert(`🤖 AI: ${emptyMsg}`);
+      return;
+    }
+    const reply = getAIReply(question, getCurrentLanguage());
+    alert(`🤖 AI: ${reply}`);
+    input.value = '';
+  };
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+}
+
+function updateAssistantLanguageUI(lang) {
+  if (!assistantWidget) return;
+  const tData = I18N[lang] || I18N.en;
+  const headerSpan = assistantWidget.querySelector('.assistant-header span');
+  if (headerSpan) headerSpan.innerHTML = tData.assistantTitle || '🤖 AI Assistant';
+  const helpP = assistantWidget.querySelector('.assistant-content p');
+  if (helpP) helpP.textContent = tData.assistantHelp || 'Ask me about circle theorems!';
+  const inputField = assistantWidget.querySelector('.assistant-input');
+  if (inputField) inputField.placeholder = tData.assistantPlaceholder || 'e.g., semicircle theorem';
+  const sendButton = assistantWidget.querySelector('.assistant-send-btn');
+  if (sendButton) sendButton.textContent = tData.assistantSend || 'Send';
+
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+  if (langSelector && langSelector.value !== lang) {
+    langSelector.value = lang;
+  }
+}
+
+function getAIReply(question, lang) {
+  const lowerQ = question.toLowerCase();
+  if (lang === 'zh') {
+    if (lowerQ.includes('圆心角') || lowerQ.includes('中心角') || lowerQ.includes('center')) {
+      return "📐 圆心角定理：圆心角是圆周角的两倍。∠AOB = 2∠ACB";
+    } else if (lowerQ.includes('半圆') || lowerQ.includes('semicircle')) {
+      return "🔵 半圆定理：直径所对的圆周角是90°（直角）。";
+    } else if (lowerQ.includes('切线') || lowerQ.includes('tangent')) {
+      return "🌀 半径垂直于切线。半径与切点连线垂直于切线。";
+    } else if (lowerQ.includes('弦') || lowerQ.includes('chord')) {
+      return "🎵 垂径定理：垂直于弦的直径平分弦。";
+    } else {
+      return "✨ 我可以解释：圆心角定理、半圆定理、切线与半径、圆内接四边形、弦切角等。再问我更多吧！";
+    }
+  } else {
+    if (lowerQ.includes('center') || lowerQ.includes('centre')) {
+      return "📐 Theorem: The angle at the center is twice the angle at the circumference. ∠AOB = 2∠ACB";
+    } else if (lowerQ.includes('semicircle')) {
+      return "🔵 Angle in a semicircle is always 90° (right angle).";
+    } else if (lowerQ.includes('tangent')) {
+      return "🌀 The radius to a point of tangency is perpendicular to the tangent.";
+    } else if (lowerQ.includes('chord')) {
+      return "🎵 Perpendicular from center to chord bisects the chord.";
+    } else {
+      return "✨ I can explain: angle at center, semicircle theorem, tangent-radius, cyclic quadrilateral, alternate segment. Ask me!";
+    }
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   restorePreferences();
   setupDropdowns();
   setupNavigation();
+  createAssistantWidget(); // Create AI assistant widget on page load
 });
