@@ -618,3 +618,146 @@ body.dark-mode .toggle-btn.active {
   font-size: 0.92rem;
   font-weight: 600;
 }
+
+/* ========== AI Assistant Widget (shared) ========== */
+.assistant {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 20px !important;
+  z-index: 1000 !important;
+  width: 56px !important;
+  height: 56px !important;
+  padding: 0 !important;
+  background: var(--primary) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border: none !important;
+  box-shadow: var(--shadow-md);
+}
+
+.assistant .assistant-content {
+  display: none;
+  width: 100%;
+}
+
+.assistant .assistant-icon {
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.assistant:hover {
+  width: min(320px, 88vw) !important;
+  height: auto !important;
+  background: var(--bg-elevated) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 28px !important;
+  padding: 16px 18px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-md) !important;
+  cursor: default;
+}
+
+.assistant:hover .assistant-icon {
+  display: none;
+}
+
+.assistant:hover .assistant-content {
+  display: block;
+}
+
+.assistant .assistant-content .assistant-header {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--heading);
+}
+
+.assistant .assistant-content .assistant-header span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.assistant .assistant-content .lang-selector {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.assistant .assistant-content .lang-selector:hover {
+  background: var(--primary);
+  color: var(--nav-hover-text);
+}
+
+.assistant .assistant-content p {
+  font-size: 0.8rem;
+  margin: 4px 0 10px;
+  color: var(--text-soft);
+}
+
+.assistant .assistant-content .assistant-input-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.assistant .assistant-content input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.assistant .assistant-content input:focus {
+  border-color: var(--primary);
+}
+
+.assistant .assistant-content button {
+  padding: 8px 16px;
+  border-radius: 40px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.assistant .assistant-content button:hover {
+  background: var(--primary-strong);
+  transform: scale(0.97);
+}
+
+body.dark-mode .assistant:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
+}
+
+@media (max-width: 640px) {
+  .assistant {
+    bottom: 16px !important;
+    right: 12px !important;
+  }
+}

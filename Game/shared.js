@@ -7,6 +7,7 @@ const settingsBtn = document.getElementById('settingsBtn');
 const contactBtn = document.getElementById('contactBtn');
 const supportBtn = document.getElementById('supportBtn');
 const accessibilityBtn = document.getElementById('accessibilityBtn');
+const dropdownButtons = document.querySelectorAll('.dropbtn');
 
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
@@ -66,7 +67,12 @@ const I18N = {
     accessibilityHeading: 'Inclusive options included',
     accessibilityDesc: 'Adjustable font size, dark mode, colour-friendly palette, high contrast and reduced motion are all available in Settings.',
     accessibilityTipHeading: 'Best viewing tip',
-    accessibilityTipDesc: 'If colours are hard to distinguish, turn on Colour-friendly mode and High contrast together.'
+    accessibilityTipDesc: 'If colours are hard to distinguish, turn on Colour-friendly mode and High contrast together.',
+
+    assistantTitle: '🤖 AI Assistant',
+    assistantPlaceholder: 'e.g., semicircle theorem',
+    assistantHelp: 'Ask me about circle theorems!',
+    assistantSend: 'Send'
   },
 
   zh: {
@@ -120,9 +126,16 @@ const I18N = {
     accessibilityHeading: '已包含的无障碍选项',
     accessibilityDesc: '设置中提供了字体大小调整、深色模式、色彩友好模式、高对比度和减少动态效果。',
     accessibilityTipHeading: '最佳使用建议',
-    accessibilityTipDesc: '如果颜色不容易区分，可以同时开启色彩友好模式和高对比度。'
+    accessibilityTipDesc: '如果颜色不容易区分，可以同时开启色彩友好模式和高对比度。',
+
+    assistantTitle: '🤖 AI 助手',
+    assistantPlaceholder: '例如：半圆定理',
+    assistantHelp: '问我任何圆定理问题！',
+    assistantSend: '发送'
   }
 };
+
+let assistantWidget = null;
 
 function getStored(name, fallback) {
   return localStorage.getItem(name) || fallback;
@@ -199,6 +212,10 @@ function applyLanguage(lang) {
 
   if (modal && modal.classList.contains('show')) {
     openSettingsPanel();
+  }
+
+  if (assistantWidget) {
+    updateAssistantLanguageUI(lang);
   }
 
   emitLanguageChanged(lang);
@@ -354,7 +371,9 @@ function getSettingsHTML() {
           <span>${t('colourFriendlyDesc')}</span>
         </div>
         <div class="control-row">
-          <button type="button" data-setting="colorblindMode" data-value="toggle" class="toggle-btn ${colorblind ? 'active' : ''}">${colorblind ? t('on') : t('off')}</button>
+          <button type="button" data-setting="colorblindMode" data-value="toggle" class="toggle-btn ${colorblind ? 'active' : ''}">
+            ${colorblind ? t('on') : t('off')}
+          </button>
         </div>
       </div>
 
@@ -364,7 +383,9 @@ function getSettingsHTML() {
           <span>${t('reducedMotionDesc')}</span>
         </div>
         <div class="control-row">
-          <button type="button" data-setting="reducedMotion" data-value="toggle" class="toggle-btn ${reducedMotion ? 'active' : ''}">${reducedMotion ? t('on') : t('off')}</button>
+          <button type="button" data-setting="reducedMotion" data-value="toggle" class="toggle-btn ${reducedMotion ? 'active' : ''}">
+            ${reducedMotion ? t('on') : t('off')}
+          </button>
         </div>
       </div>
 
@@ -374,7 +395,9 @@ function getSettingsHTML() {
           <span>${t('highContrastDesc')}</span>
         </div>
         <div class="control-row">
-          <button type="button" data-setting="highContrast" data-value="toggle" class="toggle-btn ${highContrast ? 'active' : ''}">${highContrast ? t('on') : t('off')}</button>
+          <button type="button" data-setting="highContrast" data-value="toggle" class="toggle-btn ${highContrast ? 'active' : ''}">
+            ${highContrast ? t('on') : t('off')}
+          </button>
         </div>
       </div>
 
@@ -434,14 +457,16 @@ function bindSettingsControls() {
   const fontSizePreset = document.getElementById('fontSizePreset');
 
   if (fontSlider) {
+    const updateSliderUI = (value) => {
+      if (fontSizeValue) fontSizeValue.textContent = `${Math.round(Number(value) * 100)}%`;
+      if (fontSizePreset) fontSizePreset.textContent = getFontLabel(value);
+    };
+
+    updateSliderUI(fontSlider.value);
+
     fontSlider.addEventListener('input', () => {
       applyFontScale(fontSlider.value);
-      if (fontSizeValue) {
-        fontSizeValue.textContent = `${Math.round(Number(fontSlider.value) * 100)}%`;
-      }
-      if (fontSizePreset) {
-        fontSizePreset.textContent = getFontLabel(fontSlider.value);
-      }
+      updateSliderUI(fontSlider.value);
     });
   }
 }
@@ -454,6 +479,23 @@ function bindNavigation() {
         window.location.href = target;
       });
     }
+  });
+}
+
+function bindDropdowns() {
+  dropdownButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const parent = button.closest('.nav-group');
+      if (!parent) return;
+      parent.classList.toggle('open');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-group.open').forEach((group) => {
+      group.classList.remove('open');
+    });
   });
 }
 
@@ -498,6 +540,137 @@ function bindGlobalUI() {
   });
 }
 
-restorePreferences();
-bindNavigation();
-bindGlobalUI();
+/* ---------- AI Assistant ---------- */
+
+function getAIReply(question, lang) {
+  const lowerQ = question.toLowerCase();
+
+  if (lang === 'zh') {
+    if (lowerQ.includes('圆心角') || lowerQ.includes('中心角') || lowerQ.includes('center')) {
+      return '📐 圆心角定理：圆心角是圆周角的两倍。∠AOB = 2∠ACB';
+    }
+    if (lowerQ.includes('半圆') || lowerQ.includes('semicircle')) {
+      return '🔵 半圆定理：直径所对的圆周角是90°（直角）。';
+    }
+    if (lowerQ.includes('切线') || lowerQ.includes('tangent')) {
+      return '🌀 半径垂直于切线。半径与切点连线垂直于切线。';
+    }
+    if (lowerQ.includes('弦') || lowerQ.includes('chord')) {
+      return '🎵 垂径定理：垂直于弦的直径平分弦。';
+    }
+    return '✨ 我可以解释：圆心角定理、半圆定理、切线与半径、圆内接四边形、弦切角等。再问我更多吧！';
+  }
+
+  if (lowerQ.includes('center') || lowerQ.includes('centre')) {
+    return '📐 Theorem: The angle at the center is twice the angle at the circumference. ∠AOB = 2∠ACB';
+  }
+  if (lowerQ.includes('semicircle')) {
+    return '🔵 Angle in a semicircle is always 90° (right angle).';
+  }
+  if (lowerQ.includes('tangent')) {
+    return '🌀 The radius to a point of tangency is perpendicular to the tangent.';
+  }
+  if (lowerQ.includes('chord')) {
+    return '🎵 Perpendicular from center to chord bisects the chord.';
+  }
+  return '✨ I can explain: angle at center, semicircle theorem, tangent-radius, cyclic quadrilateral, alternate segment. Ask me!';
+}
+
+function updateAssistantLanguageUI(lang) {
+  if (!assistantWidget) return;
+
+  const tData = I18N[lang] || I18N.en;
+  const headerSpan = assistantWidget.querySelector('.assistant-header span');
+  const helpP = assistantWidget.querySelector('.assistant-content p');
+  const inputField = assistantWidget.querySelector('.assistant-input');
+  const sendButton = assistantWidget.querySelector('.assistant-send-btn');
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+
+  if (headerSpan) headerSpan.innerHTML = tData.assistantTitle || '🤖 AI Assistant';
+  if (helpP) helpP.textContent = tData.assistantHelp || 'Ask me about circle theorems!';
+  if (inputField) inputField.placeholder = tData.assistantPlaceholder || 'e.g., semicircle theorem';
+  if (sendButton) sendButton.textContent = tData.assistantSend || 'Send';
+  if (langSelector && langSelector.value !== lang) {
+    langSelector.value = lang;
+  }
+}
+
+function bindAssistantEvents() {
+  if (!assistantWidget) return;
+
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+  const input = assistantWidget.querySelector('.assistant-input');
+  const sendBtn = assistantWidget.querySelector('.assistant-send-btn');
+
+  if (langSelector) {
+    langSelector.addEventListener('change', (e) => {
+      applyLanguage(e.target.value);
+    });
+  }
+
+  const sendMessage = () => {
+    const question = input?.value.trim() || '';
+    if (!question) {
+      const emptyMsg = getCurrentLanguage() === 'zh'
+        ? '请输入一个关于圆定理的问题！'
+        : 'Please ask something about circle theorems!';
+      alert(`🤖 AI: ${emptyMsg}`);
+      return;
+    }
+
+    const reply = getAIReply(question, getCurrentLanguage());
+    alert(`🤖 AI: ${reply}`);
+    input.value = '';
+  };
+
+  if (sendBtn) {
+    sendBtn.addEventListener('click', sendMessage);
+  }
+
+  if (input) {
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  }
+}
+
+function createAssistantWidget() {
+  if (document.querySelector('.assistant')) {
+    assistantWidget = document.querySelector('.assistant');
+    updateAssistantLanguageUI(getCurrentLanguage());
+    return;
+  }
+
+  const assistantDiv = document.createElement('div');
+  assistantDiv.className = 'assistant';
+  assistantDiv.innerHTML = `
+    <div class="assistant-icon">🤖</div>
+    <div class="assistant-content">
+      <div class="assistant-header">
+        <span>🤖 AI Assistant</span>
+        <select class="lang-selector" aria-label="Language switch">
+          <option value="en">🇬🇧 English</option>
+          <option value="zh">🇨🇳 中文</option>
+        </select>
+      </div>
+      <p>Ask me about circle theorems!</p>
+      <div class="assistant-input-group">
+        <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem" />
+        <button class="assistant-send-btn">Send</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(assistantDiv);
+  assistantWidget = assistantDiv;
+  bindAssistantEvents();
+  updateAssistantLanguageUI(getCurrentLanguage());
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  restorePreferences();
+  bindDropdowns();
+  bindNavigation();
+  bindGlobalUI();
+  createAssistantWidget();
+});
