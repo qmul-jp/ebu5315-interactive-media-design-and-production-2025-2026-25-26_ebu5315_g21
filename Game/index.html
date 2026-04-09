@@ -8,20 +8,21 @@
   <link rel="stylesheet" href="game.css" />
 </head>
 <body>
-
   <header>
     <div class="header-left">
       <h1>Geometry Escape Lab</h1>
       <div class="breadcrumb">
         <a href="homepage.html">Home</a> &nbsp;›&nbsp;
-        <span>Game</span>
+        <span data-role="breadcrumb-game">Game</span>
       </div>
     </div>
+
     <nav>
       <button id="navHomeBtn">Home</button>
       <button id="navGameBtn" class="active-nav">Game</button>
       <button id="navQuizBtn">Quiz</button>
       <button type="button" id="settingsBtn">Settings</button>
+
       <div class="nav-group">
         <button class="dropbtn">About ▼</button>
         <div class="dropdown-content">
@@ -34,48 +35,65 @@
   </header>
 
   <div class="container">
-    <section class="card hero-panel" style="grid-template-columns: 1fr; text-align: center; padding-top: 34px; padding-bottom: 28px;">
-      <div class="hero-copy" style="max-width: 860px; margin: 0 auto;">
-        <h1 style="margin-bottom: 14px;">Circle Conquer: Play & Learn Geo Theorems</h1>
-        <p class="hero-text" style="max-width: 680px; margin: 0 auto 18px;">
+    <section class="card hero-panel hero-panel-centered">
+      <div class="hero-copy hero-copy-centered">
+        <h1 data-role="hero-title">Circle Conquer: Play &amp; Learn Geo Theorems</h1>
+        <p class="hero-text hero-text-centered" data-role="hero-text">
           Break through 8 geometry rooms, drag points on live diagrams, and unlock the theorem archive one chamber at a time.
         </p>
-        <div class="hero-tags" style="justify-content: center;">
-          <span class="hero-tag">8 Rooms</span>
-          <span class="hero-tag">Interactive SVG</span>
-          <span class="hero-tag">Progress Unlock</span>
-          <span class="hero-tag">Theorem Archive</span>
+        <div class="hero-tags hero-tags-centered">
+          <span class="hero-tag" data-role="tag-rooms">8 Rooms</span>
+          <span class="hero-tag" data-role="tag-svg">Interactive SVG</span>
+          <span class="hero-tag" data-role="tag-unlock">Progress Unlock</span>
+          <span class="hero-tag" data-role="tag-archive">Theorem Archive</span>
         </div>
       </div>
     </section>
 
     <section class="card progress-box progress-box-enhanced">
       <div class="progress-topline">
-        <h3>Your Progress</h3>
-        <span class="status-pill">Active Explorer</span>
+        <h3 data-role="progress-title">Your Progress</h3>
+        <span id="explorerRank" class="status-pill">Active Explorer</span>
       </div>
+
       <p id="stars" class="stars">☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆</p>
-      <p id="progressText" class="progress-main-text">Room 1 available</p>
-      <p class="progress-subtext">Clear rooms one by one to unlock the theorem archive.</p>
-      <div class="progress-actions">
-        <button class="btn primary" onclick="location.href='theorems.html'">Open Theorem Archive</button>
-        <button class="btn secondary" onclick="resetGameProgress()">Restart Adventure</button>
+
+      <div class="progress-meter" aria-hidden="true">
+        <div id="progressFill" class="progress-fill"></div>
       </div>
+
+      <p id="progressNumbers" class="progress-numbers">0 / 8 rooms cleared</p>
+      <p id="progressText" class="progress-main-text">Room 1 available</p>
+      <p class="progress-subtext" data-role="progress-subtext">
+        Clear rooms one by one to unlock the theorem archive.
+      </p>
+
+      <div class="progress-actions">
+        <button class="btn primary" onclick="location.href='theorems.html'" data-role="open-archive">
+          Open Theorem Archive
+        </button>
+        <button class="btn secondary" onclick="resetGameProgress()" data-role="restart-adventure">
+          Restart Adventure
+        </button>
+      </div>
+
       <p id="resetMessage" class="reset-message" aria-live="polite"></p>
     </section>
 
     <section class="rooms-section">
-      <div class="section-heading">
+      <div class="section-heading compact-heading">
         <div>
-          <h2>Room Map</h2>
+          <h2 data-role="room-map-title">Room Map</h2>
         </div>
-        <p class="section-note">Rooms unlock one by one as you clear each theorem challenge.</p>
+        <p class="section-note" data-role="room-map-note">
+          Unlock rooms, solve the challenge, and complete the full archive.
+        </p>
       </div>
 
       <div class="room-grid">
         <article class="card room-tile">
           <div class="room-banner room-banner-1">
-            <span class="difficulty easy">Easy</span>
+            <span class="difficulty easy" data-role="difficulty-easy">Easy</span>
             <span class="room-icon">🌀</span>
           </div>
           <div class="room-preview">
@@ -92,17 +110,17 @@
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 1</h3>
-              <span class="room-code">Gate of Echo Angles</span>
+              <h3 id="roomHeading1">Room 1</h3>
+              <span class="room-code" data-role="room1-code">Gate of Echo Angles</span>
             </div>
-            <p class="room-name">Angle at the Centre</p>
+            <p class="room-name" data-role="room1-name">Angle at the Centre</p>
             <a id="roomBtn1" class="btn primary room-open-btn" href="play.html?level=1">Enter Room</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-2">
-            <span class="difficulty easy">Easy</span>
+            <span class="difficulty easy" data-role="difficulty-easy">Easy</span>
             <span class="room-icon">🌙</span>
           </div>
           <div class="room-preview">
@@ -119,17 +137,17 @@
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 2</h3>
-              <span class="room-code">Half-Moon Chamber</span>
+              <h3 id="roomHeading2">Room 2</h3>
+              <span class="room-code" data-role="room2-code">Half-Moon Chamber</span>
             </div>
-            <p class="room-name">Angles in a Semicircle</p>
+            <p class="room-name" data-role="room2-name">Angles in a Semicircle</p>
             <a id="roomBtn2" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-3">
-            <span class="difficulty medium">Medium</span>
+            <span class="difficulty medium" data-role="difficulty-medium">Medium</span>
             <span class="room-icon">🪞</span>
           </div>
           <div class="room-preview">
@@ -148,17 +166,17 @@
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 3</h3>
-              <span class="room-code">Mirror Arc Hall</span>
+              <h3 id="roomHeading3">Room 3</h3>
+              <span class="room-code" data-role="room3-code">Mirror Arc Hall</span>
             </div>
-            <p class="room-name">Angles in the Same Segment</p>
+            <p class="room-name" data-role="room3-name">Angles in the Same Segment</p>
             <a id="roomBtn3" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-4">
-            <span class="difficulty medium">Medium</span>
+            <span class="difficulty medium" data-role="difficulty-medium">Medium</span>
             <span class="room-icon">🔷</span>
           </div>
           <div class="room-preview">
@@ -173,114 +191,108 @@
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 4</h3>
-              <span class="room-code">Quadrilateral Vault</span>
+              <h3 id="roomHeading4">Room 4</h3>
+              <span class="room-code" data-role="room4-code">Quadrilateral Vault</span>
             </div>
-            <p class="room-name">Cyclic Quadrilateral</p>
+            <p class="room-name" data-role="room4-name">Cyclic Quadrilateral</p>
             <a id="roomBtn4" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-5">
-            <span class="difficulty medium">Medium</span>
+            <span class="difficulty medium" data-role="difficulty-medium">Medium</span>
             <span class="room-icon">📏</span>
           </div>
           <div class="room-preview">
             <svg viewBox="0 0 220 176" aria-label="Room 5 preview - Radius to a Tangent">
               <circle cx="90" cy="88" r="60" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
               <circle cx="150" cy="88" r="4" fill="var(--blue)"/>
-              <circle cx="90" cy="88" r="4" fill="var(--gold)"/>
-              <line x1="90" y1="88" x2="150" y2="88" stroke="var(--gold)" stroke-width="2.2"/>
-              <line x1="150" y1="22" x2="150" y2="154" stroke="var(--blue)" stroke-width="2"/>
+              <line x1="90" y1="88" x2="150" y2="88" stroke="var(--gold)" stroke-width="2"/>
+              <line x1="150" y1="28" x2="150" y2="148" stroke="var(--blue)" stroke-width="2"/>
             </svg>
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 5</h3>
-              <span class="room-code">Tangent Bridge</span>
+              <h3 id="roomHeading5">Room 5</h3>
+              <span class="room-code" data-role="room5-code">Tangent Watchtower</span>
             </div>
-            <p class="room-name">Radius to a Tangent</p>
+            <p class="room-name" data-role="room5-name">Radius to a Tangent</p>
             <a id="roomBtn5" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-6">
-            <span class="difficulty hard">Hard</span>
+            <span class="difficulty hard" data-role="difficulty-hard">Hard</span>
             <span class="room-icon">🗝️</span>
           </div>
           <div class="room-preview">
             <svg viewBox="0 0 220 176" aria-label="Room 6 preview - Tangents from a Point are Equal">
-              <circle cx="82" cy="88" r="52" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
-              <circle cx="176" cy="88" r="4" fill="var(--gold)"/>
-              <circle cx="103" cy="40" r="4" fill="var(--blue)"/>
-              <circle cx="103" cy="136" r="4" fill="var(--blue)"/>
-              <line x1="176" y1="88" x2="103" y2="40" stroke="var(--blue)" stroke-width="2"/>
-              <line x1="176" y1="88" x2="103" y2="136" stroke="var(--blue)" stroke-width="2"/>
+              <circle cx="92" cy="88" r="54" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
+              <circle cx="176" cy="88" r="4" fill="var(--blue)"/>
+              <line x1="176" y1="88" x2="129" y2="49" stroke="var(--blue)" stroke-width="2"/>
+              <line x1="176" y1="88" x2="129" y2="127" stroke="var(--blue)" stroke-width="2"/>
             </svg>
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 6</h3>
-              <span class="room-code">Twin Paths Tower</span>
+              <h3 id="roomHeading6">Room 6</h3>
+              <span class="room-code" data-role="room6-code">Twin Tangent Gate</span>
             </div>
-            <p class="room-name">Tangents from a Point are Equal</p>
+            <p class="room-name" data-role="room6-name">Tangents from a Point are Equal</p>
             <a id="roomBtn6" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-7">
-            <span class="difficulty hard">Hard</span>
+            <span class="difficulty hard" data-role="difficulty-hard">Hard</span>
             <span class="room-icon">⚡</span>
           </div>
           <div class="room-preview">
             <svg viewBox="0 0 220 176" aria-label="Room 7 preview - Angle Between Two Tangents">
-              <circle cx="82" cy="88" r="52" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
-              <circle cx="82" cy="88" r="3.5" fill="var(--muted)"/>
-              <circle cx="176" cy="88" r="4" fill="var(--gold)"/>
-              <circle cx="103" cy="40" r="4" fill="var(--blue)"/>
-              <circle cx="103" cy="136" r="4" fill="var(--blue)"/>
-              <line x1="176" y1="88" x2="103" y2="40" stroke="var(--blue)" stroke-width="2"/>
-              <line x1="176" y1="88" x2="103" y2="136" stroke="var(--blue)" stroke-width="2"/>
-              <line x1="82" y1="88" x2="103" y2="40" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="5 4"/>
-              <line x1="82" y1="88" x2="103" y2="136" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="5 4"/>
+              <circle cx="92" cy="88" r="54" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
+              <circle cx="176" cy="88" r="4" fill="var(--blue)"/>
+              <line x1="176" y1="88" x2="129" y2="49" stroke="var(--blue)" stroke-width="2"/>
+              <line x1="176" y1="88" x2="129" y2="127" stroke="var(--blue)" stroke-width="2"/>
+              <line x1="92" y1="88" x2="129" y2="49" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="5 4"/>
+              <line x1="92" y1="88" x2="129" y2="127" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="5 4"/>
             </svg>
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 7</h3>
-              <span class="room-code">Storm Gate</span>
+              <h3 id="roomHeading7">Room 7</h3>
+              <span class="room-code" data-role="room7-code">Storm Angle Gate</span>
             </div>
-            <p class="room-name">Angle Between Two Tangents</p>
+            <p class="room-name" data-role="room7-name">Angle Between Two Tangents</p>
             <a id="roomBtn7" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
 
         <article class="card room-tile">
           <div class="room-banner room-banner-8">
-            <span class="difficulty boss">Boss</span>
+            <span class="difficulty boss" data-role="difficulty-boss">Boss</span>
             <span class="room-icon">👑</span>
           </div>
           <div class="room-preview">
             <svg viewBox="0 0 220 176" aria-label="Room 8 preview - Alternate Segment Theorem">
-              <circle cx="96" cy="88" r="58" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
-              <circle cx="154" cy="88" r="4" fill="var(--gold)"/>
-              <line x1="154" y1="22" x2="154" y2="154" stroke="var(--gold)" stroke-width="2"/>
+              <circle cx="98" cy="88" r="56" fill="none" stroke="var(--svg-circle)" stroke-width="1.5"/>
               <circle cx="60" cy="42" r="4" fill="var(--blue)"/>
-              <line x1="154" y1="88" x2="60" y2="42" stroke="var(--blue)" stroke-width="2"/>
+              <circle cx="154" cy="88" r="4" fill="var(--gold)"/>
               <circle cx="43.5" cy="102.5" r="4" fill="var(--green)"/>
-              <line x1="43.5" y1="102.5" x2="154" y2="88" stroke="var(--green)" stroke-width="1.8" stroke-dasharray="6 4"/>
-              <line x1="43.5" y1="102.5" x2="60" y2="42" stroke="var(--green)" stroke-width="1.8" stroke-dasharray="6 4"/>
+              <line x1="154" y1="20" x2="154" y2="156" stroke="var(--blue)" stroke-width="2"/>
+              <line x1="60" y1="42" x2="154" y2="88" stroke="var(--gold)" stroke-width="2"/>
+              <line x1="60" y1="42" x2="43.5" y2="102.5" stroke="var(--green)" stroke-width="2"/>
+              <line x1="154" y1="88" x2="43.5" y2="102.5" stroke="var(--green)" stroke-width="2"/>
             </svg>
           </div>
           <div class="room-content">
             <div class="room-headline">
-              <h3>Room 8</h3>
-              <span class="room-code">Final Crown Chamber</span>
+              <h3 id="roomHeading8">Room 8</h3>
+              <span class="room-code" data-role="room8-code">Crown of the Final Arc</span>
             </div>
-            <p class="room-name">Alternate Segment Theorem</p>
+            <p class="room-name" data-role="room8-name">Alternate Segment Theorem</p>
             <a id="roomBtn8" class="btn room-open-btn locked-btn" href="javascript:void(0)">Locked</a>
           </div>
         </article>
@@ -299,56 +311,254 @@
   <footer class="footer">
     <div class="footer-inner">
       <span>Interactive Geometry Learning Platform</span>
-      <span>Game Homepage</span>
+      <span data-role="game-footer">Game Homepage</span>
     </div>
   </footer>
 
   <script>
+    const GAME_HOME_I18N = {
+      en: {
+        breadcrumbGame: "Game",
+        heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
+        heroText: "Break through 8 geometry rooms, drag points on live diagrams, and unlock the theorem archive one chamber at a time.",
+        tagRooms: "8 Rooms",
+        tagSvg: "Interactive SVG",
+        tagUnlock: "Progress Unlock",
+        tagArchive: "Theorem Archive",
+
+        yourProgress: "Your Progress",
+        explorerRank: "Active Explorer",
+        progressNumbers: "{n} / 8 rooms cleared",
+        roomAvailable: "Room {n} available",
+        progressSubtext: "Clear rooms one by one to unlock the theorem archive.",
+        openArchive: "Open Theorem Archive",
+        restartAdventure: "Restart Adventure",
+        roomMap: "Room Map",
+        roomMapNote: "Unlock rooms, solve the challenge, and complete the full archive.",
+
+        roomLabel: "Room {n}",
+
+        room1Code: "Gate of Echo Angles",
+        room1Name: "Angle at the Centre",
+        room2Code: "Half-Moon Chamber",
+        room2Name: "Angles in a Semicircle",
+        room3Code: "Mirror Arc Hall",
+        room3Name: "Angles in the Same Segment",
+        room4Code: "Quadrilateral Vault",
+        room4Name: "Cyclic Quadrilateral",
+        room5Code: "Tangent Watchtower",
+        room5Name: "Radius to a Tangent",
+        room6Code: "Twin Tangent Gate",
+        room6Name: "Tangents from a Point are Equal",
+        room7Code: "Storm Angle Gate",
+        room7Name: "Angle Between Two Tangents",
+        room8Code: "Crown of the Final Arc",
+        room8Name: "Alternate Segment Theorem",
+
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard",
+        boss: "Boss",
+        enterRoom: "Enter Room",
+        locked: "Locked",
+        gameFooter: "Game Homepage",
+        resetMessage: "Progress reset. Room 1 is now available again."
+      },
+      zh: {
+        breadcrumbGame: "游戏",
+        heroTitle: "Circle Conquer：边玩边学圆定理",
+        heroText: "闯过 8 个几何房间，拖动实时图形中的点，并逐步解锁完整定理档案。",
+        tagRooms: "8 个房间",
+        tagSvg: "交互式 SVG",
+        tagUnlock: "进度解锁",
+        tagArchive: "定理档案",
+
+        yourProgress: "当前进度",
+        explorerRank: "活跃探索者",
+        progressNumbers: "{n} / 8 个房间已通关",
+        roomAvailable: "房间 {n} 可用",
+        progressSubtext: "依次通关各房间，即可逐步解锁定理档案。",
+        openArchive: "打开定理档案",
+        restartAdventure: "重新开始冒险",
+        roomMap: "房间地图",
+        roomMapNote: "解锁房间、完成挑战，并收集完整定理档案。",
+
+        roomLabel: "房间 {n}",
+
+        room1Code: "回响角之门",
+        room1Name: "圆心角",
+        room2Code: "半月密室",
+        room2Name: "半圆所对的角",
+        room3Code: "镜像弧厅",
+        room3Name: "同弧所对的圆周角",
+        room4Code: "四边形秘库",
+        room4Name: "圆内接四边形",
+        room5Code: "切线瞭望塔",
+        room5Name: "半径与切线",
+        room6Code: "双切线之门",
+        room6Name: "同一点引切线长度相等",
+        room7Code: "风暴角之门",
+        room7Name: "两切线夹角",
+        room8Code: "终弧王冠",
+        room8Name: "交替弧定理",
+
+        easy: "简单",
+        medium: "中等",
+        hard: "困难",
+        boss: "最终关",
+        enterRoom: "进入房间",
+        locked: "未解锁",
+        gameFooter: "游戏主页",
+        resetMessage: "进度已重置，现在重新从房间 1 开始。"
+      }
+    };
+
+    function getGameHomeLang() {
+      return localStorage.getItem("language") || "en";
+    }
+
+    function gh(key) {
+      const lang = getGameHomeLang();
+      return GAME_HOME_I18N[lang]?.[key] || GAME_HOME_I18N.en[key] || key;
+    }
+
+    function ghf(key, vars = {}) {
+      let text = gh(key);
+      Object.keys(vars).forEach((k) => {
+        text = text.replace(`{${k}}`, vars[k]);
+      });
+      return text;
+    }
+
+    function applyGameHomeLanguage() {
+      document.documentElement.lang = getGameHomeLang() === "zh" ? "zh" : "en";
+
+      const map = {
+        breadcrumbGame: '[data-role="breadcrumb-game"]',
+        heroTitle: '[data-role="hero-title"]',
+        heroText: '[data-role="hero-text"]',
+        tagRooms: '[data-role="tag-rooms"]',
+        tagSvg: '[data-role="tag-svg"]',
+        tagUnlock: '[data-role="tag-unlock"]',
+        tagArchive: '[data-role="tag-archive"]',
+        yourProgress: '[data-role="progress-title"]',
+        progressSubtext: '[data-role="progress-subtext"]',
+        openArchive: '[data-role="open-archive"]',
+        restartAdventure: '[data-role="restart-adventure"]',
+        roomMap: '[data-role="room-map-title"]',
+        roomMapNote: '[data-role="room-map-note"]',
+        room1Code: '[data-role="room1-code"]',
+        room1Name: '[data-role="room1-name"]',
+        room2Code: '[data-role="room2-code"]',
+        room2Name: '[data-role="room2-name"]',
+        room3Code: '[data-role="room3-code"]',
+        room3Name: '[data-role="room3-name"]',
+        room4Code: '[data-role="room4-code"]',
+        room4Name: '[data-role="room4-name"]',
+        room5Code: '[data-role="room5-code"]',
+        room5Name: '[data-role="room5-name"]',
+        room6Code: '[data-role="room6-code"]',
+        room6Name: '[data-role="room6-name"]',
+        room7Code: '[data-role="room7-code"]',
+        room7Name: '[data-role="room7-name"]',
+        room8Code: '[data-role="room8-code"]',
+        room8Name: '[data-role="room8-name"]',
+        gameFooter: '[data-role="game-footer"]'
+      };
+
+      Object.entries(map).forEach(([key, selector]) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = gh(key);
+      });
+
+      document.querySelectorAll('[data-role="difficulty-easy"]').forEach(el => el.textContent = gh('easy'));
+      document.querySelectorAll('[data-role="difficulty-medium"]').forEach(el => el.textContent = gh('medium'));
+      document.querySelectorAll('[data-role="difficulty-hard"]').forEach(el => el.textContent = gh('hard'));
+      document.querySelectorAll('[data-role="difficulty-boss"]').forEach(el => el.textContent = gh('boss'));
+
+      for (let i = 1; i <= 8; i += 1) {
+        const heading = document.getElementById(`roomHeading${i}`);
+        if (heading) heading.textContent = ghf('roomLabel', { n: i });
+      }
+    }
+
     function updateGameProgressUI() {
-      const unlockedLevel = parseInt(localStorage.getItem("unlockedLevel") || "1", 10);
-      const highestCleared = parseInt(localStorage.getItem("highestCleared") || "0", 10);
+      const unlockedLevel = parseInt(localStorage.getItem('unlockedLevel') || '1', 10);
+      const highestCleared = parseInt(localStorage.getItem('highestCleared') || '0', 10);
 
-      const stars = document.getElementById("stars");
-      const progressText = document.getElementById("progressText");
+      const stars = document.getElementById('stars');
+      const progressFill = document.getElementById('progressFill');
+      const progressNumbers = document.getElementById('progressNumbers');
+      const progressText = document.getElementById('progressText');
+      const explorerRank = document.getElementById('explorerRank');
 
-      const filled = "★ ".repeat(highestCleared);
-      const empty = "☆ ".repeat(8 - highestCleared);
-      stars.textContent = (filled + empty).trim();
-
-      if (highestCleared >= 8) {
-        progressText.textContent = "All rooms cleared";
-      } else {
-        progressText.textContent = `Room ${unlockedLevel} available`;
+      if (stars) {
+        const filled = "★".repeat(highestCleared);
+        const empty = "☆".repeat(8 - highestCleared);
+        stars.textContent = `${filled}${filled && empty ? " " : ""}${empty}`.trim();
       }
 
-      for (let i = 1; i <= 8; i++) {
+      if (progressFill) {
+        progressFill.style.width = `${(highestCleared / 8) * 100}%`;
+      }
+
+      if (progressNumbers) {
+        progressNumbers.textContent = ghf('progressNumbers', { n: highestCleared });
+      }
+
+      if (progressText) {
+        const availableRoom = Math.min(highestCleared + 1, 8);
+        progressText.textContent = ghf('roomAvailable', { n: availableRoom });
+      }
+
+      if (explorerRank) {
+        explorerRank.textContent = gh('explorerRank');
+      }
+
+      for (let i = 1; i <= 8; i += 1) {
         const btn = document.getElementById(`roomBtn${i}`);
         if (!btn) continue;
 
         if (i <= unlockedLevel) {
-          btn.classList.remove("locked-btn");
-          btn.classList.add("primary");
-          btn.textContent = i <= highestCleared ? "Replay Room" : "Enter Room";
+          btn.classList.remove('locked-btn');
+          btn.classList.add('primary');
           btn.href = `play.html?level=${i}`;
+          btn.textContent = gh('enterRoom');
         } else {
-          btn.classList.add("locked-btn");
-          btn.classList.remove("primary");
-          btn.textContent = "Locked";
-          btn.href = "javascript:void(0)";
+          btn.classList.add('locked-btn');
+          btn.classList.remove('primary');
+          btn.href = 'javascript:void(0)';
+          btn.textContent = gh('locked');
         }
       }
     }
 
     function resetGameProgress() {
-      localStorage.setItem("unlockedLevel", "1");
-      localStorage.setItem("highestCleared", "0");
-      const resetMessage = document.getElementById("resetMessage");
-      if (resetMessage) resetMessage.textContent = "Progress has been reset.";
+      localStorage.setItem('unlockedLevel', '1');
+      localStorage.setItem('highestCleared', '0');
       updateGameProgressUI();
+      const resetMessage = document.getElementById('resetMessage');
+      if (resetMessage) resetMessage.textContent = gh('resetMessage');
     }
 
-    window.addEventListener("DOMContentLoaded", updateGameProgressUI);
+    window.addEventListener('DOMContentLoaded', () => {
+      applyGameHomeLanguage();
+      updateGameProgressUI();
+    });
+    window.addEventListener('focus', () => {
+      applyGameHomeLanguage();
+      updateGameProgressUI();
+    });
+    window.addEventListener('storage', () => {
+      applyGameHomeLanguage();
+      updateGameProgressUI();
+    });
+    window.addEventListener('languageChanged', () => {
+      applyGameHomeLanguage();
+      updateGameProgressUI();
+    });
   </script>
+
   <script src="shared.js"></script>
 </body>
 </html>
