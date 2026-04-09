@@ -77,6 +77,7 @@ Provides common visual styles for the whole website, including:
 - modal window
 - footer
 - shared button and card styles
+- ai assistant window appearance
 
 ### `shared.js`
 Provides common interactive functions for the whole website, including:
@@ -88,6 +89,7 @@ Provides common interactive functions for the whole website, including:
 - high contrast mode
 - reduced motion mode
 - localStorage preference saving
+- ai assistant window interaction
 
 Pages in each section should include both files:
 
