@@ -1,6 +1,6 @@
-# EBU6305
+# EBU5315
 
-## Group Number: 2020EBU6305G21
+## Group Number: 2026EBU5315G21
 
 ## Project Title: Circle Conquer: Play & Learn Geo Theorems
 
@@ -58,8 +58,8 @@ Each team member works on their own branch and contributes to the project throug
 Major updates are developed in individual branches before being merged into the main branch for version releases.
 
 ## Development Progress
-- **V1**: Initial repository setup and first development version
-- **V2**: To be updated
+- **V1**: Initial development version. In this version, each team member built the basic framework for their own section separately. The three sections had not yet been fully connected.
+- **V2**: Added bilingual switching between English and Chinese, completed navigation links across the Homepage, Game, and Quiz sections, and deployed the AI assistant across all pages as a floating widget in the bottom right corner.  
 - **V3**: To be updated
 - **V4**: To be updated
 
@@ -77,6 +77,7 @@ Provides common visual styles for the whole website, including:
 - modal window
 - footer
 - shared button and card styles
+- ai assistant window appearance
 
 ### `shared.js`
 Provides common interactive functions for the whole website, including:
@@ -88,6 +89,7 @@ Provides common interactive functions for the whole website, including:
 - high contrast mode
 - reduced motion mode
 - localStorage preference saving
+- ai assistant window interaction
 
 Pages in each section should include both files:
 
