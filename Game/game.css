@@ -401,6 +401,13 @@
   background: #fffdf8;
   border: 1px solid rgba(54, 76, 112, 0.12);
   border-radius: 12px;
+  touch-action: none;
+}
+/* 禁用 SVG 中所有文字的默认选中行为，并让点击穿透文字 */
+#svg text {
+  user-select: none;
+  -webkit-user-select: none; /* 兼容 Safari */
+  pointer-events: none;      /* 防止文字遮挡拖动点的点击事件 */
 }
 
 .diagram-note,
@@ -1328,4 +1335,399 @@ body.dark-mode .feedback-success {
 body.dark-mode .theorem-icon {
   background: rgba(255, 255, 255, 0.06);
   border-color: var(--line);
+}
+
+/* --- V4.3: 移除定理档案室的 Emoji 图标 --- */
+
+/* 1. 隐藏图标容器 */
+.theorem-icon {
+  display: none !important;
+}
+
+/* 2. 优化布局：图标去掉后，让文字内容左侧对齐，增加呼吸感 */
+.theorem-item-main {
+  gap: 0 !important; /* 去掉原有的图标间距 */
+}
+
+.theorem-copy {
+  padding-left: 10px; /* 给文字左侧留出一点优雅的空白 */
+}
+
+/* 3. 强化已解锁状态的边框质感（苹果风格的高光边缘） */
+.theorem-item.unlocked {
+  background: rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 
+    0 8px 32px -8px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark-mode .theorem-item.unlocked {
+  background: rgba(255, 255, 255, 0.03) !important;
+  box-shadow: 
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* 错误时的震动反馈 (Game Feel) */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); border-color: rgba(226, 75, 75, 0.6) !important; }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.shake-animation {
+  animation: shakeError 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  box-shadow: 0 0 24px rgba(226, 75, 75, 0.4) !important; /* 震动时伴随危险红光 */
+}
+
+/* =========================================================
+   V6: Play Page Header & Mission Strip Overhaul
+   (Overlapping layout, Spotlight, and Glassmorphism)
+   ========================================================= */
+
+/* --- 1. 顶部 Header (聚光灯背景与底部留白) --- */
+.play-hero-shell {
+  position: relative;
+  overflow: hidden;
+  /* 增加上下内边距，特别是底部留出空间给下方的卡片重叠 */
+  padding: 46px 30px 60px !important; 
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(200, 155, 44, 0.12) 0%, transparent 70%),
+    rgba(255, 255, 255, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 32px !important; /* 更大的圆角 */
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.04) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body.dark-mode .play-hero-shell {
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(200, 155, 44, 0.15) 0%, transparent 70%),
+    rgba(20, 25, 38, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* 优化顶部小标签 (Room Challenge | Room 1/8) */
+.play-room-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px !important;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 999px;
+  margin-bottom: 18px !important;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+body.dark-mode .play-room-kicker {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.play-room-kicker .eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  font-weight: 700;
+  margin: 0;
+}
+
+.play-room-kicker .room-progress-badge {
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: 0.85rem;
+}
+
+/* 优化“In Progress”状态胶囊，增加呼吸呼吸光晕 */
+.status-pill-inline {
+  margin-top: 16px !important;
+  background: var(--bg-elevated) !important;
+  box-shadow: 0 4px 16px rgba(200, 155, 44, 0.15) !important;
+  border: 1px solid rgba(200, 155, 44, 0.25) !important;
+  color: var(--primary) !important;
+  letter-spacing: 0.5px;
+}
+body.dark-mode .status-pill-inline {
+  background: var(--bg-soft) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* --- 2. 任务栏 (向上偏移重叠，左侧修饰线) --- */
+.mission-strip {
+  margin-top: -36px !important; /* 关键：向上偏移，与 Header 产生物理重叠 */
+  position: relative;
+  z-index: 10;
+  gap: 20px !important;
+  margin-bottom: 28px !important;
+  padding: 0 20px; /* 两侧稍微收缩，增强层次感 */
+}
+
+.mission-block {
+  position: relative;
+  padding: 24px 28px !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.06) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .mission-block {
+  background: linear-gradient(145deg, rgba(30, 38, 56, 0.7), rgba(20, 25, 38, 0.5)) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 添加卡片左侧的高级感指示线 */
+.mission-block::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 30px;
+  bottom: 30px;
+  width: 4px;
+  background: var(--primary);
+  border-radius: 0 4px 4px 0;
+}
+
+/* 第二个卡片（Goal）使用蓝色指示线区分 */
+.mission-block:nth-child(2)::before {
+  background: var(--accent);
+}
+
+.mission-label {
+  font-size: 0.75rem !important;
+  color: var(--text-soft) !important;
+  margin-bottom: 8px !important;
+  opacity: 0.8;
+}
+
+.mission-block p {
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  color: var(--heading) !important;
+  margin: 0 !important;
+}
+
+/* 响应式：在手机端取消左右缩进缩进 */
+@media (max-width: 760px) {
+  .mission-strip {
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   V7: Play Area & Console Overhaul (Apple-esque Dashboard)
+   ========================================================= */
+
+/* --- 1. 左右两栏的顶部标题区统一规范 --- */
+.card-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line); /* 增加一条精致的分割线 */
+}
+
+.card-topline h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--heading);
+}
+
+.diagram-desc {
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+/* --- 2. 右侧控制台：数据展示区“内嵌化 (Inset)” --- */
+/* 让目标数值和当前状态看起来像嵌在玻璃面板里的屏幕 */
+.challenge-box {
+  background: rgba(0, 0, 0, 0.02) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+body.dark-mode .challenge-box {
+  background: rgba(0, 0, 0, 0.2) !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.small-heading {
+  font-size: 0.75rem !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px !important;
+  opacity: 0.8;
+}
+
+.challenge-target {
+  font-size: 1.25rem !important;
+  color: var(--primary) !important; /* 目标关系用金色高亮 */
+}
+
+/* --- 3. 右侧控制台：实时状态区重构 --- */
+.enhanced-stats {
+  background: rgba(0, 0, 0, 0.02) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  margin-top: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important; /* 左边自适应，右边固定，解决对齐问题 */
+  gap: 20px !important;
+  align-items: center;
+}
+
+body.dark-mode .enhanced-stats {
+  background: rgba(0, 0, 0, 0.2) !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.enhanced-stats .stat-item:last-child {
+  text-align: right;
+  border-left: 1px solid var(--line); /* 尝试次数左侧加一条分割线 */
+  padding-left: 20px;
+}
+
+.stat-label {
+  font-size: 0.75rem !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-soft) !important;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.enhanced-stats p {
+  font-size: 1rem;
+  margin: 0 !important;
+}
+
+.attempt-number {
+  font-size: 2.2rem !important; /* 放大剩余次数，增强游戏紧张感 */
+  line-height: 1 !important;
+  color: var(--text) !important;
+}
+body.dark-mode .attempt-number { color: #fff !important; }
+
+/* --- 4. 右侧控制台：按钮层级优化 --- */
+.action-row-vertical {
+  gap: 10px !important;
+  margin-top: 24px !important;
+}
+
+/* 弱化次要按钮，突出主 Check 按钮 */
+.action-row-vertical .btn.secondary,
+.action-row-vertical .btn.subtle-btn {
+  min-height: 44px !important;
+  font-size: 0.9rem !important;
+}
+
+/* --- 5. 底部次要信息块 (Tip, Feedback, Hint, Reward) 统一风格 --- */
+.diagram-note, .hint-box, .reward-preview {
+  background: transparent !important;
+  border: 1px dashed var(--line) !important;
+  box-shadow: none !important;
+  padding: 16px !important;
+  border-radius: 16px !important;
+}
+
+body.dark-mode .diagram-note, 
+body.dark-mode .hint-box, 
+body.dark-mode .reward-preview {
+  background: rgba(255,255,255,0.02) !important;
+}
+
+.reward-icon {
+  background: transparent !important;
+  border: none !important;
+  font-size: 32px !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+@keyframes hintUpdate {
+  0% { background-color: rgba(200, 155, 44, 0.4); transform: scale(1.02); }
+  100% { background-color: transparent; transform: scale(1); }
+}
+
+.hint-flash {
+  animation: hintUpdate 0.5s ease-out;
+}
+
+/* 防止移动端拖拽点时画面乱滚 */
+#svg {
+  touch-action: none !important;
+}
+
+/* Hint 闪烁高亮动画 */
+@keyframes hintUpdate {
+  0% { background-color: rgba(200, 155, 44, 0.4); transform: scale(1.02); }
+  100% { background-color: transparent; transform: scale(1); }
+}
+
+.hint-flash {
+  animation: hintUpdate 0.5s ease-out;
+}
+
+/* =========================================================
+   V9: Lockdown Protocol (Game Over State)
+   ========================================================= */
+
+/* 1. 卡片闪烁危险红光 */
+@keyframes lockdownPulse {
+  0% { box-shadow: inset 0 0 0 1px rgba(226, 75, 75, 0.5), 0 12px 32px -8px rgba(226, 75, 75, 0.2) !important; }
+  50% { box-shadow: inset 0 0 0 2px rgba(226, 75, 75, 0.8), 0 12px 48px 0 rgba(226, 75, 75, 0.4) !important; border-color: rgba(226, 75, 75, 0.6) !important;}
+  100% { box-shadow: inset 0 0 0 1px rgba(226, 75, 75, 0.5), 0 12px 32px -8px rgba(226, 75, 75, 0.2) !important; }
+}
+
+.lockdown-mode .play-hero-shell,
+.lockdown-mode .challenge-box,
+.lockdown-mode .enhanced-stats {
+  animation: lockdownPulse 2s infinite ease-in-out !important;
+}
+
+/* 2. SVG 仪器“失去活性”并禁止交互 */
+.lockdown-mode #svg {
+  pointer-events: none !important; /* 彻底禁止拖动 */
+  opacity: 0.5;
+  filter: grayscale(0.8) sepia(1) hue-rotate(-50deg) saturate(3); /* 让图形蒙上一层死寂的红灰色 */
+  transition: all 0.5s ease;
+}
+
+/* 3. Reboot 重启按钮样式 */
+.btn.reboot-btn {
+  background: linear-gradient(135deg, #e24b4b, #b91c1c) !important;
+  color: white !important;
+  box-shadow: 0 4px 14px rgba(226, 75, 75, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  animation: shakeError 0.4s ease-in-out; /* 出现时震动一下 */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn.reboot-btn:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  box-shadow: 0 6px 20px rgba(226, 75, 75, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 让剩余次数变成红色警告 */
+.lockdown-mode .attempt-number {
+  color: #e24b4b !important;
 }
