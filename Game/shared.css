@@ -957,3 +957,129 @@ body.dark-mode #svg {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.4) !important;
 }
+
+/* =========================================================
+   V11: Inclusive Design & Wellbeing Enforcements 
+   (Eye-care, Brutal High-Contrast, Legibility)
+   ========================================================= */
+
+/* --- 1. 护眼模式 (Eye-care Theme) --- */
+body.eye-care {
+  --bg: #fdf6e3;
+  --bg-panel: rgba(250, 243, 224, 0.98);
+  --bg-soft: #f4e8d1;
+  --bg-elevated: #fffcf5;
+  --text: #433422;
+  --text-soft: #7a6548;
+  --heading: #312515;
+  --primary: #b58900;
+  --primary-strong: #8a6800;
+  --primary-soft: rgba(181, 137, 0, 0.15);
+  --accent: #2aa198;
+  --border: rgba(181, 137, 0, 0.2);
+  --line: rgba(181, 137, 0, 0.15);
+  --svg-circle: rgba(181, 137, 0, 0.3);
+  --svg-line: #937b54;
+  --svg-label: #312515;
+  background: #fdf6e3 !important; 
+}
+body.eye-care::before {
+  display: none !important; 
+}
+
+/* --- 2. 暴力高对比度模式 (Brutal High-Contrast) --- */
+body.high-contrast * {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast {
+  --bg: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-soft: #f0f0f0;
+  --text: #000000;
+  --text-soft: #111111;
+  --heading: #000000;
+  --primary: #0000ff; 
+  --primary-strong: #0000cc;
+  --gold: #cc6600;
+  background: #ffffff !important;
+}
+
+body.high-contrast header,
+body.high-contrast .card, 
+body.high-contrast .panel-box, 
+body.high-contrast .theorem-item,
+body.high-contrast .assistant:hover {
+  background: #ffffff !important;
+  backdrop-filter: none !important; 
+  -webkit-backdrop-filter: none !important;
+  border: 3px solid #000000 !important; 
+  border-radius: 8px !important; 
+}
+
+body.dark-mode.high-contrast {
+  --bg: #000000;
+  --bg-panel: #000000;
+  --bg-soft: #1a1a1a;
+  --text: #ffffff;
+  --text-soft: #eeeeee;
+  --heading: #ffffff;
+  --primary: #ffff00; 
+  --primary-strong: #cccc00;
+  background: #000000 !important;
+}
+
+body.dark-mode.high-contrast header,
+body.dark-mode.high-contrast .card, 
+body.dark-mode.high-contrast .panel-box, 
+body.dark-mode.high-contrast .theorem-item {
+  background: #000000 !important;
+  border: 3px solid #ffffff !important; 
+}
+
+body.high-contrast .btn.primary {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+body.dark-mode.high-contrast .btn.primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+body.high-contrast #svg {
+  background: #ffffff !important;
+  border: 3px solid #000000 !important;
+}
+body.dark-mode.high-contrast #svg {
+  background: #000000 !important;
+  border: 3px solid #ffffff !important;
+}
+
+/* --- 3. 易读排版模式 (Enhanced Legibility for Dyslexia) --- */
+body.legibility-mode {
+  font-family: "Comic Sans MS", "Arial", sans-serif !important;
+  line-height: 1.8 !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.05em !important;
+}
+
+body.legibility-mode h1, 
+body.legibility-mode h2, 
+body.legibility-mode h3 {
+  letter-spacing: 0.1em !important;
+  margin-bottom: 1rem !important;
+}
+
+body.legibility-mode p {
+  text-align: left !important; 
+}
+
+/* --- 4. 彻底的减少动态效果 (Reduced Motion Enhancement) --- */
+body.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
