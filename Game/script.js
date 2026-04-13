@@ -40,60 +40,205 @@ const OUTSIDE_PADDING = 10;
 
 const GAME_I18N = {
   en: {
-    roomChallenge: "Room Challenge", missionLabel: "Mission", goalLabel: "Goal",
-    interactiveDiagram: "Interactive Diagram", liveGeometry: "Live Geometry",
-    tipLabel: "Tip:", diagramTip: "Move the red points to restore the broken geometric harmony.",
-    puzzleConsole: "Puzzle Console", chamberLock: "Chamber Lock", targetRelationship: "Target Relationship",
-    currentLabel: "Current", attemptsLeft: "Attempts Left", checkChamber: "Check Chamber",
-    nextRoom: "Next Room →", backToRoomMap: "← Back to Room Map", hintTitle: "Hint",
-    rewardTitle: "Reward", rewardText: "Clear this room to unlock a theorem fragment in the archive.", playFooter: "Play Room",
-    inProgress: "In Progress", solvedStatus: "Solved", failedStatus: "Try Again",
+    roomChallenge: "Room Challenge", 
+    missionLabel: "Mission", 
+    goalLabel: "Goal",
+    interactiveDiagram: "Interactive Diagram", 
+    liveGeometry: "Live Geometry",
+    tipLabel: "Tip:", 
+    diagramTip: "Move the red points to restore the broken geometric harmony.",
+    puzzleConsole: "Puzzle Console", 
+    chamberLock: "Chamber Lock", 
+    targetRelationship: "Target Relationship",
+    currentLabel: "Current", 
+    attemptsLeft: "Attempts Left", 
+    checkChamber: "Check Chamber",
+    nextRoom: "Next Room →", 
+    backToRoomMap: "← Back to Room Map", 
+    hintTitle: "Hint",
+    rewardTitle: "Reward", 
+    rewardText: "Clear this room to unlock a theorem fragment in the archive.", 
+    playFooter: "Play Room",
+    
+    inProgress: "In Progress", 
+    solvedStatus: "Solved", 
+    failedStatus: "Try Again",
     moveThenCheck: "Restore the theorem, then press Check.",
-    hintDefault: "Hints will appear if you need support.", hintShortPrefix: "Hint: ", hintDeepPrefix: "Stronger hint: ",
-    successMessage: "Perfect Alignment! The theorem is restored.", warningMessage: "Geometry unstable. Adjust the points and try again.",
-    noAttemptsMessage: "System Locked. Please refresh to reboot the chamber.", roomProgress: "Room {n} / 8", roomBreadcrumb: "Room {n}", currentPrefix: "Current",
+    hintDefault: "Hints will appear if you need support.", 
+    hintShortPrefix: "Hint: ", 
+    hintDeepPrefix: "Stronger hint: ",
+    successMessage: "Perfect Alignment! The theorem is restored.", 
+    warningMessage: "Geometry unstable. Adjust the points and try again.",
+    
+    // --- V9: Lockdown Protocol ---
+    exitAndReview: "Evacuate & Review",
+    lockedStatus: "System Locked",
+    noAttemptsMessage: "System Locked. Evacuate to the map and review the theory.",
+
+    roomProgress: "Room {n} / 8", 
+    roomBreadcrumb: "Room {n}", 
+    currentPrefix: "Current",
     diagramDescCircle: "Drag the red points on the circle to find the exact alignment.",
     diagramDescOuter: "Drag the red points outside and on the circle to form perfect tangents.",
     diagramDescAltSegment: "Drag the points to un-break the segment angles.",
-    rebootChamber: "Reboot Chamber",
-    lockedStatus: "System Locked",
     
-    room1Title: "Room 1 - Angle at the Centre", room1Mission: "Move C out of the minor arc to restore the double angle rule.", room1Objective: "Verify that ∠AOB = 2 × ∠ACB.", room1Target: "∠AOB = 2 × ∠ACB", room1Hint1: "Point C is trapped inside the minor arc. Drag it to the larger side of the circle.", room1Hint2: "The theorem only works when the circum angle stands on the major arc.",
-    room2Title: "Room 2 - Angles in a Semicircle", room2Mission: "First, form a perfect diameter with A and B. Then observe C.", room2Objective: "Verify that ∠ACB = 90°.", room2Target: "∠ACB = 90°", room2Hint1: "Points A and B are not forming a straight line across the centre.", room2Hint2: "Drag A or B until they are exactly opposite each other (180 degrees apart).",
-    room3Title: "Room 3 - Angles in the Same Segment", room3Mission: "Point D is in the wrong segment. Fix it.", room3Objective: "Verify that ∠ACB = ∠ADB.", room3Target: "∠ACB = ∠ADB", room3Hint1: "C and D must be on the same side of the chord AB.", room3Hint2: "Drag D across the chord so it joins C in the major segment.",
-    room4Title: "Room 4 - Cyclic Quadrilateral", room4Mission: "Untangle the bowtie shape to form a proper convex quadrilateral.", room4Objective: "Verify that opposite angles sum to 180°.", room4Target: "∠ABC + ∠ADC = 180°", room4Hint1: "The lines are crossing each other. This breaks the interior angles.", room4Hint2: "Drag the vertices so they form a clean boundary around the circle.",
-    room5Title: "Room 5 - Radius to a Tangent", room5Mission: "Rotate the control arm (L) until the line becomes a perfect tangent.", room5Objective: "Verify that radius ⟂ tangent.", room5Target: "∠OTL = 90°", room5Hint1: "The line crossing T is cutting through the circle. It needs to skim the edge.", room5Hint2: "Drag L until the angle OTL is exactly 90 degrees.",
-    room6Title: "Room 6 - Tangents from a Point", room6Mission: "Drag A and B until they form perfect 90° tangents with the radius.", room6Objective: "Verify that PA = PB.", room6Target: "PA = PB & Tangent ⟂ Radius", room6Hint1: "The lines from P are just random secants. Turn them into tangents.", room6Hint2: "Drag A and B until both ∠OAP and ∠OBP are 90 degrees.",
-    room7Title: "Room 7 - Angle Between Tangents", room7Mission: "Drag A and B to form tangents, then check the sum.", room7Objective: "Verify that ∠APB + ∠AOB = 180°.", room7Target: "Sum = 180° & Tangents ⟂ Radius", room7Hint1: "First, make sure A and B are exact tangent points (90°).", room7Hint2: "When ∠OAP and ∠OBP are 90°, the opposite angles will sum to 180°.",
-    room8Title: "Room 8 - Alternate Segment", room8Mission: "Point C is in the wrong segment. Restore the alternate harmony.", room8Objective: "Verify that tangent-chord angle = ∠ACB.", room8Target: "Tangent-chord = ∠ACB", room8Hint1: "Point C must be in the alternate segment to the tangent angle.", room8Hint2: "Drag C across the chord AB to the opposite side of the circle."
+    // --- V8: Puzzle Challenge Missions & Hints ---
+    room1Title: "Room 1 - Angle at the Centre", 
+    room1Mission: "Move C out of the minor arc to restore the double angle rule.", 
+    room1Objective: "Verify that ∠AOB = 2 × ∠ACB.", 
+    room1Target: "∠AOB = 2 × ∠ACB", 
+    room1Hint1: "Point C is trapped inside the minor arc. Drag it to the larger side of the circle.", 
+    room1Hint2: "The theorem only works when the circum angle stands on the major arc.",
+    
+    room2Title: "Room 2 - Angles in a Semicircle", 
+    room2Mission: "First, form a perfect diameter with A and B. Then observe C.", 
+    room2Objective: "Verify that ∠ACB = 90°.", 
+    room2Target: "∠ACB = 90°", 
+    room2Hint1: "Points A and B are not forming a straight line across the centre.", 
+    room2Hint2: "Drag A or B until they are exactly opposite each other (180 degrees apart).",
+    
+    room3Title: "Room 3 - Angles in the Same Segment", 
+    room3Mission: "Point D is in the wrong segment. Fix it.", 
+    room3Objective: "Verify that ∠ACB = ∠ADB.", 
+    room3Target: "∠ACB = ∠ADB", 
+    room3Hint1: "C and D must be on the same side of the chord AB.", 
+    room3Hint2: "Drag D across the chord so it joins C in the major segment.",
+    
+    room4Title: "Room 4 - Cyclic Quadrilateral", 
+    room4Mission: "Untangle the bowtie shape to form a proper convex quadrilateral.", 
+    room4Objective: "Verify that opposite angles sum to 180°.", 
+    room4Target: "∠ABC + ∠ADC = 180°", 
+    room4Hint1: "The lines are crossing each other. This breaks the interior angles.", 
+    room4Hint2: "Drag the vertices so they form a clean boundary around the circle.",
+    
+    room5Title: "Room 5 - Radius to a Tangent", 
+    room5Mission: "Rotate the control arm (L) until the line becomes a perfect tangent.", 
+    room5Objective: "Verify that radius ⟂ tangent.", 
+    room5Target: "∠OTL = 90°", 
+    room5Hint1: "The line crossing T is cutting through the circle. It needs to skim the edge.", 
+    room5Hint2: "Drag L until the angle OTL is exactly 90 degrees.",
+    
+    room6Title: "Room 6 - Tangents from a Point", 
+    room6Mission: "Drag A and B until they form perfect 90° tangents with the radius.", 
+    room6Objective: "Verify that PA = PB.", 
+    room6Target: "PA = PB & Tangent ⟂ Radius", 
+    room6Hint1: "The lines from P are just random secants. Turn them into tangents.", 
+    room6Hint2: "Drag A and B until both ∠OAP and ∠OBP are 90 degrees.",
+    
+    room7Title: "Room 7 - Angle Between Tangents", 
+    room7Mission: "Drag A and B to form tangents, then check the sum.", 
+    room7Objective: "Verify that ∠APB + ∠AOB = 180°.", 
+    room7Target: "Sum = 180° & Tangents ⟂ Radius", 
+    room7Hint1: "First, make sure A and B are exact tangent points (90°).", 
+    room7Hint2: "When ∠OAP and ∠OBP are 90°, the opposite angles will sum to 180°.",
+    
+    room8Title: "Room 8 - Alternate Segment", 
+    room8Mission: "Point C is in the wrong segment. Restore the alternate harmony.", 
+    room8Objective: "Verify that tangent-chord angle = ∠ACB.", 
+    room8Target: "Tangent-chord = ∠ACB", 
+    room8Hint1: "Point C must be in the alternate segment to the tangent angle.", 
+    room8Hint2: "Drag C across the chord AB to the opposite side of the circle."
   },
+
   zh: {
-    roomChallenge: "房间挑战", missionLabel: "任务", goalLabel: "目标",
-    interactiveDiagram: "交互图形", liveGeometry: "实时几何",
-    tipLabel: "提示：", diagramTip: "图形初始处于破损状态，拖动红点修复定理关系。",
-    puzzleConsole: "解密面板", chamberLock: "房间机关", targetRelationship: "目标关系",
-    currentLabel: "当前值", attemptsLeft: "剩余次数", checkChamber: "检查机关",
-    nextRoom: "下一房间 →", backToRoomMap: "← 返回地图", hintTitle: "提示",
-    rewardTitle: "奖励", rewardText: "通关此房间后，可在档案中解锁一条定理碎片。", playFooter: "关卡页面",
-    inProgress: "修复中", solvedStatus: "已修复", failedStatus: "再试一次",
+    roomChallenge: "房间挑战", 
+    missionLabel: "任务", 
+    goalLabel: "目标",
+    interactiveDiagram: "交互图形", 
+    liveGeometry: "实时几何",
+    tipLabel: "提示：", 
+    diagramTip: "图形初始处于破损状态，拖动红点修复定理关系。",
+    puzzleConsole: "解密面板", 
+    chamberLock: "房间机关", 
+    targetRelationship: "目标关系",
+    currentLabel: "当前值", 
+    attemptsLeft: "剩余次数", 
+    checkChamber: "检查机关",
+    nextRoom: "下一房间 →", 
+    backToRoomMap: "← 返回地图", 
+    hintTitle: "提示",
+    rewardTitle: "奖励", 
+    rewardText: "通关此房间后，可在档案中解锁一条定理碎片。", 
+    playFooter: "关卡页面",
+    
+    inProgress: "修复中", 
+    solvedStatus: "已修复", 
+    failedStatus: "再试一次",
     moveThenCheck: "将点拖动到正确位置后，点击检查。",
-    hintDefault: "需要帮助时会显示提示。", hintShortPrefix: "提示：", hintDeepPrefix: "深度提示：",
-    successMessage: "完美共振！几何定理已修复。", warningMessage: "几何结构仍不稳定，继续调整红点。",
-    noAttemptsMessage: "机关已锁死。请刷新页面重启房间。", roomProgress: "第 {n} 关 / 共 8 关", roomBreadcrumb: "房间 {n}", currentPrefix: "当前",
+    hintDefault: "需要帮助时会显示提示。", 
+    hintShortPrefix: "提示：", 
+    hintDeepPrefix: "深度提示：",
+    successMessage: "完美共振！几何定理已修复。", 
+    warningMessage: "几何结构仍不稳定，继续调整红点。",
+    
+    // --- V9: Lockdown Protocol ---
+    exitAndReview: "撤离并复习",
+    lockedStatus: "系统已锁死",
+    noAttemptsMessage: "机关锁死。请先撤离房间，去复习一下几何定理再来挑战。",
+
+    roomProgress: "第 {n} 关 / 共 8 关", 
+    roomBreadcrumb: "房间 {n}", 
+    currentPrefix: "当前",
     diagramDescCircle: "拖动圆上的红点，找到完美的定理角度。",
     diagramDescOuter: "在圆外和圆上拖动红点，形成完美的切线。",
     diagramDescAltSegment: "把点拖离错误的区域，让交替弧定理共鸣。",
-    rebootChamber: "重启实验室",
-    lockedStatus: "系统已锁死",
     
-    room1Title: "房间 1 - 圆心角", room1Mission: "C 点陷在了劣弧里，导致定理失效。把它拖出来。", room1Objective: "验证 ∠AOB = 2 × ∠ACB。", room1Target: "∠AOB = 2 × ∠ACB", room1Hint1: "目前 C 点在 AB 构成的短弧里面，此时角度关系是错的。", room1Hint2: "把 C 点拖到圆的另一侧（优弧）上，使其等于圆心角的一半。",
-    room2Title: "房间 2 - 半圆所对的角", room2Mission: "A 和 B 现在并不是直径。先修复直径，再观察 C。", room2Objective: "验证 ∠ACB = 90°。", room2Target: "∠ACB = 90°", room2Hint1: "看看 A、圆心 O、B，它们现在不是一条直线。", room2Hint2: "拖动 A 或 B，让它们穿过圆心形成 180° 的平角（直径）。",
-    room3Title: "房间 3 - 同弧所对的圆周角", room3Mission: "D 点跑到了错误的弧上。把它带回 C 的身边。", room3Objective: "验证 ∠ACB = ∠ADB。", room3Target: "∠ACB = ∠ADB", room3Hint1: "C 和 D 必须在弦 AB 的同一侧，定理才会成立。", room3Hint2: "把 D 点跨过弦 AB，拖到和 C 点相同的圆弧区域。",
-    room4Title: "房间 4 - 圆内接四边形", room4Mission: "四边形现在是个交叉的蝴蝶结。理顺它。", room4Objective: "验证对角和为 180°。", room4Target: "∠ABC + ∠ADC = 180°", room4Hint1: "线条交叉导致内部角度计算崩溃了。", room4Hint2: "拖动顶点，让 A, B, C, D 顺着圆周依次排列，形成凸四边形。",
-    room5Title: "房间 5 - 半径与切线", room5Mission: "拖动控制杆 L，把割线旋转成完美的切线。", room5Objective: "验证半径垂直于切线。", room5Target: "∠OTL = 90°", room5Hint1: "现在的线穿过了圆。切线应该只在边缘擦过。", room5Hint2: "拖动控制杆 L，直到 ∠OTL 变成完美的 90° 直角。",
-    room6Title: "房间 6 - 切线长定理", room6Mission: "拖动 A 和 B，直到它们成为真正的“切点”。", room6Objective: "验证 PA = PB。", room6Target: "PA = PB 且 切线 ⟂ 半径", room6Hint1: "现在 P 连向 A 和 B 的线只是随便画的。你需要让它们垂直于半径。", room6Hint2: "拖动 A 和 B，直到图上显示的 ∠OAP 和 ∠OBP 都变成 90°。",
-    room7Title: "房间 7 - 两切线夹角", room7Mission: "同上，先拖动 A 和 B 形成切线，再验证互补角。", room7Objective: "验证 ∠APB + ∠AOB = 180°。", room7Target: "和为 180° 且 切点为 90°", room7Hint1: "定理的前提是 A 和 B 必须是切点。", room7Hint2: "先让 ∠OAP 和 ∠OBP 达到 90°，你会发现剩下的两个角加起来正好 180°。",
-    room8Title: "房间 8 - 交替弧定理", room8Mission: "C 点在错误的弓形里。把它转移到交替弧中。", room8Objective: "验证切线弦角 = ∠ACB。", room8Target: "切线弦角 = ∠ACB", room8Hint1: "C 点现在和切线夹角在弦的同一侧。", room8Hint2: "把 C 点跨过弦拖到上方较大的圆弧（交替弧）里。"
+    // --- V8: Puzzle Challenge Missions & Hints ---
+    room1Title: "房间 1 - 圆心角", 
+    room1Mission: "C 点陷在了劣弧里，导致定理失效。把它拖出来。", 
+    room1Objective: "验证 ∠AOB = 2 × ∠ACB。", 
+    room1Target: "∠AOB = 2 × ∠ACB", 
+    room1Hint1: "目前 C 点在 AB 构成的短弧里面，此时角度关系是错的。", 
+    room1Hint2: "把 C 点拖到圆的另一侧（优弧）上，使其等于圆心角的一半。",
+    
+    room2Title: "房间 2 - 半圆所对的角", 
+    room2Mission: "A 和 B 现在并不是直径。先修复直径，再观察 C。", 
+    room2Objective: "验证 ∠ACB = 90°。", 
+    room2Target: "∠ACB = 90°", 
+    room2Hint1: "看看 A、圆心 O、B，它们现在不是一条直线。", 
+    room2Hint2: "拖动 A 或 B，让它们穿过圆心形成 180° 的平角（直径）。",
+    
+    room3Title: "房间 3 - 同弧所对的圆周角", 
+    room3Mission: "D 点跑到了错误的弧上。把它带回 C 的身边。", 
+    room3Objective: "验证 ∠ACB = ∠ADB。", 
+    room3Target: "∠ACB = ∠ADB", 
+    room3Hint1: "C 和 D 必须在弦 AB 的同一侧，定理才会成立。", 
+    room3Hint2: "把 D 点跨过弦 AB，拖到和 C 点相同的圆弧区域。",
+    
+    room4Title: "房间 4 - 圆内接四边形", 
+    room4Mission: "四边形现在是个交叉的蝴蝶结。理顺它。", 
+    room4Objective: "验证对角和为 180°。", 
+    room4Target: "∠ABC + ∠ADC = 180°", 
+    room4Hint1: "线条交叉导致内部角度计算崩溃了。", 
+    room4Hint2: "拖动顶点，让 A, B, C, D 顺着圆周依次排列，形成凸四边形。",
+    
+    room5Title: "房间 5 - 半径与切线", 
+    room5Mission: "拖动控制杆 L，把割线旋转成完美的切线。", 
+    room5Objective: "验证半径垂直于切线。", 
+    room5Target: "∠OTL = 90°", 
+    room5Hint1: "现在的线穿过了圆。切线应该只在边缘擦过。", 
+    room5Hint2: "拖动控制杆 L，直到 ∠OTL 变成完美的 90° 直角。",
+    
+    room6Title: "房间 6 - 切线长定理", 
+    room6Mission: "拖动 A 和 B，直到它们成为真正的“切点”。", 
+    room6Objective: "验证 PA = PB。", 
+    room6Target: "PA = PB 且 切线 ⟂ 半径", 
+    room6Hint1: "现在 P 连向 A 和 B 的线只是随便画的。你需要让它们垂直于半径。", 
+    room6Hint2: "拖动 A 和 B，直到图上显示的 ∠OAP 和 ∠OBP 都变成 90°。",
+    
+    room7Title: "房间 7 - 两切线夹角", 
+    room7Mission: "同上，先拖动 A 和 B 形成切线，再验证互补角。", 
+    room7Objective: "验证 ∠APB + ∠AOB = 180°。", 
+    room7Target: "和为 180° 且 切点为 90°", 
+    room7Hint1: "定理的前提是 A 和 B 必须是切点。", 
+    room7Hint2: "先让 ∠OAP 和 ∠OBP 达到 90°，你会发现剩下的两个角加起来正好 180°。",
+    
+    room8Title: "房间 8 - 交替弧定理", 
+    room8Mission: "C 点在错误的弓形里。把它转移到交替弧中。", 
+    room8Objective: "验证切线弦角 = ∠ACB。", 
+    room8Target: "切线弦角 = ∠ACB", 
+    room8Hint1: "C 点现在和切线夹角在弦的同一侧。", 
+    room8Hint2: "把 C 点跨过弦拖到上方较大的圆弧（交替弧）里。"
   }
 };
 
@@ -461,26 +606,24 @@ function checkRoom() {
     setTimeout(() => challengePanel.classList.remove('shake-animation'), 400);
   }
 
-  // 找到 checkRoom 函数里的这段：
+  // 修改 checkRoom 里的锁死部分：
   if (attempts <= 0) {
     statusText.textContent = gt("lockedStatus");
-    setFeedback("warning", gt("noAttemptsMessage"));
+    setFeedback("warning", gt("noAttemptsMessage")); // 这里会显示建议复习的文案
     setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
     
-    // --- 新增：触发锁死协议 ---
     if (typeof playSound === 'function') playSound('lockdown');
-    document.body.classList.add('lockdown-mode'); // 触发全屏红光 CSS
+    document.body.classList.add('lockdown-mode'); 
     
-    // 把按钮变成红色的 Reboot 按钮
-    checkBtn.textContent = gt("rebootChamber");
-    checkBtn.classList.add("reboot-btn");
+    // 把按钮文字变成“撤离并复习”
+    checkBtn.textContent = gt("exitAndReview"); 
+    checkBtn.classList.add("reboot-btn"); // 继续借用那个红色的高警报样式
     
-    // 替换按钮的点击事件，使其变成重启功能
     checkBtn.removeEventListener("click", checkRoom);
     checkBtn.addEventListener("click", () => {
-      window.location.reload(); // 一键重启当前关卡
+      // 核心修改：不再是 reload 原地重启，而是强制踢回选关地图（或定理学习页）
+      window.location.href = "index.html"; 
     });
-    // ----------------------------
     return;
   }
   statusText.textContent = gt("failedStatus");
