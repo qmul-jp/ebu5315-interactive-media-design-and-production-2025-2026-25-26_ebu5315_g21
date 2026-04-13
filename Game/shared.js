@@ -674,3 +674,157 @@ window.addEventListener('DOMContentLoaded', () => {
   bindGlobalUI();
   createAssistantWidget();
 });
+
+// ==========================================
+// V11: Inclusive Design Patch (安全补丁：直接追加到 shared.js 最底部)
+// ==========================================
+
+// 1. 动态注入新文案（不破坏原有的 const I18N）
+if (typeof I18N !== 'undefined') {
+    Object.assign(I18N.en, {
+        eyeCare: 'Eye-Care', legibility: 'Enhanced legibility', legibilityDesc: 'Increase line spacing and letter spacing for dyslexic users.'
+    });
+    Object.assign(I18N.zh, {
+        eyeCare: '护眼', legibility: '易读排版 (Dyslexia)', legibilityDesc: '强制增大字间距与行高，使用无衬线体以提升阅读清晰度。'
+    });
+}
+
+// 2. 覆盖原有函数 (利用 JavaScript 的提升特性，自动替换旧逻辑)
+function applyTheme(theme) {
+    document.body.classList.toggle('dark-mode', theme === 'dark');
+    document.body.classList.toggle('eye-care', theme === 'eye-care');
+    localStorage.setItem('theme', theme);
+}
+
+function applyLegibility(enabled) {
+    document.body.classList.toggle('legibility-mode', enabled);
+    localStorage.setItem('legibilityMode', enabled ? 'on' : 'off');
+}
+
+function restorePreferences() {
+    applyTheme(getStored('theme', 'light'));
+    applyFontScale(getStored('fontScale', '1.00'));
+    applyColorblindMode(getStored('colorblindMode', 'off') === 'on');
+    applyReducedMotion(getStored('reducedMotion', 'off') === 'on');
+    applyHighContrast(getStored('highContrast', 'off') === 'on');
+    applyLegibility(getStored('legibilityMode', 'off') === 'on');
+    applyLanguage(getStored('language', 'en'));
+}
+
+function getSettingsHTML() {
+  const theme = getStored('theme', 'light');
+  const fontScale = getCurrentFontScale();
+  const colorblind = getStored('colorblindMode', 'off') === 'on';
+  const reducedMotion = getStored('reducedMotion', 'off') === 'on';
+  const highContrast = getStored('highContrast', 'off') === 'on';
+  const legibility = getStored('legibilityMode', 'off') === 'on';
+  const language = getCurrentLanguage();
+
+  return `
+    <div class="settings-panel">
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('themeMode')}</strong><span>${t('themeDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="theme" data-value="light" class="mode-switch-btn ${theme === 'light' ? 'active' : ''}">${t('light')}</button>
+          <button type="button" data-setting="theme" data-value="eye-care" class="mode-switch-btn ${theme === 'eye-care' ? 'active' : ''}">${t('eyeCare')}</button>
+          <button type="button" data-setting="theme" data-value="dark" class="mode-switch-btn ${theme === 'dark' ? 'active' : ''}">${t('dark')}</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('language')}</strong><span>${t('languageDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="language" data-value="en" class="mode-switch-btn ${language === 'en' ? 'active' : ''}">${t('english')}</button>
+          <button type="button" data-setting="language" data-value="zh" class="mode-switch-btn ${language === 'zh' ? 'active' : ''}">${t('chinese')}</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('fontSize')}</strong><span>${t('fontSizeDesc')}</span>
+        </div>
+        <div class="font-slider-wrap">
+          <span class="font-slider-label">A</span>
+          <input id="fontSizeSlider" class="font-size-slider" type="range" min="0.85" max="1.30" step="0.01" value="${fontScale}" />
+          <span class="font-slider-label font-slider-label-large">A</span>
+        </div>
+        <div class="font-slider-readout">
+          <span id="fontSizeValue">${Math.round(Number(fontScale) * 100)}%</span>
+          <span id="fontSizePreset">${getFontLabel(fontScale)}</span>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('legibility')}</strong><span>${t('legibilityDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="legibilityMode" data-value="toggle" class="toggle-btn ${legibility ? 'active' : ''}">${legibility ? t('on') : t('off')}</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('colourFriendly')}</strong><span>${t('colourFriendlyDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="colorblindMode" data-value="toggle" class="toggle-btn ${colorblind ? 'active' : ''}">${colorblind ? t('on') : t('off')}</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('reducedMotion')}</strong><span>${t('reducedMotionDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="reducedMotion" data-value="toggle" class="toggle-btn ${reducedMotion ? 'active' : ''}">${reducedMotion ? t('on') : t('off')}</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="settings-copy">
+          <strong>${t('highContrast')}</strong><span>${t('highContrastDesc')}</span>
+        </div>
+        <div class="control-row">
+          <button type="button" data-setting="highContrast" data-value="toggle" class="toggle-btn ${highContrast ? 'active' : ''}">${highContrast ? t('on') : t('off')}</button>
+        </div>
+      </div>
+      <p class="settings-note">${t('savedNote')}</p>
+    </div>
+  `;
+}
+
+function bindSettingsControls() {
+  if (!modalTextContainer) return;
+  modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyTheme(btn.dataset.value); openSettingsPanel(); });
+  });
+  modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyLanguage(btn.dataset.value); openSettingsPanel(); });
+  });
+  modalTextContainer.querySelectorAll("[data-setting='colorblindMode']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyColorblindMode(getStored('colorblindMode', 'off') !== 'on'); openSettingsPanel(); });
+  });
+  modalTextContainer.querySelectorAll("[data-setting='reducedMotion']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyReducedMotion(getStored('reducedMotion', 'off') !== 'on'); openSettingsPanel(); });
+  });
+  modalTextContainer.querySelectorAll("[data-setting='highContrast']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyHighContrast(getStored('highContrast', 'off') !== 'on'); openSettingsPanel(); });
+  });
+  modalTextContainer.querySelectorAll("[data-setting='legibilityMode']").forEach((btn) => {
+    btn.addEventListener('click', () => { applyLegibility(getStored('legibilityMode', 'off') !== 'on'); openSettingsPanel(); });
+  });
+  
+  const fontSlider = document.getElementById('fontSizeSlider');
+  const fontSizeValue = document.getElementById('fontSizeValue');
+  const fontSizePreset = document.getElementById('fontSizePreset');
+  if (fontSlider) {
+    const updateSliderUI = (value) => {
+      if (fontSizeValue) fontSizeValue.textContent = `${Math.round(Number(value) * 100)}%`;
+      if (fontSizePreset) fontSizePreset.textContent = getFontLabel(value);
+    };
+    updateSliderUI(fontSlider.value);
+    fontSlider.addEventListener('input', () => {
+      applyFontScale(fontSlider.value);
+      updateSliderUI(fontSlider.value);
+    });
+  }
+}
