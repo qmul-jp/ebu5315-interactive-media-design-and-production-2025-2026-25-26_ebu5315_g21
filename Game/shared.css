@@ -761,3 +761,199 @@ body.dark-mode .assistant:hover {
     right: 12px !important;
   }
 }
+
+/* =========================================================
+   V3.5: 消除“骨架感” - 质感与深度提升 (Anti-Skeletal UI)
+   ========================================================= */
+
+/* 1. 增加背景的“数学/实验室”质感（点阵图）代替死板的纯色 */
+body {
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
+  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+  background-size: 24px 24px; /* 数学坐标纸的点阵感 */
+  opacity: 0.3;
+  pointer-events: none;
+}
+body.dark-mode::before {
+  opacity: 0.15;
+}
+
+/* 2. 打破生硬的边框：用“毛玻璃 (Glassmorphism)”和“弥散阴影”代替 1px 实线边框 */
+.card, .panel-box, .theorem-item {
+  border: 1px solid rgba(255, 255, 255, 0.4) !important; /* 极高光边缘，弱化边框线 */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
+  backdrop-filter: blur(12px); /* 毛玻璃透视效果 */
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+    0 24px 48px -12px rgba(53, 92, 154, 0.12) !important; /* 深层弥散阴影，让卡片飘起来 */
+}
+
+body.dark-mode .card, body.dark-mode .panel-box, body.dark-mode .theorem-item {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  background: linear-gradient(145deg, rgba(30, 38, 56, 0.8), rgba(20, 25, 38, 0.4)) !important;
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important; /* 暗黑模式下的内部高光 */
+}
+
+/* 3. 让所有按钮看起来像真实的、有手感的按键，而不是一个色块 */
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong)) !important;
+  box-shadow: 
+    0 4px 12px rgba(143, 106, 42, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important; /* 顶部反光 */
+  border: none !important;
+}
+.btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(143, 106, 42, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 4. 打破方块阵列：在关键元素（如英雄区）增加不对称的视觉装饰 */
+.hero-panel::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* 不规则的流体形状 */
+  background: linear-gradient(135deg, rgba(200, 155, 44, 0.1), rgba(53, 92, 154, 0.1));
+  animation: morph 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes morph {
+  0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(0deg); }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(10deg); }
+}
+
+/* 保证层级关系，文字不被装饰遮挡 */
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   V4: Apple-esque Premium Design
+   Eliminating wireframes, embracing space, light, and glass.
+   ========================================================= */
+
+/* --- 1. 彻底干掉硬边框，用光影定义边界 --- */
+.card, .panel-box, .theorem-item {
+  border: none !important; /* 彻底移除实体边框 */
+  background: rgba(255, 255, 255, 0.65) !important; /* 更通透的毛玻璃 */
+  backdrop-filter: blur(24px) saturate(180%); /* 苹果标志性的高模糊+高饱和背景透视 */
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 
+    0 4px 24px -8px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important; /* 仅保留极细的内发光作为物理边缘 */
+  border-radius: 28px !important; /* 增加圆角，更圆润 */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
+}
+
+/* 悬停时的悬浮感 */
+.room-tile:hover, .theorem-item.unlocked:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  box-shadow: 
+    0 20px 40px -12px rgba(53, 92, 154, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 暗色模式的极致通透 */
+body.dark-mode .card, body.dark-mode .panel-box, body.dark-mode .theorem-item {
+  background: rgba(20, 25, 38, 0.45) !important;
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* --- 2. 导航栏重塑：仿 iOS 顶栏 --- */
+header {
+  background: rgba(255, 252, 246, 0.7) !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+body.dark-mode header {
+  background: rgba(15, 21, 32, 0.6) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* 导航按钮无边框化，悬停时出现柔和背景 */
+nav button, .nav-link, .dropbtn {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-soft) !important;
+  font-weight: 500 !important;
+}
+nav button:hover, .nav-link:hover, .dropbtn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: var(--text) !important;
+  transform: none !important;
+}
+nav button.active-nav, .nav-link.active-nav, .dropbtn.active-nav {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+}
+body.dark-mode nav button:hover { background: rgba(255, 255, 255, 0.05) !important; }
+
+/* --- 3. 字体层级与质感 (Typography) --- */
+h1 {
+  letter-spacing: -0.03em !important; /* 苹果标题常用的紧凑字距 */
+  font-weight: 700 !important;
+}
+
+/* --- 4. Hero 区域：去除线框结构，拥抱留白 --- */
+.hero-panel {
+  padding: 60px 40px !important; /* 巨大的呼吸空间 */
+}
+/* 柔和的背景环境光 */
+.hero-panel::before {
+  content: "";
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 60%; height: 140%;
+  background: radial-gradient(circle, rgba(200, 155, 44, 0.08) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-copy { position: relative; z-index: 1; }
+
+/* --- 5. 按钮的高级质感 --- */
+.btn {
+  border-radius: 999px !important; /* 胶囊按钮 */
+  letter-spacing: 0.02em;
+}
+.btn.primary:hover {
+  transform: scale(1.02) !important; /* 点击时的弹性呼吸 */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* --- 6. SVG 画布容器的无界感 --- */
+.diagram-wrap-enhanced {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+#svg {
+  border: none !important;
+  border-radius: 20px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.06) !important;
+}
+body.dark-mode #svg {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.4) !important;
+}
