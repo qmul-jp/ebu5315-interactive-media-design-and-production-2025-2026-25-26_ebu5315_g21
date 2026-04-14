@@ -233,7 +233,8 @@ function applyLanguage(lang) {
   if (aboutBtn) aboutBtn.textContent = t('about');
 
   if (modal && modal.classList.contains('show')) {
-    openSettingsPanel();
+    const scrollTop = getSettingsPanelScrollTop();
+    openSettingsPanel(scrollTop);
   }
 
   if (assistantWidget) {
@@ -332,6 +333,20 @@ function getFontLabel(scale) {
   return t('medium');
 }
 
+function getSettingsPanelScrollTop() {
+  if (!modalTextContainer) return 0;
+  const panel = modalTextContainer.querySelector('.apple-settings-panel, .settings-panel');
+  return panel ? panel.scrollTop : 0;
+}
+
+function restoreSettingsPanelScrollTop(scrollTop = 0) {
+  if (!modalTextContainer) return;
+  const panel = modalTextContainer.querySelector('.apple-settings-panel, .settings-panel');
+  if (panel) {
+    panel.scrollTop = scrollTop;
+  }
+}
+
 function getSettingsHTML() {
   const theme = getStored('theme', 'light');
   const fontScale = getCurrentFontScale();
@@ -379,7 +394,7 @@ function getSettingsHTML() {
             <strong>${t('language')}</strong>
             <span>${t('chooseLanguage')}</span>
           </div>
-          <div class="control-row segmented-control" role="tablist" aria-label="${t('language')}">
+          <div class="control-row segmented-control" data-segment="language" role="tablist" aria-label="${t('language')}">
             <button type="button" data-setting="language" data-value="en" class="mode-switch-btn ${language === 'en' ? 'active' : ''}">${t('english')}</button>
             <button type="button" data-setting="language" data-value="zh" class="mode-switch-btn ${language === 'zh' ? 'active' : ''}">${t('chinese')}</button>
           </div>
@@ -463,25 +478,74 @@ function getSettingsHTML() {
   `;
 }
 
-function openSettingsPanel() {
+function openSettingsPanel(preservedScrollTop = 0) {
   openModal(t('settings'), getSettingsHTML());
   bindSettingsControls();
+  restoreSettingsPanelScrollTop(preservedScrollTop);
+  updateAllSegmentedThumbs(modalTextContainer, false);
 }
+
+window.addEventListener('resize', () => {
+  updateAllSegmentedThumbs(document);
+});
 
 function bindSettingsControls() {
   if (!modalTextContainer) return;
 
+  const rerenderSettingsPanel = () => {
+    const scrollTop = getSettingsPanelScrollTop();
+    openSettingsPanel(scrollTop);
+  };
+
   modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
     btn.addEventListener('click', () => {
-      applyTheme(btn.dataset.value);
-      openSettingsPanel();
+      const newTheme = btn.dataset.value;
+      const currentTheme = getStored('theme', 'light');
+      if (newTheme === currentTheme) return;
+
+      applyTheme(newTheme);
+
+      const group = btn.closest('.segmented-control');
+      group?.querySelectorAll('.mode-switch-btn').forEach((item) => {
+        item.classList.toggle('active', item === btn);
+      });
+      updateSegmentedThumb(group, true);
     });
   });
 
   modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
     btn.addEventListener('click', () => {
-      applyLanguage(btn.dataset.value);
-      openSettingsPanel();
+      const newLang = btn.dataset.value;
+      const currentLang = getStored('language', 'en');
+      if (newLang === currentLang) return;
+
+      const oldGroup = btn.closest('.segmented-control');
+      const oldActiveBtn = oldGroup?.querySelector('.mode-switch-btn.active');
+
+      const oldThumbX = oldActiveBtn
+        ? oldActiveBtn.offsetLeft - oldGroup.querySelector('.mode-switch-btn').offsetLeft
+        : 0;
+      const oldThumbWidth = oldActiveBtn
+        ? oldActiveBtn.offsetWidth
+        : 76;
+
+      applyLanguage(newLang);
+
+      requestAnimationFrame(() => {
+        updateAllSegmentedThumbs(modalTextContainer, false);
+
+        const newLanguageGroup = modalTextContainer.querySelector('[data-segment="language"]');
+        if (!newLanguageGroup) return;
+
+        newLanguageGroup.classList.add('no-thumb-transition');
+        newLanguageGroup.style.setProperty('--segment-thumb-x', `${oldThumbX}px`);
+        newLanguageGroup.style.setProperty('--segment-thumb-width', `${oldThumbWidth}px`);
+
+        void newLanguageGroup.offsetWidth;
+
+        newLanguageGroup.classList.remove('no-thumb-transition');
+        updateSegmentedThumb(newLanguageGroup, true);
+      });
     });
   });
 
@@ -489,7 +553,8 @@ function bindSettingsControls() {
     btn.addEventListener('click', () => {
       const enabled = getStored('colorblindMode', 'off') !== 'on';
       applyColorblindMode(enabled);
-      openSettingsPanel();
+      btn.classList.toggle('active', enabled);
+      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
     });
   });
 
@@ -497,7 +562,8 @@ function bindSettingsControls() {
     btn.addEventListener('click', () => {
       const enabled = getStored('reducedMotion', 'off') !== 'on';
       applyReducedMotion(enabled);
-      openSettingsPanel();
+      btn.classList.toggle('active', enabled);
+      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
     });
   });
 
@@ -505,7 +571,8 @@ function bindSettingsControls() {
     btn.addEventListener('click', () => {
       const enabled = getStored('highContrast', 'off') !== 'on';
       applyHighContrast(enabled);
-      openSettingsPanel();
+      btn.classList.toggle('active', enabled);
+      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
     });
   });
 
@@ -513,7 +580,8 @@ function bindSettingsControls() {
     btn.addEventListener('click', () => {
       const enabled = getStored('legibilityMode', 'off') !== 'on';
       applyLegibility(enabled);
-      openSettingsPanel();
+      btn.classList.toggle('active', enabled);
+      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
     });
   });
 
@@ -531,6 +599,10 @@ function bindSettingsControls() {
 
     fontSlider.addEventListener('input', () => {
       applyFontScale(fontSlider.value);
+      updateSliderUI(fontSlider.value);
+    });
+
+    fontSlider.addEventListener('change', () => {
       updateSliderUI(fontSlider.value);
     });
   }
@@ -566,7 +638,7 @@ function bindDropdowns() {
 
 function bindGlobalUI() {
   if (settingsBtn) {
-    settingsBtn.addEventListener('click', openSettingsPanel);
+    settingsBtn.addEventListener('click', () => openSettingsPanel(0));
   }
 
   if (contactBtn) {
@@ -739,3 +811,33 @@ window.addEventListener('DOMContentLoaded', () => {
   bindGlobalUI();
   createAssistantWidget();
 });
+
+function updateSegmentedThumb(group, animate = true) {
+  if (!group) return;
+
+  const activeBtn = group.querySelector('.mode-switch-btn.active');
+  if (!activeBtn) return;
+
+  if (!animate) {
+    group.classList.add('no-thumb-transition');
+  }
+
+  group.style.setProperty('--segment-thumb-x', `${activeBtn.offsetLeft}px`);
+  group.style.setProperty('--segment-thumb-width', `${activeBtn.offsetWidth}px`);
+
+  if (!animate) {
+    requestAnimationFrame(() => {
+      group.classList.remove('no-thumb-transition');
+    });
+  }
+}
+
+function updateAllSegmentedThumbs(scope = document, animate = true) {
+  scope.querySelectorAll('.segmented-control').forEach((group) => {
+    updateSegmentedThumb(group, animate);
+  });
+}
+
+function updateAllSegmentedThumbs(scope = document) {
+  scope.querySelectorAll('.segmented-control').forEach(updateSegmentedThumb);
+}
