@@ -155,7 +155,8 @@ body.reduce-motion *,
 body.reduce-motion *::before,
 body.reduce-motion *::after {
   animation: none !important;
-  transition: none !important;
+  transition-duration: 0s !important;
+
   scroll-behavior: auto !important;
 }
 
@@ -1193,13 +1194,6 @@ body.legibility-mode p {
   text-align: left !important;
 }
 
-/* --- 4. 彻底的减少动态效果 (Reduced Motion Enhancement) --- */
-body.reduce-motion * {
-  animation: none !important;
-  transition: none !important;
-  transform: none !important;
-}
-
 /* ==========================================
    Apple-like Settings Refresh
    只覆盖 settings modal，不破坏整体架构
@@ -1321,19 +1315,85 @@ body.dark-mode .settings-group.settings-row::after {
   flex-shrink: 0;
 }
 
+.control-row.segmented-control {
+  justify-content: flex-start;
+}
+
+.segmented-control::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: var(--segment-thumb-width, 76px);
+  height: calc(100% - 6px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  transform: translateX(var(--segment-thumb-x, 0px));
+  transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background .22s ease,
+    box-shadow .22s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.segmented-control.no-thumb-transition::before {
+  transition: none !important;
+}
+
 /* segmented control */
 .segmented-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
   background: rgba(120, 120, 128, 0.12);
   padding: 3px;
   border-radius: 999px;
   gap: 0;
+  flex: 0 0 auto;
+  width: fit-content;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 body.dark-mode .segmented-control {
   background: rgba(255, 255, 255, 0.09);
 }
 
+.segmented-control::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: var(--segment-thumb-width, 76px);
+  height: calc(100% - 6px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  transform: translateX(var(--segment-thumb-x, 0px));
+  transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background .22s ease,
+    box-shadow .22s ease;
+  z-index: 0;
+}
+
+body.dark-mode .segmented-control::before {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 6px 16px rgba(0, 0, 0, 0.28);
+}
+
 .mode-switch-btn {
+  position: relative;
+  z-index: 1;
   border: none !important;
   background: transparent !important;
   color: var(--text-soft) !important;
@@ -1343,7 +1403,7 @@ body.dark-mode .segmented-control {
   padding: 8px 14px !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em;
-  transition: background .22s ease, color .22s ease, box-shadow .22s ease !important;
+  transition: color .22s ease !important;
 }
 
 .mode-switch-btn:hover {
@@ -1353,19 +1413,14 @@ body.dark-mode .segmented-control {
 }
 
 .mode-switch-btn.active {
-  background: rgba(255, 255, 255, 0.96) !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: #111827 !important;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.06) !important;
 }
 
 body.dark-mode .mode-switch-btn.active {
-  background: rgba(255, 255, 255, 0.16) !important;
+  background: transparent !important;
   color: #f8fafc !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 6px 16px rgba(0, 0, 0, 0.28) !important;
 }
 
 /* iOS-like switch */
@@ -1505,9 +1560,14 @@ body.dark-mode .mode-switch-btn.active {
   }
 
   .segmented-control {
-    width: fit-content;
-    max-width: 100%;
-    flex-wrap: wrap;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(120, 120, 128, 0.12);
+    gap: 0;
+    isolation: isolate;
   }
 
   .mode-switch-btn {
