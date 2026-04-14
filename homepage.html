@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Geometry Escape Lab | Home</title>
+
+  <link rel="stylesheet" href="shared.css">
+
+  <style>
+    /* ===== Homepage styles ===== */
+    .hero {
+      background: var(--bg-elevated);
+      padding: 36px 24px;
+      border-radius: var(--radius-xl);
+      margin-bottom: 32px;
+      text-align: center;
+
+      border: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero h2 {
+      font-size: clamp(2rem, 4vw, 3.1rem);
+    }
+
+    .hero p {
+      color: var(--text-soft);
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin: 28px 0 32px;
+    }
+
+    .buttons button {
+      width: min(90%, 700px);
+      padding: 20px;
+      border-radius: 60px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+
+      background: var(--bg-soft);
+      border: none;
+      outline: none;
+      box-shadow: var(--shadow-sm);
+
+      color: var(--text);
+    }
+
+    .buttons button:hover {
+      background: var(--primary);
+      color: var(--nav-hover-text);
+    }
+
+    .content {
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-panel);
+      padding: 24px;
+      border-radius: var(--radius-md);
+
+      border: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      text-align: center;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .prev,
+    .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 50%;
+      padding: 6px 10px;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .ad-container {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-soft);
+
+      border: none;
+      background: var(--bg-soft);
+      border-radius: var(--radius-md);
+    }
+  </style>
+
+  <!-- shared logic (navigation, settings, language) -->
+  <script src="shared.js" defer></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-left">
+      <h1>Geometry Escape Lab</h1>
+      <div class="breadcrumb">
+        <span data-role="breadcrumb-home"></span>
+      </div>
+    </div>
+
+    <nav>
+      <button id="navHomeBtn"></button>
+      <button id="navGameBtn"></button>
+      <button id="navQuizBtn"></button>
+      <button id="settingsBtn"></button>
+
+      <div class="nav-group">
+        <button class="dropbtn"></button>
+        <div class="dropdown-content">
+          <a href="#" id="contactBtn"></a>
+          <a href="#" id="supportBtn"></a>
+          <a href="#" id="accessibilityBtn"></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- modal (shared.js controlled) -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close">&times;</button>
+      <h2 id="modal-title"></h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <h2 data-role="hero-title"></h2>
+      <p data-role="hero-sub"></p>
+    </div>
+
+    <!-- Main buttons -->
+    <div class="buttons">
+      <button id="gameMainBtn" data-role="game-btn"></button>
+      <button id="quizMainBtn" data-role="quiz-btn"></button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Carousel -->
+      <div class="card slider">
+        <div class="slide active">
+          <h3 data-role="slide1-title"></h3>
+          <p data-role="slide1-text"></p>
+        </div>
+        <div class="slide">
+          <h3 data-role="slide2-title"></h3>
+          <p data-role="slide2-text"></p>
+        </div>
+
+        <button class="prev">‹</button>
+        <button class="next">›</button>
+      </div>
+
+      <div class="ad-container">
+        <p data-role="ad-text"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span data-role="footer-left"></span>
+      <span data-role="footer-right"></span>
+    </div>
+  </footer>
+
+  <script>
+    /* ===== Homepage I18N dictionary ===== */
+    const HOMEPAGE_I18N = {
+      en: {
+        breadcrumb: "Home",
+        heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
+        heroSub: "Interactive GCSE Math Learning",
+        gameBtn: "🎮 GAME",
+        quizBtn: "📖 QUIZ",
+
+        slide1Title: "Angle at the center",
+        slide1Text: "Angle at the center is twice the angle at the circumference.",
+
+        slide2Title: "Angles in a semicircle",
+        slide2Text: "Angle in a semicircle is always 90°.",
+
+        adText: "Advertisement",
+
+        footerLeft: "© Geometry Escape Lab",
+        footerRight: "Learn with fun"
+      },
+
+      zh: {
+        breadcrumb: "首页",
+        heroTitle: "Circle Conquer：边玩边学圆定理",
+        heroSub: "互动式 GCSE 数学学习",
+        gameBtn: "🎮 游戏",
+        quizBtn: "📖 测验",
+
+        slide1Title: "圆心角",
+        slide1Text: "圆心角是圆周角的两倍",
+
+        slide2Title: "半圆定理",
+        slide2Text: "半圆所对的角为90°",
+
+        adText: "广告区域",
+
+        footerLeft: "© 几何逃脱实验室",
+        footerRight: "快乐学习"
+      }
+    };
+
+    /* ===== Helpers ===== */
+    function getLang() {
+      return localStorage.getItem('language') || 'en';
+    }
+
+    function tPage(key) {
+      const lang = getLang();
+      return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key];
+    }
+
+    /* ===== Apply language ===== */
+    function applyHomepageLanguage() {
+      document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
+
+      const map = {
+        breadcrumb: '[data-role="breadcrumb-home"]',
+        heroTitle: '[data-role="hero-title"]',
+        heroSub: '[data-role="hero-sub"]',
+        gameBtn: '[data-role="game-btn"]',
+        quizBtn: '[data-role="quiz-btn"]',
+
+        slide1Title: '[data-role="slide1-title"]',
+        slide1Text: '[data-role="slide1-text"]',
+        slide2Title: '[data-role="slide2-title"]',
+        slide2Text: '[data-role="slide2-text"]',
+
+        adText: '[data-role="ad-text"]',
+        footerLeft: '[data-role="footer-left"]',
+        footerRight: '[data-role="footer-right"]'
+      };
+
+      Object.entries(map).forEach(([key, selector]) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = tPage(key);
+      });
+    }
+
+    /* ===== Carousel ===== */
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
+
+    function showSlide(i) {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === i);
+      });
+    }
+
+    document.querySelector('.next').onclick = () => {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    };
+
+    document.querySelector('.prev').onclick = () => {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide(index);
+    };
+
+    /* ===== Navigation ===== */
+    document.getElementById('gameMainBtn').onclick = () => location.href = 'index.html';
+    document.getElementById('quizMainBtn').onclick = () => location.href = 'quiz.html';
+
+    /* ===== Language sync events ===== */
+    window.addEventListener('DOMContentLoaded', applyHomepageLanguage);
+    window.addEventListener('focus', applyHomepageLanguage);
+    window.addEventListener('storage', applyHomepageLanguage);
+    window.addEventListener('languageChanged', applyHomepageLanguage);
+
+  </script>
+
+</body>
+
+</html>
