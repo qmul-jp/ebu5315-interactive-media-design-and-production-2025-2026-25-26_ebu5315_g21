@@ -16,9 +16,7 @@
       border-radius: var(--radius-xl);
       margin-bottom: 32px;
       text-align: center;
-
-      border: none;
-      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
     }
 
     .hero h2 {
@@ -44,12 +42,8 @@
       font-size: 1.4rem;
       font-weight: 700;
       cursor: pointer;
-
       background: var(--bg-soft);
-      border: none;
-      outline: none;
-      box-shadow: var(--shadow-sm);
-
+      border: 1px solid var(--border);
       color: var(--text);
     }
 
@@ -67,9 +61,7 @@
       background: var(--bg-panel);
       padding: 24px;
       border-radius: var(--radius-md);
-
-      border: none;
-      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
     }
 
     .slider {
@@ -100,29 +92,14 @@
       padding: 6px 10px;
     }
 
-    .prev {
-      left: 10px;
-    }
-
-    .next {
-      right: 10px;
-    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
 
     .ad-container {
       text-align: center;
+      border: 1px dashed var(--border);
       padding: 20px;
       color: var(--text-soft);
-
-      border: none;
-      background: var(--bg-soft);
-      border-radius: var(--radius-md);
-    }
-
-    .slide-img {
-      max-width: 100%;
-      height: auto;
-      margin: 16px 0;
-      border-radius: 12px;
     }
   </style>
 
@@ -132,309 +109,196 @@
 
 <body>
 
-  <header>
-    <div class="header-left">
-      <h1>Geometry Escape Lab</h1>
-      <div class="breadcrumb">
-        <span data-role="breadcrumb-home"></span>
-      </div>
-    </div>
-
-    <nav>
-      <button id="navHomeBtn"></button>
-      <button id="navGameBtn"></button>
-      <button id="navQuizBtn"></button>
-      <button id="settingsBtn"></button>
-
-      <div class="nav-group">
-        <button class="dropbtn"></button>
-        <div class="dropdown-content">
-          <a href="#" id="contactBtn"></a>
-          <a href="#" id="supportBtn"></a>
-          <a href="#" id="accessibilityBtn"></a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- modal (shared.js controlled) -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <button class="close">&times;</button>
-      <h2 id="modal-title"></h2>
-      <div id="modal-text"></div>
+<header>
+  <div class="header-left">
+    <h1>Geometry Escape Lab</h1>
+    <div class="breadcrumb">
+      <span data-role="breadcrumb-home"></span>
     </div>
   </div>
 
-  <div class="container">
+  <nav>
+    <button id="navHomeBtn"></button>
+    <button id="navGameBtn"></button>
+    <button id="navQuizBtn"></button>
+    <button id="settingsBtn"></button>
 
-    <!-- Hero -->
-    <div class="hero">
-      <h2 data-role="hero-title"></h2>
-      <p data-role="hero-sub"></p>
-    </div>
-
-    <!-- Main buttons -->
-    <div class="buttons">
-      <button id="gameMainBtn" data-role="game-btn"></button>
-      <button id="quizMainBtn" data-role="quiz-btn"></button>
-    </div>
-
-    <!-- Content -->
-    <div class="content">
-
-      <!-- Carousel -->
-      <div class="card slider">
-        <div class="slide active">
-          <h3 data-role="slide1-title"></h3>
-          <img src="images/center-angle.png" alt="Angle at the center diagram" class="slide-img">
-          <p data-role="slide1-text1"></p>
-          <p data-role="slide1-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide2-title"></h3>
-          <p data-role="slide2-text1"></p>
-          <p data-role="slide2-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide3-title"></h3>
-          <p data-role="slide3-text1"></p>
-          <p data-role="slide3-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide4-title"></h3>
-          <p data-role="slide4-text1"></p>
-          <p data-role="slide4-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide5-title"></h3>
-          <p data-role="slide5-text1"></p>
-          <p data-role="slide5-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide6-title"></h3>
-          <p data-role="slide6-text1"></p>
-          <p data-role="slide6-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide7-title"></h3>
-          <p data-role="slide7-text1"></p>
-          <p data-role="slide7-text2"></p>
-        </div>
-        <div class="slide">
-          <h3 data-role="slide8-title"></h3>
-          <p data-role="slide8-text1"></p>
-          <p data-role="slide8-text2"></p>
-        </div>
-
-        <button class="prev">‹</button>
-        <button class="next">›</button>
+    <div class="nav-group">
+      <button class="dropbtn"></button>
+      <div class="dropdown-content">
+        <a href="#" id="contactBtn"></a>
+        <a href="#" id="supportBtn"></a>
+        <a href="#" id="accessibilityBtn"></a>
       </div>
-
-      <div class="ad-container">
-        <p data-role="ad-text"></p>
-      </div>
-
     </div>
+  </nav>
+</header>
+
+<!-- modal (shared.js controlled) -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="close">&times;</button>
+    <h2 id="modal-title"></h2>
+    <div id="modal-text"></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h2 data-role="hero-title"></h2>
+    <p data-role="hero-sub"></p>
   </div>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span data-role="footer-left"></span>
-      <span data-role="footer-right"></span>
+  <!-- Main buttons -->
+  <div class="buttons">
+    <button id="gameMainBtn" data-role="game-btn"></button>
+    <button id="quizMainBtn" data-role="quiz-btn"></button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Carousel -->
+    <div class="card slider">
+      <div class="slide active">
+        <h3 data-role="slide1-title"></h3>
+        <p data-role="slide1-text"></p>
+      </div>
+      <div class="slide">
+        <h3 data-role="slide2-title"></h3>
+        <p data-role="slide2-text"></p>
+      </div>
+
+      <button class="prev">‹</button>
+      <button class="next">›</button>
     </div>
-  </footer>
 
-  <script>
-    /* ===== Homepage I18N dictionary ===== */
-    const HOMEPAGE_I18N = {
-      en: {
-        breadcrumb: "Home",
-        heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
-        heroSub: "Interactive GCSE Math Learning",
-        gameBtn: "🎮 GAME",
-        quizBtn: "📖 QUIZ",
+    <div class="ad-container">
+      <p data-role="ad-text"></p>
+    </div>
 
-        slide1Title: "Angle at the center",
-        slide1Text1: "Angle at the center is twice the angle at the circumference.",
-        slide1Text2: "∠AOB = 2 × ∠ACB",
+  </div>
+</div>
 
-        slide2Title: "Angles in a semicircle",
-        slide2Text1: "Angle in a semicircle is always 90°.",
-        slide2Text2: "∠ACB = 90°",
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span data-role="footer-left"></span>
+    <span data-role="footer-right"></span>
+  </div>
+</footer>
 
-        slide3Title: "Angles in the Same Segment",
-        slide3Text1: "Angles subtended by the same arc in the same segment are equal.",
-        slide3Text2: "∠ACB = ∠ADB",
+<script>
+/* ===== Homepage I18N dictionary ===== */
+const HOMEPAGE_I18N = {
+  en: {
+    breadcrumb: "Home",
+    heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
+    heroSub: "Interactive GCSE Math Learning",
+    gameBtn: "🎮 GAME",
+    quizBtn: "📖 QUIZ",
 
-        slide4Title: "Cyclic Quadrilateral",
-        slide4Text1: "Opposite angles of a cyclic quadrilateral are supplementary.",
-        slide4Text2: "∠ABC + ∠ADC = 180°",
+    slide1Title: "Angle at the center",
+    slide1Text: "Angle at the center is twice the angle at the circumference.",
 
-        slide5Title: "Radius to a Tangent",
-        slide5Text1: "The radius of a circle is perpendicular to the tangent at the point of contact.",
-        slide5Text2: "∠OTL = 90°",
+    slide2Title: "Angles in a semicircle",
+    slide2Text: "Angle in a semicircle is always 90°.",
 
-        slide6Title: "Tangents from a Point",
-        slide6Text1: "Tangents drawn from the same external point to a circle are equal in length, and each tangent is perpendicular to the radius at the point of contact.",
-        slide6Text2: "PA = PB & Tangent ⟂ Radius",
+    adText: "📐 Interactive circle theorems learning",
 
-        slide7Title: "Angle Between Tangents",
-        slide7Text1: "The angle between two tangents drawn from an external point to a circle is supplementary to the central angle subtended by the points of contact, and each tangent is perpendicular to the radius at the point of contact.",
-        slide7Text2: "Sum = 180° & Tangents ⟂ Radius",
+    footerLeft: "© Geometry Escape Lab",
+    footerRight: "Learn with fun"
+  },
 
-        slide8Title: "Alternate Segment",
-        slide8Text1: "The angle between a tangent and a chord at the point of contact is equal to the angle in the alternate segment.",
-        slide8Text2: "Tangent-chord = ∠ACB",
+  zh: {
+    breadcrumb: "首页",
+    heroTitle: "Circle Conquer：边玩边学圆定理",
+    heroSub: "互动式 GCSE 数学学习",
+    gameBtn: "🎮 游戏",
+    quizBtn: "📖 测验",
 
-        adText: "Advertisement",
+    slide1Title: "圆心角",
+    slide1Text: "圆心角是圆周角的两倍",
 
-        footerLeft: "© Geometry Escape Lab",
-        footerRight: "Learn with fun"
-      },
+    slide2Title: "半圆定理",
+    slide2Text: "半圆所对的角为90°",
 
-      zh: {
-        breadcrumb: "首页",
-        heroTitle: "Circle Conquer：边玩边学圆定理",
-        heroSub: "互动式 GCSE 数学学习",
-        gameBtn: "🎮 游戏",
-        quizBtn: "📖 测验",
+    adText: "📐 圆定理互动学习",
 
-        slide1Title: "圆心角",
-        slide1Text1: "圆心角是同弧所对圆周角的两倍。",
-        slide1Text2: "∠AOB = 2 × ∠ACB",
+    footerLeft: "© 几何逃脱实验室",
+    footerRight: "快乐学习"
+  }
+};
 
-        slide2Title: "半圆所对的圆周角",
-        slide2Text1: "半圆所对的圆周角恒为 90°。",
-        slide2Text2: "∠ACB = 90°",
+/* ===== Helpers ===== */
+function getLang() {
+  return localStorage.getItem('language') || 'en';
+}
 
-        slide3Title: "同弧同段角相等",
-        slide3Text1: "同一弧在同一弓形内所对的圆周角相等。",
-        slide3Text2: "∠ACB = ∠ADB",
+function tPage(key) {
+  const lang = getLang();
+  return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key];
+}
 
-        slide4Title: "圆内接四边形",
-        slide4Text1: "圆内接四边形的对角互补。",
-        slide4Text2: "∠ABC + ∠ADC = 180°",
+/* ===== Apply language ===== */
+function applyHomepageLanguage() {
+  document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
 
-        slide5Title: "半径与切线",
-        slide5Text1: "圆的半径与过切点的切线互相垂直。",
-        slide5Text2: "∠OTL = 90°",
+  const map = {
+    breadcrumb: '[data-role="breadcrumb-home"]',
+    heroTitle: '[data-role="hero-title"]',
+    heroSub: '[data-role="hero-sub"]',
+    gameBtn: '[data-role="game-btn"]',
+    quizBtn: '[data-role="quiz-btn"]',
 
-        slide6Title: "一点引两条切线",
-        slide6Text1: "从同一个圆外点向圆引出的两条切线长度相等，且切线都垂直于经过切点的半径。",
-        slide6Text2: "PA = PB，且 切线 ⟂ 半径",
+    slide1Title: '[data-role="slide1-title"]',
+    slide1Text: '[data-role="slide1-text"]',
+    slide2Title: '[data-role="slide2-title"]',
+    slide2Text: '[data-role="slide2-text"]',
 
-        slide7Title: "两切线所夹角",
-        slide7Text1: "从圆外一点引出的两条切线所夹的角，与两切点对应的圆心角互为补角，且切线都垂直于半径。",
-        slide7Text2: "和为 180°，且 切线 ⟂ 半径",
+    adText: '[data-role="ad-text"]',
+    footerLeft: '[data-role="footer-left"]',
+    footerRight: '[data-role="footer-right"]'
+  };
 
-        slide8Title: "交替弓形定理",
-        slide8Text1: "切线与弦在切点所成的角，等于弦在对侧弧所对的圆周角。",
-        slide8Text2: "切线-弦角 = ∠ACB",
+  Object.entries(map).forEach(([key, selector]) => {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = tPage(key);
+  });
+}
 
-        adText: "广告区域",
+/* ===== Carousel ===== */
+const slides = document.querySelectorAll('.slide');
+let index = 0;
 
-        footerLeft: "© 几何逃脱实验室",
-        footerRight: "快乐学习"
-      }
-    };
+function showSlide(i) {
+  slides.forEach((s, idx) => {
+    s.classList.toggle('active', idx === i);
+  });
+}
 
-    /* ===== Helpers ===== */
-    function getLang() {
-      return localStorage.getItem('language') || 'en';
-    }
+document.querySelector('.next').onclick = () => {
+  index = (index + 1) % slides.length;
+  showSlide(index);
+};
 
-    function tPage(key) {
-      const lang = getLang();
-      return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key];
-    }
+document.querySelector('.prev').onclick = () => {
+  index = (index - 1 + slides.length) % slides.length;
+  showSlide(index);
+};
 
-    /* ===== Apply language ===== */
-    function applyHomepageLanguage() {
-      document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
+/* ===== Navigation ===== */
+document.getElementById('gameMainBtn').onclick = () => location.href = 'index.html';
+document.getElementById('quizMainBtn').onclick = () => location.href = 'quiz.html';
 
-      const map = {
-        breadcrumb: '[data-role="breadcrumb-home"]',
-        heroTitle: '[data-role="hero-title"]',
-        heroSub: '[data-role="hero-sub"]',
-        gameBtn: '[data-role="game-btn"]',
-        quizBtn: '[data-role="quiz-btn"]',
+/* ===== Language sync events ===== */
+window.addEventListener('DOMContentLoaded', applyHomepageLanguage);
+window.addEventListener('focus', applyHomepageLanguage);
+window.addEventListener('storage', applyHomepageLanguage);
+window.addEventListener('languageChanged', applyHomepageLanguage);
 
-        slide1Title: '[data-role="slide1-title"]',
-        slide1Text1: '[data-role="slide1-text1"]',
-        slide1Text2: '[data-role="slide1-text2"]',
-
-        slide2Title: '[data-role="slide2-title"]',
-        slide2Text1: '[data-role="slide2-text1"]',
-        slide2Text2: '[data-role="slide2-text2"]',
-
-        slide3Title: '[data-role="slide3-title"]',
-        slide3Text1: '[data-role="slide3-text1"]',
-        slide3Text2: '[data-role="slide3-text2"]',
-
-        slide4Title: '[data-role="slide4-title"]',
-        slide4Text1: '[data-role="slide4-text1"]',
-        slide4Text2: '[data-role="slide4-text2"]',
-
-        slide5Title: '[data-role="slide5-title"]',
-        slide5Text1: '[data-role="slide5-text1"]',
-        slide5Text2: '[data-role="slide5-text2"]',
-
-        slide6Title: '[data-role="slide6-title"]',
-        slide6Text1: '[data-role="slide6-text1"]',
-        slide6Text2: '[data-role="slide6-text2"]',
-
-        slide7Title: '[data-role="slide7-title"]',
-        slide7Text1: '[data-role="slide7-text1"]',
-        slide7Text2: '[data-role="slide7-text2"]',
-
-        slide8Title: '[data-role="slide8-title"]',
-        slide8Text1: '[data-role="slide8-text1"]',
-        slide8Text2: '[data-role="slide8-text2"]',
-
-        adText: '[data-role="ad-text"]',
-        footerLeft: '[data-role="footer-left"]',
-        footerRight: '[data-role="footer-right"]'
-      };
-
-      Object.entries(map).forEach(([key, selector]) => {
-        const el = document.querySelector(selector);
-        if (el) el.textContent = tPage(key);
-      });
-    }
-
-    /* ===== Carousel ===== */
-    const slides = document.querySelectorAll('.slide');
-    let index = 0;
-
-    function showSlide(i) {
-      slides.forEach((s, idx) => {
-        s.classList.toggle('active', idx === i);
-      });
-    }
-
-    document.querySelector('.next').onclick = () => {
-      index = (index + 1) % slides.length;
-      showSlide(index);
-    };
-
-    document.querySelector('.prev').onclick = () => {
-      index = (index - 1 + slides.length) % slides.length;
-      showSlide(index);
-    };
-
-    /* ===== Navigation ===== */
-    document.getElementById('gameMainBtn').onclick = () => location.href = 'index.html';
-    document.getElementById('quizMainBtn').onclick = () => location.href = 'quiz.html';
-
-    /* ===== Language sync events ===== */
-    window.addEventListener('DOMContentLoaded', applyHomepageLanguage);
-    window.addEventListener('focus', applyHomepageLanguage);
-    window.addEventListener('storage', applyHomepageLanguage);
-    window.addEventListener('languageChanged', applyHomepageLanguage);
-
-  </script>
+</script>
 
 </body>
-
 </html>
