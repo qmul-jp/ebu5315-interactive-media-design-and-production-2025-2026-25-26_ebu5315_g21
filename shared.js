@@ -153,6 +153,184 @@ const I18N = {
 
 let assistantWidget = null;
 
+const ASSISTANT_POSITION_KEY = 'assistantPosition';
+
+function getSavedAssistantPosition() {
+  try {
+    return JSON.parse(localStorage.getItem(ASSISTANT_POSITION_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function saveAssistantPosition(x, y) {
+  localStorage.setItem(
+    ASSISTANT_POSITION_KEY,
+    JSON.stringify({
+      x: Math.round(x),
+      y: Math.round(y)
+    })
+  );
+}
+
+function clampAssistantPosition(x, y, el) {
+  if (!el) return { x: 0, y: 0 };
+
+  const rect = el.getBoundingClientRect();
+  const maxX = Math.max(0, window.innerWidth - rect.width);
+  const maxY = Math.max(0, window.innerHeight - rect.height);
+
+  return {
+    x: Math.max(0, Math.min(x, maxX)),
+    y: Math.max(0, Math.min(y, maxY))
+  };
+}
+
+function applyAssistantPosition(el, x, y) {
+  if (!el) return;
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+  el.style.right = 'auto';
+  el.style.bottom = 'auto';
+}
+
+function restoreAssistantPosition() {
+  if (!assistantWidget) return;
+
+  const saved = getSavedAssistantPosition();
+
+  if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') {
+    requestAnimationFrame(() => {
+      if (!assistantWidget) return;
+      const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+      applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    });
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    if (!assistantWidget) return;
+    const rect = assistantWidget.getBoundingClientRect();
+    applyAssistantPosition(assistantWidget, rect.left, rect.top);
+    saveAssistantPosition(rect.left, rect.top);
+  });
+}
+
+function enableAssistantDragging() {
+  if (!assistantWidget) return;
+
+  let isDragging = false;
+  let startPointerX = 0;
+  let startPointerY = 0;
+  let startLeft = 0;
+  let startTop = 0;
+  let moved = false;
+
+  const getPoint = (e) => {
+    if (e.touches && e.touches[0]) {
+      return {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+
+    if (e.changedTouches && e.changedTouches[0]) {
+      return {
+        x: e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY
+      };
+    }
+
+    return {
+      x: e.clientX,
+      y: e.clientY
+    };
+  };
+
+  const canStartDrag = (target) => {
+    return !!target.closest('.assistant-trigger');
+  };
+
+  const onStart = (e) => {
+    if (!assistantWidget) return;
+    if (!canStartDrag(e.target)) return;
+
+    const point = getPoint(e);
+    const rect = assistantWidget.getBoundingClientRect();
+
+    isDragging = true;
+    moved = false;
+    startPointerX = point.x;
+    startPointerY = point.y;
+    startLeft = rect.left;
+    startTop = rect.top;
+
+    assistantWidget.classList.add('dragging');
+
+    e.preventDefault();
+  };
+
+  const onMove = (e) => {
+    if (!isDragging || !assistantWidget) return;
+
+    const point = getPoint(e);
+    const dx = point.x - startPointerX;
+    const dy = point.y - startPointerY;
+
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      moved = true;
+    }
+
+    const pos = clampAssistantPosition(startLeft + dx, startTop + dy, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+
+    e.preventDefault();
+  };
+
+  const onEnd = () => {
+    if (!isDragging || !assistantWidget) return;
+
+    isDragging = false;
+    assistantWidget.classList.remove('dragging');
+
+    const rect = assistantWidget.getBoundingClientRect();
+    const pos = clampAssistantPosition(rect.left, rect.top, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+
+    setTimeout(() => {
+      moved = false;
+    }, 0);
+  };
+
+  assistantWidget.addEventListener('mousedown', onStart);
+  assistantWidget.addEventListener('touchstart', onStart, { passive: false });
+
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: false });
+
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+
+  window.addEventListener('resize', () => {
+    if (!assistantWidget) return;
+
+    const saved = getSavedAssistantPosition();
+    if (!saved) return;
+
+    const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+  });
+
+  assistantWidget.addEventListener('click', (e) => {
+    if (moved) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+}
+
 function getStored(name, fallback) {
   return localStorage.getItem(name) || fallback;
 }
@@ -252,6 +430,8 @@ function restorePreferences() {
   applyHighContrast(getStored('highContrast', 'off') === 'on');
   applyLegibility(getStored('legibilityMode', 'off') === 'on');
   applyLanguage(getStored('language', 'en'));
+
+  document.documentElement.classList.remove('pre-dark', 'pre-eye-care', 'theme-preload');
 }
 
 function buildContactHTML() {
@@ -718,10 +898,11 @@ function updateAssistantLanguageUI(lang) {
 
   const tData = I18N[lang] || I18N.en;
   const headerSpan = assistantWidget.querySelector('.assistant-header span');
-  const helpP = assistantWidget.querySelector('.assistant-content p');
+  const helpP = assistantWidget.querySelector('.assistant-help');
   const inputField = assistantWidget.querySelector('.assistant-input');
   const sendButton = assistantWidget.querySelector('.assistant-send-btn');
   const langSelector = assistantWidget.querySelector('.lang-selector');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
 
   if (headerSpan) headerSpan.innerHTML = tData.assistantTitle || '🤖 AI Assistant';
   if (helpP) helpP.textContent = tData.assistantHelp || 'Ask me about circle theorems!';
@@ -729,6 +910,12 @@ function updateAssistantLanguageUI(lang) {
   if (sendButton) sendButton.textContent = tData.assistantSend || 'Send';
   if (langSelector && langSelector.value !== lang) {
     langSelector.value = lang;
+  }
+
+  if (answerBox && answerBox.classList.contains('empty')) {
+    answerBox.textContent = lang === 'zh'
+      ? '在这里输入问题，答案会显示在这个窗口中。'
+      : 'Ask a question and the answer will appear here.';
   }
 }
 
@@ -738,6 +925,8 @@ function bindAssistantEvents() {
   const langSelector = assistantWidget.querySelector('.lang-selector');
   const input = assistantWidget.querySelector('.assistant-input');
   const sendBtn = assistantWidget.querySelector('.assistant-send-btn');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
+  const panel = assistantWidget.querySelector('.assistant-panel');
 
   if (langSelector) {
     langSelector.addEventListener('change', (e) => {
@@ -745,19 +934,35 @@ function bindAssistantEvents() {
     });
   }
 
+  const setAssistantAnswer = (text, isEmpty = false) => {
+    if (!answerBox) return;
+    answerBox.textContent = text;
+    answerBox.classList.toggle('empty', isEmpty);
+    updateAssistantPanelDirection();
+  };
+
   const sendMessage = () => {
     const question = input?.value.trim() || '';
+    const lang = getCurrentLanguage();
+
     if (!question) {
-      const emptyMsg = getCurrentLanguage() === 'zh'
+      const emptyMsg = lang === 'zh'
         ? '请输入一个关于圆定理的问题！'
         : 'Please ask something about circle theorems!';
-      alert(`🤖 AI: ${emptyMsg}`);
+      setAssistantAnswer(emptyMsg, false);
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
       return;
     }
 
-    const reply = getAIReply(question, getCurrentLanguage());
-    alert(`🤖 AI: ${reply}`);
+    const reply = getAIReply(question, lang);
+    setAssistantAnswer(reply, false);
+
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+
     input.value = '';
+    input.focus();
   };
 
   if (sendBtn) {
@@ -768,20 +973,75 @@ function bindAssistantEvents() {
     input.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendMessage();
     });
+
+    input.addEventListener('focus', () => {
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
+    });
   }
+
+  if (panel) {
+    panel.addEventListener('mouseenter', () => {
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
+    });
+  }
+
+  assistantWidget.addEventListener('mouseenter', () => {
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+  });
+
+  assistantWidget.addEventListener('mouseleave', () => {
+    if (!assistantWidget.classList.contains('dragging')) {
+      assistantWidget.classList.remove('open');
+    }
+  });
 }
+
+function updateAssistantPanelDirection() {
+  if (!assistantWidget) return;
+
+  const panel = assistantWidget.querySelector('.assistant-panel');
+  if (!panel) return;
+
+  assistantWidget.classList.remove('expand-up', 'expand-down');
+
+  const widgetRect = assistantWidget.getBoundingClientRect();
+  const estimatedPanelHeight = Math.min(panel.scrollHeight || 260, window.innerHeight * 0.7);
+
+  const spaceAbove = widgetRect.top;
+  const spaceBelow = window.innerHeight - widgetRect.bottom;
+
+  if (spaceAbove >= estimatedPanelHeight + 12 || spaceAbove >= spaceBelow) {
+    assistantWidget.classList.add('expand-up');
+  } else {
+    assistantWidget.classList.add('expand-down');
+  }
+
+}
+
+window.addEventListener('resize', () => {
+  updateAssistantPanelDirection();
+});
 
 function createAssistantWidget() {
   if (document.querySelector('.assistant')) {
     assistantWidget = document.querySelector('.assistant');
     updateAssistantLanguageUI(getCurrentLanguage());
+    restoreAssistantPosition();
+    enableAssistantDragging();
     return;
   }
 
   const assistantDiv = document.createElement('div');
   assistantDiv.className = 'assistant';
   assistantDiv.innerHTML = `
-    <div class="assistant-icon">🤖</div>
+  <button class="assistant-trigger" type="button" aria-label="Open AI assistant">
+    <span class="assistant-icon">🤖</span>
+  </button>
+
+  <div class="assistant-panel">
     <div class="assistant-content">
       <div class="assistant-header">
         <span>🤖 AI Assistant</span>
@@ -790,18 +1050,28 @@ function createAssistantWidget() {
           <option value="zh">🇨🇳 中文</option>
         </select>
       </div>
-      <p>Ask me about circle theorems!</p>
+
+      <p class="assistant-help">Ask me about circle theorems!</p>
+
+      <div class="assistant-answer-wrap">
+        <div class="assistant-answer empty">Ask a question and the answer will appear here.</div>
+      </div>
+
       <div class="assistant-input-group">
         <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem" />
         <button class="assistant-send-btn">Send</button>
       </div>
     </div>
-  `;
+  </div>
+`;
 
   document.body.appendChild(assistantDiv);
   assistantWidget = assistantDiv;
+
   bindAssistantEvents();
   updateAssistantLanguageUI(getCurrentLanguage());
+  restoreAssistantPosition();
+  enableAssistantDragging();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
