@@ -69,27 +69,21 @@ The project includes two shared files used across Homepage, Game, and Quiz.
 
 ### `shared.css`
 Provides common visual styles for the whole website, including:
-- colour variables
-- light mode / dark mode
-- font size scaling
-- accessibility styles
-- shared navigation bar
-- modal window
-- footer
-- shared button and card styles
-- ai assistant window appearance
+- CSS Colour variables & Typography
+- Appearance Themes: Light mode, Dark mode, and Eye-Care mode
+- Accessibility Overrides: Brutal High Contrast, Enhanced Legibility (Dyslexia support), and Reduced Motion
+- Modern UI elements
+- Modern UI elements
+- AI assistant window appearance
+
 
 ### `shared.js`
 Provides common interactive functions for the whole website, including:
-- navigation button links
-- settings modal
-- theme switching
-- font size slider
-- colour-friendly mode
-- high contrast mode
-- reduced motion mode
-- localStorage preference saving
-- ai assistant window interaction
+- Navigation button routing
+- Settings modal logic and state management
+- Dynamic toggles for Theme, Font size slider, Colour-friendly mode, High Contrast, Legibility, and Reduced Motion
+- localStorage preference saving (ensuring settings persist across all pages)
+- AI assistant window interaction & bilingual content injection
 
 Pages in each section should include both files:
 

@@ -1,4 +1,3 @@
-<!-- homepage.html - 移除冲突的内联样式，保留核心功能 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,29 +5,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Geometry Escape Lab | Home</title>
+
   <link rel="stylesheet" href="shared.css">
+
   <style>
-    /* ========== homepage additional styles (carousel, hero, etc) ========== */
+    /* ===== Homepage styles ===== */
     .hero {
       background: var(--bg-elevated);
       padding: 36px 24px;
       border-radius: var(--radius-xl);
       margin-bottom: 32px;
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
       text-align: center;
+
+      border: none;
+      box-shadow: var(--shadow-sm);
     }
 
     .hero h2 {
-      margin-top: 0;
-      font-size: clamp(1.4rem, 5vw, 2rem);
-      font-weight: 700;
-      color: var(--heading);
+      font-size: clamp(2rem, 4vw, 3.1rem);
     }
 
     .hero p {
-      font-size: clamp(0.9rem, 3.5vw, 1.1rem);
       color: var(--text-soft);
     }
 
@@ -42,77 +39,51 @@
 
     .buttons button {
       width: min(90%, 700px);
-      padding: 20px 16px;
-      border: none;
+      padding: 20px;
       border-radius: 60px;
-      cursor: pointer;
-      font-size: clamp(1.1rem, 5vw, 1.6rem);
+      font-size: 1.4rem;
       font-weight: 700;
-      transition: all 0.25s ease;
+      cursor: pointer;
+
       background: var(--bg-soft);
-      color: var(--text);
-      border: 1px solid var(--border);
-      letter-spacing: 1px;
+      border: none;
+      outline: none;
       box-shadow: var(--shadow-sm);
+
+      color: var(--text);
     }
 
     .buttons button:hover {
       background: var(--primary);
       color: var(--nav-hover-text);
-      transform: scale(1.02);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-      border-color: transparent;
     }
 
     .content {
       display: grid;
-      grid-template-columns: 1fr;
       gap: 24px;
-      margin-top: 32px;
     }
 
     .card {
       background: var(--bg-panel);
-      padding: 32px 20px;
+      padding: 24px;
       border-radius: var(--radius-md);
+
+      border: none;
       box-shadow: var(--shadow-sm);
-      transition: transform 0.2s, background 0.2s;
-      border: 1px solid var(--border);
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-    }
-
-    .card h3 {
-      font-size: 1.35rem;
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: var(--heading);
-    }
-
-    /* Slider (carousel) */
     .slider {
       position: relative;
       overflow: hidden;
-      text-align: center;
-    }
-
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease;
     }
 
     .slide {
       display: none;
       text-align: center;
-      opacity: 0;
-      transition: opacity 0.5s;
     }
 
     .slide.active {
       display: block;
-      opacity: 1;
     }
 
     .prev,
@@ -123,61 +94,39 @@
       border: none;
       background: rgba(0, 0, 0, 0.4);
       color: white;
-      font-size: 28px;
-      padding: 8px 14px;
+      font-size: 24px;
       cursor: pointer;
       border-radius: 50%;
-      transition: 0.2s;
-      z-index: 2;
-      font-weight: bold;
-    }
-
-    .prev:hover,
-    .next:hover {
-      background: var(--primary);
-      color: white;
+      padding: 6px 10px;
     }
 
     .prev {
-      left: 12px;
+      left: 10px;
     }
 
     .next {
-      right: 12px;
+      right: 10px;
     }
 
     .ad-container {
-      background: var(--bg-panel);
-      border-radius: var(--radius-md);
-      padding: 20px;
       text-align: center;
-      border: 1px dashed var(--border-strong);
+      padding: 20px;
       color: var(--text-soft);
-      font-size: 0.9rem;
-      transition: background 0.2s;
+
+      border: none;
+      background: var(--bg-soft);
+      border-radius: var(--radius-md);
     }
 
-    @media (max-width: 640px) {
-      .buttons button {
-        padding: 14px 12px;
-      }
-      .card {
-        padding: 24px 16px;
-      }
-      .prev,
-      .next {
-        font-size: 22px;
-        padding: 5px 10px;
-      }
-    }
-
-    html {
-      font-size: calc(16px * var(--font-scale));
-    }
-    body {
-      font-size: 1rem;
+    .slide-img {
+      max-width: 100%;
+      height: auto;
+      margin: 16px 0;
+      border-radius: 12px;
     }
   </style>
+
+  <!-- shared logic (navigation, settings, language) -->
   <script src="shared.js" defer></script>
 </head>
 
@@ -187,176 +136,305 @@
     <div class="header-left">
       <h1>Geometry Escape Lab</h1>
       <div class="breadcrumb">
-        <span>Home</span>
+        <span data-role="breadcrumb-home"></span>
       </div>
     </div>
 
     <nav>
-      <button id="navHomeBtn">Home</button>
-      <button id="navGameBtn">Game</button>
-      <button id="navQuizBtn">Quiz</button>
-      <button type="button" id="settingsBtn">Settings</button>
+      <button id="navHomeBtn"></button>
+      <button id="navGameBtn"></button>
+      <button id="navQuizBtn"></button>
+      <button id="settingsBtn"></button>
+
       <div class="nav-group">
-        <button class="dropbtn">About ▼</button>
+        <button class="dropbtn"></button>
         <div class="dropdown-content">
-          <a href="#" id="contactBtn">Contact us</a>
-          <a href="#" id="supportBtn">About this project</a>
-          <a href="#" id="accessibilityBtn">Accessibility help</a>
+          <a href="#" id="contactBtn"></a>
+          <a href="#" id="supportBtn"></a>
+          <a href="#" id="accessibilityBtn"></a>
         </div>
       </div>
     </nav>
   </header>
 
+  <!-- modal (shared.js controlled) -->
   <div id="modal" class="modal">
     <div class="modal-content">
-      <button class="close" type="button">&times;</button>
-      <h2 id="modal-title">Settings</h2>
+      <button class="close">&times;</button>
+      <h2 id="modal-title"></h2>
       <div id="modal-text"></div>
     </div>
   </div>
 
   <div class="container">
+
+    <!-- Hero -->
     <div class="hero">
-      <h2 id="heroTitle">Circle Conquer: Play & Learn Geo Theorems</h2>
-      <p id="heroSub">GCSE Math Interactive Learning | Chinese & English</p>
+      <h2 data-role="hero-title"></h2>
+      <p data-role="hero-sub"></p>
     </div>
 
+    <!-- Main buttons -->
     <div class="buttons">
-      <button class="game-btn" id="gameMainBtn">🎮 GAME</button>
-      <button class="quiz-btn" id="quizMainBtn">📖 QUIZ</button>
+      <button id="gameMainBtn" data-role="game-btn"></button>
+      <button id="quizMainBtn" data-role="quiz-btn"></button>
     </div>
 
+    <!-- Content -->
     <div class="content">
+
+      <!-- Carousel -->
       <div class="card slider">
         <div class="slide active">
-          <h3>Angle at the center</h3>
-          <p>Angle at the center is twice the angle at the circumference.<br><strong>∠AOB = 2∠ACB</strong></p>
+          <h3 data-role="slide1-title"></h3>
+          <img src="images/center-angle.png" alt="Angle at the center diagram" class="slide-img">
+          <p data-role="slide1-text1"></p>
+          <p data-role="slide1-text2"></p>
         </div>
         <div class="slide">
-          <h3>Angle in a semicircle</h3>
-          <p>The angle in a semicircle is always 90° (right angle).</p>
+          <h3 data-role="slide2-title"></h3>
+          <p data-role="slide2-text1"></p>
+          <p data-role="slide2-text2"></p>
         </div>
         <div class="slide">
-          <h3>Radius & Tangent</h3>
-          <p>The radius is perpendicular to the tangent.</p>
+          <h3 data-role="slide3-title"></h3>
+          <p data-role="slide3-text1"></p>
+          <p data-role="slide3-text2"></p>
         </div>
-        <button class="prev" aria-label="Previous theorem">‹</button>
-        <button class="next" aria-label="Next theorem">›</button>
+        <div class="slide">
+          <h3 data-role="slide4-title"></h3>
+          <p data-role="slide4-text1"></p>
+          <p data-role="slide4-text2"></p>
+        </div>
+        <div class="slide">
+          <h3 data-role="slide5-title"></h3>
+          <p data-role="slide5-text1"></p>
+          <p data-role="slide5-text2"></p>
+        </div>
+        <div class="slide">
+          <h3 data-role="slide6-title"></h3>
+          <p data-role="slide6-text1"></p>
+          <p data-role="slide6-text2"></p>
+        </div>
+        <div class="slide">
+          <h3 data-role="slide7-title"></h3>
+          <p data-role="slide7-text1"></p>
+          <p data-role="slide7-text2"></p>
+        </div>
+        <div class="slide">
+          <h3 data-role="slide8-title"></h3>
+          <p data-role="slide8-text1"></p>
+          <p data-role="slide8-text2"></p>
+        </div>
+
+        <button class="prev">‹</button>
+        <button class="next">›</button>
       </div>
+
       <div class="ad-container">
-        <p>📐 Circle Theorem Zone | Interactive learning | advertisement</p>
+        <p data-role="ad-text"></p>
       </div>
+
     </div>
   </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span data-role="footer-left"></span>
+      <span data-role="footer-right"></span>
+    </div>
+  </footer>
 
   <script>
-    (function () {
-      const heroTitle = document.getElementById('heroTitle');
-      const heroSub = document.getElementById('heroSub');
-      const gameMainBtn = document.getElementById('gameMainBtn');
-      const quizMainBtn = document.getElementById('quizMainBtn');
+    /* ===== Homepage I18N dictionary ===== */
+    const HOMEPAGE_I18N = {
+      en: {
+        breadcrumb: "Home",
+        heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
+        heroSub: "Interactive GCSE Math Learning",
+        gameBtn: "🎮 GAME",
+        quizBtn: "📖 QUIZ",
 
-      const slides = document.querySelectorAll('.slide');
-      const prevBtn = document.querySelector('.prev');
-      const nextBtn = document.querySelector('.next');
-      const sliderContainer = document.querySelector('.slider');
-      let currentIndex = 0;
-      let autoInterval = null;
+        slide1Title: "Angle at the center",
+        slide1Text1: "Angle at the center is twice the angle at the circumference.",
+        slide1Text2: "∠AOB = 2 × ∠ACB",
 
-      function showSlide(index) {
-        slides.forEach((slide, i) => {
-          slide.classList.toggle('active', i === index);
-        });
+        slide2Title: "Angles in a semicircle",
+        slide2Text1: "Angle in a semicircle is always 90°.",
+        slide2Text2: "∠ACB = 90°",
+
+        slide3Title: "Angles in the Same Segment",
+        slide3Text1: "Angles subtended by the same arc in the same segment are equal.",
+        slide3Text2: "∠ACB = ∠ADB",
+
+        slide4Title: "Cyclic Quadrilateral",
+        slide4Text1: "Opposite angles of a cyclic quadrilateral are supplementary.",
+        slide4Text2: "∠ABC + ∠ADC = 180°",
+
+        slide5Title: "Radius to a Tangent",
+        slide5Text1: "The radius of a circle is perpendicular to the tangent at the point of contact.",
+        slide5Text2: "∠OTL = 90°",
+
+        slide6Title: "Tangents from a Point",
+        slide6Text1: "Tangents drawn from the same external point to a circle are equal in length, and each tangent is perpendicular to the radius at the point of contact.",
+        slide6Text2: "PA = PB & Tangent ⟂ Radius",
+
+        slide7Title: "Angle Between Tangents",
+        slide7Text1: "The angle between two tangents drawn from an external point to a circle is supplementary to the central angle subtended by the points of contact, and each tangent is perpendicular to the radius at the point of contact.",
+        slide7Text2: "Sum = 180° & Tangents ⟂ Radius",
+
+        slide8Title: "Alternate Segment",
+        slide8Text1: "The angle between a tangent and a chord at the point of contact is equal to the angle in the alternate segment.",
+        slide8Text2: "Tangent-chord = ∠ACB",
+
+        adText: "Advertisement",
+
+        footerLeft: "© Geometry Escape Lab",
+        footerRight: "Learn with fun"
+      },
+
+      zh: {
+        breadcrumb: "首页",
+        heroTitle: "Circle Conquer：边玩边学圆定理",
+        heroSub: "互动式 GCSE 数学学习",
+        gameBtn: "🎮 游戏",
+        quizBtn: "📖 测验",
+
+        slide1Title: "圆心角",
+        slide1Text1: "圆心角是同弧所对圆周角的两倍。",
+        slide1Text2: "∠AOB = 2 × ∠ACB",
+
+        slide2Title: "半圆所对的圆周角",
+        slide2Text1: "半圆所对的圆周角恒为 90°。",
+        slide2Text2: "∠ACB = 90°",
+
+        slide3Title: "同弧同段角相等",
+        slide3Text1: "同一弧在同一弓形内所对的圆周角相等。",
+        slide3Text2: "∠ACB = ∠ADB",
+
+        slide4Title: "圆内接四边形",
+        slide4Text1: "圆内接四边形的对角互补。",
+        slide4Text2: "∠ABC + ∠ADC = 180°",
+
+        slide5Title: "半径与切线",
+        slide5Text1: "圆的半径与过切点的切线互相垂直。",
+        slide5Text2: "∠OTL = 90°",
+
+        slide6Title: "一点引两条切线",
+        slide6Text1: "从同一个圆外点向圆引出的两条切线长度相等，且切线都垂直于经过切点的半径。",
+        slide6Text2: "PA = PB，且 切线 ⟂ 半径",
+
+        slide7Title: "两切线所夹角",
+        slide7Text1: "从圆外一点引出的两条切线所夹的角，与两切点对应的圆心角互为补角，且切线都垂直于半径。",
+        slide7Text2: "和为 180°，且 切线 ⟂ 半径",
+
+        slide8Title: "交替弓形定理",
+        slide8Text1: "切线与弦在切点所成的角，等于弦在对侧弧所对的圆周角。",
+        slide8Text2: "切线-弦角 = ∠ACB",
+
+        adText: "广告区域",
+
+        footerLeft: "© 几何逃脱实验室",
+        footerRight: "快乐学习"
       }
+    };
 
-      function nextSlide() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-      }
+    /* ===== Helpers ===== */
+    function getLang() {
+      return localStorage.getItem('language') || 'en';
+    }
 
-      function prevSlide() {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        showSlide(currentIndex);
-      }
+    function tPage(key) {
+      const lang = getLang();
+      return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key];
+    }
 
-      function startAutoSlide() {
-        if (autoInterval) clearInterval(autoInterval);
-        autoInterval = setInterval(nextSlide, 3500);
-      }
+    /* ===== Apply language ===== */
+    function applyHomepageLanguage() {
+      document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
 
-      function stopAutoSlide() {
-        if (autoInterval) {
-          clearInterval(autoInterval);
-          autoInterval = null;
-        }
-      }
+      const map = {
+        breadcrumb: '[data-role="breadcrumb-home"]',
+        heroTitle: '[data-role="hero-title"]',
+        heroSub: '[data-role="hero-sub"]',
+        gameBtn: '[data-role="game-btn"]',
+        quizBtn: '[data-role="quiz-btn"]',
 
-      if (slides.length > 0 && prevBtn && nextBtn) {
-        startAutoSlide();
-        if (sliderContainer) {
-          sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-          sliderContainer.addEventListener('mouseleave', startAutoSlide);
-        }
-        prevBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          prevSlide();
-          stopAutoSlide();
-          startAutoSlide();
-        });
-        nextBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          nextSlide();
-          stopAutoSlide();
-          startAutoSlide();
-        });
-      }
+        slide1Title: '[data-role="slide1-title"]',
+        slide1Text1: '[data-role="slide1-text1"]',
+        slide1Text2: '[data-role="slide1-text2"]',
 
-      const translations = {
-        en: {
-          heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
-          heroSub: "GCSE Math Interactive Learning | Chinese & English"
-        },
-        zh: {
-          heroTitle: "⚡ 圆形征服：边玩边学几何定理",
-          heroSub: "🎓 GCSE 数学互动学习 | 中英双语 | 圆定理实验室"
-        }
+        slide2Title: '[data-role="slide2-title"]',
+        slide2Text1: '[data-role="slide2-text1"]',
+        slide2Text2: '[data-role="slide2-text2"]',
+
+        slide3Title: '[data-role="slide3-title"]',
+        slide3Text1: '[data-role="slide3-text1"]',
+        slide3Text2: '[data-role="slide3-text2"]',
+
+        slide4Title: '[data-role="slide4-title"]',
+        slide4Text1: '[data-role="slide4-text1"]',
+        slide4Text2: '[data-role="slide4-text2"]',
+
+        slide5Title: '[data-role="slide5-title"]',
+        slide5Text1: '[data-role="slide5-text1"]',
+        slide5Text2: '[data-role="slide5-text2"]',
+
+        slide6Title: '[data-role="slide6-title"]',
+        slide6Text1: '[data-role="slide6-text1"]',
+        slide6Text2: '[data-role="slide6-text2"]',
+
+        slide7Title: '[data-role="slide7-title"]',
+        slide7Text1: '[data-role="slide7-text1"]',
+        slide7Text2: '[data-role="slide7-text2"]',
+
+        slide8Title: '[data-role="slide8-title"]',
+        slide8Text1: '[data-role="slide8-text1"]',
+        slide8Text2: '[data-role="slide8-text2"]',
+
+        adText: '[data-role="ad-text"]',
+        footerLeft: '[data-role="footer-left"]',
+        footerRight: '[data-role="footer-right"]'
       };
 
-      function updateLanguageUI(lang) {
-        const t = translations[lang] || translations.en;
-        if (heroTitle) heroTitle.innerText = t.heroTitle;
-        if (heroSub) heroSub.innerText = t.heroSub;
-      }
+      Object.entries(map).forEach(([key, selector]) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = tPage(key);
+      });
+    }
 
-      let currentLanguage = localStorage.getItem('homepageLang') || 'en';
-      updateLanguageUI(currentLanguage);
+    /* ===== Carousel ===== */
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
 
-      if (gameMainBtn) {
-        gameMainBtn.addEventListener('click', () => {
-          window.location.href = 'index.html';
-        });
-      }
-      if (quizMainBtn) {
-        quizMainBtn.addEventListener('click', () => {
-          window.location.href = 'quiz.html';
-        });
-      }
-      
-      if (localStorage.getItem('subtitles') === null) {
-        localStorage.setItem('subtitles', 'true');
-      }
+    function showSlide(i) {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === i);
+      });
+    }
 
-      if (prevBtn) prevBtn.setAttribute('aria-label', 'Previous theorem');
-      if (nextBtn) nextBtn.setAttribute('aria-label', 'Next theorem');
-    })();
+    document.querySelector('.next').onclick = () => {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    };
+
+    document.querySelector('.prev').onclick = () => {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide(index);
+    };
+
+    /* ===== Navigation ===== */
+    document.getElementById('gameMainBtn').onclick = () => location.href = 'index.html';
+    document.getElementById('quizMainBtn').onclick = () => location.href = 'quiz.html';
+
+    /* ===== Language sync events ===== */
+    window.addEventListener('DOMContentLoaded', applyHomepageLanguage);
+    window.addEventListener('focus', applyHomepageLanguage);
+    window.addEventListener('storage', applyHomepageLanguage);
+    window.addEventListener('languageChanged', applyHomepageLanguage);
+
   </script>
 
-  <div class="site-footer">
-    <div class="footer-inner">
-      <span>© Geometry Escape Lab — interactive circle theorems</span>
-      <span>🎓 Learn with fun</span>
-    </div>
-  </div>
 </body>
 
 </html>
