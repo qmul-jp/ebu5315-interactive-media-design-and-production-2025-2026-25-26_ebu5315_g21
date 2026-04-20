@@ -9,10 +9,11 @@ const supportBtn = document.getElementById('supportBtn');
 const accessibilityBtn = document.getElementById('accessibilityBtn');
 const dropdownButtons = document.querySelectorAll('.dropbtn');
 
+// --- 路由已更新 ---
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
-  navGameBtn: 'index.html',
-  navQuizBtn: 'quiz.html'
+  navGameBtn: 'gamehome.html', 
+  navQuizBtn: 'index.html'     
 };
 
 const I18N = {
@@ -472,7 +473,6 @@ function openSettingsPanel(preservedScrollTop = 0) {
   bindSettingsControls();
   restoreSettingsPanelScrollTop(preservedScrollTop);
   
-  // 保证容器渲染完成后再计算滑块宽度和位置
   setTimeout(() => {
     requestAnimationFrame(() => {
       updateAllSegmentedThumbs(modalTextContainer, false);
@@ -489,7 +489,6 @@ window.addEventListener('resize', () => {
 function bindSettingsControls() {
   if (!modalTextContainer) return;
 
-  // 主题切换
   modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newTheme = btn.dataset.value;
@@ -506,7 +505,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 语言切换
   modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newLang = btn.dataset.value;
@@ -545,7 +543,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 辅助功能开关
   ['colorblindMode', 'reducedMotion', 'highContrast', 'legibilityMode'].forEach(setting => {
     modalTextContainer.querySelectorAll(`[data-setting='${setting}']`).forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -563,7 +560,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 字体滑动条
   const fontSlider = document.getElementById('fontSizeSlider');
   const fontSizeValue = document.getElementById('fontSizeValue');
   const fontSizePreset = document.getElementById('fontSizePreset');
@@ -651,8 +647,6 @@ function bindGlobalUI() {
     if (e.key === 'Escape') closeModal();
   });
 }
-
-/* ---------- AI Assistant ---------- */
 
 function getAIReply(question, lang) {
   const lowerQ = question.toLowerCase();
@@ -779,7 +773,6 @@ function createAssistantWidget() {
   updateAssistantLanguageUI(getCurrentLanguage());
 }
 
-// UI 核心更新机制
 function updateSegmentedThumb(group, animate = true) {
   if (!group) return;
 
