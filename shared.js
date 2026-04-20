@@ -19,18 +19,18 @@ const I18N = {
   en: {
     settings: 'Settings',
     themeMode: 'Theme mode',
-    themeDesc: 'Switch between light and dark appearance.',
+    themeDesc: 'Choose the overall appearance.',
     light: 'Light',
     eyeCare: 'Eye-Care',
     dark: 'Dark',
 
     language: 'Language',
-    languageDesc: 'Switch between English and Chinese.',
+    languageDesc: 'Choose the display language.',
     english: 'English',
     chinese: '中文',
 
     fontSize: 'Font size',
-    fontSizeDesc: 'Adjust text size across the page.',
+    fontSizeDesc: 'Adjust text size smoothly across the page.',
     small: 'Small',
     medium: 'Medium',
     large: 'Large',
@@ -38,19 +38,17 @@ const I18N = {
     colourFriendly: 'Colour-friendly mode',
     colourFriendlyDesc: 'Use a palette that is easier to distinguish.',
     reducedMotion: 'Reduced motion',
-    reducedMotionDesc: 'Reduce motion for a calmer experience.',
+    reducedMotionDesc: 'Lower visual motion for a calmer experience.',
     highContrast: 'High contrast',
     highContrastDesc: 'Increase separation between text and background.',
     legibility: 'Enhanced legibility',
-    legibilityDesc: 'Increase line and letter spacing for easier reading.',
+    legibilityDesc: 'Increase line spacing and letter spacing for dyslexic users.',
     on: 'On',
     off: 'Off',
     savedNote: 'These preferences are saved automatically for the next visit.',
 
     appearanceSection: 'Appearance',
     accessibilitySection: 'Accessibility',
-    chooseAppearance: 'Choose the overall appearance.',
-    chooseLanguage: 'Choose the display language.',
 
     home: 'Home',
     game: 'Game',
@@ -86,18 +84,18 @@ const I18N = {
   zh: {
     settings: '设置',
     themeMode: '主题模式',
-    themeDesc: '在浅色与深色外观之间切换。',
+    themeDesc: '选择页面整体外观。',
     light: '浅色',
     eyeCare: '护眼',
     dark: '深色',
 
     language: '语言',
-    languageDesc: '在英文和中文之间切换。',
+    languageDesc: '切换界面显示语言。',
     english: 'English',
     chinese: '中文',
 
     fontSize: '字体大小',
-    fontSizeDesc: '调整页面文字大小。',
+    fontSizeDesc: '拖动滑块可平滑调整整页文字大小。',
     small: '小',
     medium: '中',
     large: '大',
@@ -105,19 +103,17 @@ const I18N = {
     colourFriendly: '色彩友好模式',
     colourFriendlyDesc: '使用更容易区分的配色方案。',
     reducedMotion: '减少动态效果',
-    reducedMotionDesc: '减少动画效果，获得更平静的浏览体验。',
+    reducedMotionDesc: '降低页面动态效果，获得更平静的浏览体验。',
     highContrast: '高对比度',
     highContrastDesc: '增强文字与背景之间的区分度。',
     legibility: '易读排版',
-    legibilityDesc: '增加字距与行高，提升阅读清晰度。',
+    legibilityDesc: '强制增大字间距与行高，提升阅读清晰度。',
     on: '开',
     off: '关',
     savedNote: '这些设置会自动保存，下次访问时仍然生效。',
 
     appearanceSection: '外观',
     accessibilitySection: '辅助功能',
-    chooseAppearance: '选择页面外观。',
-    chooseLanguage: '切换显示语言。',
 
     home: '首页',
     game: '游戏',
@@ -149,7 +145,123 @@ const I18N = {
     assistantHelp: '问我任何圆定理问题！',
     assistantSend: '发送'
   }
+
 };
+
+// ----- 新增：AI Assistant 可拖拽位置存储 -----
+const ASSISTANT_POSITION_KEY = 'assistantPosition';
+
+function getSavedAssistantPosition() {
+  try {
+    return JSON.parse(localStorage.getItem(ASSISTANT_POSITION_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function saveAssistantPosition(x, y) {
+  localStorage.setItem(ASSISTANT_POSITION_KEY, JSON.stringify({ x: Math.round(x), y: Math.round(y) }));
+}
+
+function clampAssistantPosition(x, y, el) {
+  if (!el) return { x: 0, y: 0 };
+  const rect = el.getBoundingClientRect();
+  const maxX = Math.max(0, window.innerWidth - rect.width);
+  const maxY = Math.max(0, window.innerHeight - rect.height);
+  return { x: Math.max(0, Math.min(x, maxX)), y: Math.max(0, Math.min(y, maxY)) };
+}
+
+function applyAssistantPosition(el, x, y) {
+  if (!el) return;
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+  el.style.right = 'auto';
+  el.style.bottom = 'auto';
+}
+
+function restoreAssistantPosition() {
+  if (!assistantWidget) return;
+  const saved = getSavedAssistantPosition();
+  if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') {
+    requestAnimationFrame(() => {
+      if (!assistantWidget) return;
+      const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+      applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    });
+  } else {
+    requestAnimationFrame(() => {
+      if (!assistantWidget) return;
+      const rect = assistantWidget.getBoundingClientRect();
+      applyAssistantPosition(assistantWidget, rect.left, rect.top);
+      saveAssistantPosition(rect.left, rect.top);
+    });
+  }
+}
+
+function enableAssistantDragging() {
+  if (!assistantWidget) return;
+  let isDragging = false, startPointerX = 0, startPointerY = 0, startLeft = 0, startTop = 0, moved = false;
+
+  const getPoint = (e) => {
+    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  };
+  const canStartDrag = (target) => !!target.closest('.assistant-trigger');
+
+  const onStart = (e) => {
+    if (!assistantWidget || !canStartDrag(e.target)) return;
+    const point = getPoint(e);
+    const rect = assistantWidget.getBoundingClientRect();
+    isDragging = true;
+    moved = false;
+    startPointerX = point.x;
+    startPointerY = point.y;
+    startLeft = rect.left;
+    startTop = rect.top;
+    assistantWidget.classList.add('dragging');
+    e.preventDefault();
+  };
+
+  const onMove = (e) => {
+    if (!isDragging || !assistantWidget) return;
+    const point = getPoint(e);
+    const dx = point.x - startPointerX;
+    const dy = point.y - startPointerY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    const pos = clampAssistantPosition(startLeft + dx, startTop + dy, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    e.preventDefault();
+  };
+
+  const onEnd = () => {
+    if (!isDragging || !assistantWidget) return;
+    isDragging = false;
+    assistantWidget.classList.remove('dragging');
+    const rect = assistantWidget.getBoundingClientRect();
+    const pos = clampAssistantPosition(rect.left, rect.top, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+    setTimeout(() => { moved = false; }, 0);
+  };
+
+  assistantWidget.addEventListener('mousedown', onStart);
+  assistantWidget.addEventListener('touchstart', onStart, { passive: false });
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+  window.addEventListener('resize', () => {
+    if (!assistantWidget) return;
+    const saved = getSavedAssistantPosition();
+    if (!saved) return;
+    const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+  });
+
+  assistantWidget.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+}
 
 let assistantWidget = null;
 
@@ -167,8 +279,9 @@ function t(key) {
 }
 
 function applyTheme(theme) {
-  document.body.classList.toggle('dark-mode', theme === 'dark');
-  document.body.classList.toggle('eye-care', theme === 'eye-care');
+  document.body.classList.remove('dark-mode', 'eye-care');
+  if (theme === 'dark') document.body.classList.add('dark-mode');
+  if (theme === 'eye-care') document.body.classList.add('eye-care');
   localStorage.setItem('theme', theme);
 }
 
@@ -204,9 +317,7 @@ function applyLegibility(enabled) {
 
 function emitLanguageChanged(lang) {
   window.dispatchEvent(
-    new CustomEvent('languageChanged', {
-      detail: { lang }
-    })
+    new CustomEvent('languageChanged', { detail: { lang } })
   );
 }
 
@@ -231,11 +342,6 @@ function applyLanguage(lang) {
   if (supportBtnEl) supportBtnEl.textContent = t('aboutProject');
   if (accessibilityBtnEl) accessibilityBtnEl.textContent = t('accessibilityHelp');
   if (aboutBtn) aboutBtn.textContent = t('about');
-
-  if (modal && modal.classList.contains('show')) {
-    const scrollTop = getSettingsPanelScrollTop();
-    openSettingsPanel(scrollTop);
-  }
 
   if (assistantWidget) {
     updateAssistantLanguageUI(lang);
@@ -380,7 +486,7 @@ function getSettingsHTML() {
         <div class="settings-group settings-row">
           <div class="settings-copy">
             <strong>${t('themeMode')}</strong>
-            <span>${t('chooseAppearance')}</span>
+            <span>${t('themeDesc')}</span>
           </div>
           <div class="control-row segmented-control" role="tablist" aria-label="${t('themeMode')}">
             <button type="button" data-setting="theme" data-value="light" class="mode-switch-btn ${theme === 'light' ? 'active' : ''}">${t('light')}</button>
@@ -392,7 +498,7 @@ function getSettingsHTML() {
         <div class="settings-group settings-row">
           <div class="settings-copy">
             <strong>${t('language')}</strong>
-            <span>${t('chooseLanguage')}</span>
+            <span>${t('languageDesc')}</span>
           </div>
           <div class="control-row segmented-control" data-segment="language" role="tablist" aria-label="${t('language')}">
             <button type="button" data-setting="language" data-value="en" class="mode-switch-btn ${language === 'en' ? 'active' : ''}">${t('english')}</button>
@@ -405,7 +511,6 @@ function getSettingsHTML() {
             <strong>${t('fontSize')}</strong>
             <span>${t('fontSizeDesc')}</span>
           </div>
-
           <div class="settings-slider-block">
             <div class="font-slider-wrap">
               <span class="font-slider-label">A</span>
@@ -482,21 +587,27 @@ function openSettingsPanel(preservedScrollTop = 0) {
   openModal(t('settings'), getSettingsHTML());
   bindSettingsControls();
   restoreSettingsPanelScrollTop(preservedScrollTop);
-  updateAllSegmentedThumbs(modalTextContainer, false);
+
+  // 保证容器渲染完成后再计算滑块宽度和位置
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      updateAllSegmentedThumbs(modalTextContainer, false);
+    });
+  }, 10);
 }
 
 window.addEventListener('resize', () => {
-  updateAllSegmentedThumbs(document);
+  if (modal.classList.contains('show')) {
+    updateAllSegmentedThumbs(document, false);
+  }
+  if (modal && modal.classList.contains('show')) updateAllSegmentedThumbs(document, false);
+  updateAssistantPanelDirection();
 });
 
 function bindSettingsControls() {
   if (!modalTextContainer) return;
 
-  const rerenderSettingsPanel = () => {
-    const scrollTop = getSettingsPanelScrollTop();
-    openSettingsPanel(scrollTop);
-  };
-
+  // 主题切换
   modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newTheme = btn.dataset.value;
@@ -513,6 +624,7 @@ function bindSettingsControls() {
     });
   });
 
+  // 语言切换
   modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newLang = btn.dataset.value;
@@ -529,11 +641,13 @@ function bindSettingsControls() {
         ? oldActiveBtn.offsetWidth
         : 76;
 
+      const scrollTop = getSettingsPanelScrollTop();
+
       applyLanguage(newLang);
+      openSettingsPanel(scrollTop);
 
       requestAnimationFrame(() => {
         updateAllSegmentedThumbs(modalTextContainer, false);
-
         const newLanguageGroup = modalTextContainer.querySelector('[data-segment="language"]');
         if (!newLanguageGroup) return;
 
@@ -549,42 +663,25 @@ function bindSettingsControls() {
     });
   });
 
-  modalTextContainer.querySelectorAll("[data-setting='colorblindMode']").forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const enabled = getStored('colorblindMode', 'off') !== 'on';
-      applyColorblindMode(enabled);
-      btn.classList.toggle('active', enabled);
-      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
+  // 辅助功能开关
+  ['colorblindMode', 'reducedMotion', 'highContrast', 'legibilityMode'].forEach(setting => {
+    modalTextContainer.querySelectorAll(`[data-setting='${setting}']`).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isCurrentlyOn = getStored(setting, 'off') === 'on';
+        const enabled = !isCurrentlyOn;
+
+        if (setting === 'colorblindMode') applyColorblindMode(enabled);
+        if (setting === 'reducedMotion') applyReducedMotion(enabled);
+        if (setting === 'highContrast') applyHighContrast(enabled);
+        if (setting === 'legibilityMode') applyLegibility(enabled);
+
+        btn.classList.toggle('active', enabled);
+        btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
+      });
     });
   });
 
-  modalTextContainer.querySelectorAll("[data-setting='reducedMotion']").forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const enabled = getStored('reducedMotion', 'off') !== 'on';
-      applyReducedMotion(enabled);
-      btn.classList.toggle('active', enabled);
-      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    });
-  });
-
-  modalTextContainer.querySelectorAll("[data-setting='highContrast']").forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const enabled = getStored('highContrast', 'off') !== 'on';
-      applyHighContrast(enabled);
-      btn.classList.toggle('active', enabled);
-      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    });
-  });
-
-  modalTextContainer.querySelectorAll("[data-setting='legibilityMode']").forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const enabled = getStored('legibilityMode', 'off') !== 'on';
-      applyLegibility(enabled);
-      btn.classList.toggle('active', enabled);
-      btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    });
-  });
-
+  // 字体滑动条
   const fontSlider = document.getElementById('fontSizeSlider');
   const fontSizeValue = document.getElementById('fontSizeValue');
   const fontSizePreset = document.getElementById('fontSizePreset');
@@ -599,10 +696,6 @@ function bindSettingsControls() {
 
     fontSlider.addEventListener('input', () => {
       applyFontScale(fontSlider.value);
-      updateSliderUI(fontSlider.value);
-    });
-
-    fontSlider.addEventListener('change', () => {
       updateSliderUI(fontSlider.value);
     });
   }
@@ -715,103 +808,139 @@ function getAIReply(question, lang) {
 
 function updateAssistantLanguageUI(lang) {
   if (!assistantWidget) return;
-
   const tData = I18N[lang] || I18N.en;
   const headerSpan = assistantWidget.querySelector('.assistant-header span');
-  const helpP = assistantWidget.querySelector('.assistant-content p');
+  const helpP = assistantWidget.querySelector('.assistant-help');
   const inputField = assistantWidget.querySelector('.assistant-input');
   const sendButton = assistantWidget.querySelector('.assistant-send-btn');
   const langSelector = assistantWidget.querySelector('.lang-selector');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
 
   if (headerSpan) headerSpan.innerHTML = tData.assistantTitle || '🤖 AI Assistant';
   if (helpP) helpP.textContent = tData.assistantHelp || 'Ask me about circle theorems!';
   if (inputField) inputField.placeholder = tData.assistantPlaceholder || 'e.g., semicircle theorem';
   if (sendButton) sendButton.textContent = tData.assistantSend || 'Send';
-  if (langSelector && langSelector.value !== lang) {
-    langSelector.value = lang;
+  if (langSelector && langSelector.value !== lang) langSelector.value = lang;
+
+  if (answerBox && answerBox.classList.contains('empty')) {
+    answerBox.textContent = lang === 'zh' ? '在这里输入问题，答案会显示在这个窗口中。' : 'Ask a question and the answer will appear here.';
+  }
+}
+
+function updateAssistantPanelDirection() {
+  if (!assistantWidget) return;
+  const panel = assistantWidget.querySelector('.assistant-panel');
+  if (!panel) return;
+  assistantWidget.classList.remove('expand-up', 'expand-down');
+  const widgetRect = assistantWidget.getBoundingClientRect();
+  const estimatedPanelHeight = Math.min(panel.scrollHeight || 260, window.innerHeight * 0.7);
+  const spaceAbove = widgetRect.top;
+  const spaceBelow = window.innerHeight - widgetRect.bottom;
+  if (spaceAbove >= estimatedPanelHeight + 12 || spaceAbove >= spaceBelow) {
+    assistantWidget.classList.add('expand-up');
+  } else {
+    assistantWidget.classList.add('expand-down');
   }
 }
 
 function bindAssistantEvents() {
   if (!assistantWidget) return;
-
   const langSelector = assistantWidget.querySelector('.lang-selector');
   const input = assistantWidget.querySelector('.assistant-input');
   const sendBtn = assistantWidget.querySelector('.assistant-send-btn');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
+  const panel = assistantWidget.querySelector('.assistant-panel');
 
   if (langSelector) {
-    langSelector.addEventListener('change', (e) => {
-      applyLanguage(e.target.value);
-    });
+    langSelector.addEventListener('change', (e) => applyLanguage(e.target.value));
   }
+
+  const setAssistantAnswer = (text, isEmpty = false) => {
+    if (!answerBox) return;
+    answerBox.textContent = text;
+    answerBox.classList.toggle('empty', isEmpty);
+    updateAssistantPanelDirection();
+  };
 
   const sendMessage = () => {
     const question = input?.value.trim() || '';
+    const lang = getCurrentLanguage();
     if (!question) {
-      const emptyMsg = getCurrentLanguage() === 'zh'
-        ? '请输入一个关于圆定理的问题！'
-        : 'Please ask something about circle theorems!';
-      alert(`🤖 AI: ${emptyMsg}`);
+      const emptyMsg = lang === 'zh' ? '请输入一个关于圆定理的问题！' : 'Please ask something about circle theorems!';
+      setAssistantAnswer(emptyMsg, false);
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
       return;
     }
-
-    const reply = getAIReply(question, getCurrentLanguage());
-    alert(`🤖 AI: ${reply}`);
+    const reply = getAIReply(question, lang);
+    setAssistantAnswer(reply, false);
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
     input.value = '';
+    input.focus();
   };
 
-  if (sendBtn) {
-    sendBtn.addEventListener('click', sendMessage);
-  }
-
+  if (sendBtn) sendBtn.addEventListener('click', sendMessage);
   if (input) {
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage();
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    input.addEventListener('focus', () => {
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
     });
   }
+  if (panel) panel.addEventListener('mouseenter', () => {
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+  });
+  assistantWidget.addEventListener('mouseenter', () => {
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+  });
+  assistantWidget.addEventListener('mouseleave', () => {
+    if (!assistantWidget.classList.contains('dragging')) assistantWidget.classList.remove('open');
+  });
 }
 
 function createAssistantWidget() {
-  if (document.querySelector('.assistant')) {
-    assistantWidget = document.querySelector('.assistant');
-    updateAssistantLanguageUI(getCurrentLanguage());
-    return;
-  }
+  // 移除旧版助理（如果存在）
+  const existing = document.querySelector('.assistant');
+  if (existing) existing.remove();
 
   const assistantDiv = document.createElement('div');
   assistantDiv.className = 'assistant';
   assistantDiv.innerHTML = `
-    <div class="assistant-icon">🤖</div>
-    <div class="assistant-content">
-      <div class="assistant-header">
-        <span>🤖 AI Assistant</span>
-        <select class="lang-selector" aria-label="Language switch">
-          <option value="en">🇬🇧 English</option>
-          <option value="zh">🇨🇳 中文</option>
-        </select>
-      </div>
-      <p>Ask me about circle theorems!</p>
-      <div class="assistant-input-group">
-        <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem" />
-        <button class="assistant-send-btn">Send</button>
+    <button class="assistant-trigger" type="button" aria-label="Open AI assistant">
+      <span class="assistant-icon">🤖</span>
+    </button>
+    <div class="assistant-panel">
+      <div class="assistant-content">
+        <div class="assistant-header">
+          <span>🤖 AI Assistant</span>
+          <select class="lang-selector" aria-label="Language switch">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+        <p class="assistant-help">Ask me about circle theorems!</p>
+        <div class="assistant-answer-wrap">
+          <div class="assistant-answer empty">Ask a question and the answer will appear here.</div>
+        </div>
+        <div class="assistant-input-group">
+          <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem" />
+          <button class="assistant-send-btn">Send</button>
+        </div>
       </div>
     </div>
   `;
-
   document.body.appendChild(assistantDiv);
   assistantWidget = assistantDiv;
   bindAssistantEvents();
   updateAssistantLanguageUI(getCurrentLanguage());
+  restoreAssistantPosition();
+  enableAssistantDragging();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  restorePreferences();
-  bindDropdowns();
-  bindNavigation();
-  bindGlobalUI();
-  createAssistantWidget();
-});
-
+// UI 核心更新机制
 function updateSegmentedThumb(group, animate = true) {
   if (!group) return;
 
@@ -838,6 +967,10 @@ function updateAllSegmentedThumbs(scope = document, animate = true) {
   });
 }
 
-function updateAllSegmentedThumbs(scope = document) {
-  scope.querySelectorAll('.segmented-control').forEach(updateSegmentedThumb);
-}
+window.addEventListener('DOMContentLoaded', () => {
+  restorePreferences();
+  bindDropdowns();
+  bindNavigation();
+  bindGlobalUI();
+  createAssistantWidget();
+});

@@ -60,31 +60,29 @@ Major updates are developed in individual branches before being merged into the 
 ## Development Progress
 - **V1**: Initial development version. In this version, each team member built the basic framework for their own section separately. The three sections had not yet been fully connected.
 - **V2**: Added bilingual switching between English and Chinese, completed navigation links across the Homepage, Game, and Quiz sections, and deployed the AI assistant across all pages as a floating widget in the bottom right corner.  
-- **V3**: To be updated
+- **V3**: Premium UI & Game Feel Enhancement**
+  * **Settings Persistence:** Added `localStorage` (cookies) to automatically save language, theme, and accessibility preferences across all pages.
+  * **Apple-esque UI:** Redesigned the Settings modal with iOS-style glassmorphism, smooth segmented controls, and animated toggle switches.
+  * **Game Audio:** Introduced a dynamic Web Audio API engine with sound effects for dragging, success, errors, and system lockdown.
 - **V4**: To be updated
 
-## Shared Files
+### Shared Files
 
 The project includes two shared files used across Homepage, Game, and Quiz.
 
-### `shared.css`
+**`shared.css`**
 Provides common visual styles for the whole website, including:
-- CSS Colour variables & Typography
-- Appearance Themes: Light mode, Dark mode, and Eye-Care mode
-- Accessibility Overrides: Brutal High Contrast, Enhanced Legibility (Dyslexia support), and Reduced Motion
-- Modern UI elements
-- Modern UI elements
-- AI assistant window appearance
+* CSS Colour variables & Typography.
+* Premium Apple-esque design (Glassmorphism & deep shadows).
+* Appearance Themes (Light, Dark, Eye-Care).
+* Accessibility Overrides (Brutal High Contrast, Enhanced Legibility, Reduced Motion).
 
-
-### `shared.js`
+**`shared.js`**
 Provides common interactive functions for the whole website, including:
-- Navigation button routing
-- Settings modal logic and state management
-- Dynamic toggles for Theme, Font size slider, Colour-friendly mode, High Contrast, Legibility, and Reduced Motion
-- localStorage preference saving (ensuring settings persist across all pages)
-- AI assistant window interaction & bilingual content injection
-
+* Navigation routing and dropdown logic.
+* UI engine for the Apple-style Settings modal (smooth sliding animations).
+* `localStorage` management for persisting user preferences.
+* Global event dispatcher (`languageChanged`) for seamless, no-reload bilingual switching and AI assistant integration.
 Pages in each section should include both files:
 
 ```html
