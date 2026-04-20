@@ -1,0 +1,1622 @@
+/* =========================================================
+   shared.css
+   Shared theme, navigation, modal and accessibility system
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --diagram-circle: #d9dde5;
+  --diagram-line: #7b8494;
+  --diagram-fixed-point: #aeb8cc;
+  --diagram-drag-point: #e24b4b;
+  --diagram-drag-stroke: #ffffff;
+  --diagram-text: #243247;
+  --diagram-angle-text: #111827;
+  --diagram-accent-text: #7a5c2e;
+  --bg: #f6f3ec;
+  --bg-panel: rgba(255, 252, 246, 0.96);
+  --bg-soft: #f2ebe0;
+  --bg-elevated: #fffdf8;
+  --text: #243042;
+  --text-soft: #5b6778;
+  --heading: #1b2433;
+
+  --primary: #8f6a2a;
+  --primary-strong: #6f5220;
+  --primary-soft: rgba(143, 106, 42, 0.12);
+  --accent: #355c9a;
+  --accent-soft: rgba(53, 92, 154, 0.12);
+
+  --border: rgba(72, 86, 112, 0.14);
+  --border-strong: rgba(72, 86, 112, 0.28);
+  --line: rgba(72, 86, 112, 0.12);
+  --shadow-sm: 0 4px 10px rgba(31, 41, 55, 0.05);
+  --shadow-md: 0 16px 36px rgba(31, 41, 55, 0.10);
+
+  --radius-xl: 28px;
+  --radius-lg: 999px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+
+  --gold: #b78935;
+  --blue: #355c9a;
+  --blue-strong: #273d66;
+  --green: #3d8d62;
+  --cyan: #5fc7ff;
+  --muted: #657286;
+
+  --svg-circle: rgba(72, 86, 112, 0.28);
+  --svg-line: #6c7890;
+  --svg-fixed-point: #586578;
+  --svg-label: #182130;
+  --svg-accent-text: #6f5220;
+  --svg-drag-fill: #df3d3d;
+  --svg-drag-stroke: #ffffff;
+
+  --font-scale: 1;
+  --content-max: 1400px;
+  --nav-hover-text: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: calc(16px * var(--font-scale));
+  background:
+    radial-gradient(circle at top right, rgba(200, 155, 44, 0.07), transparent 24%),
+    linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+  color: var(--text);
+  transition: background-color .25s ease, color .25s ease, font-size .2s ease;
+  line-height: 1.5;
+}
+
+body.dark-mode {
+  --diagram-circle: #f3f4f6;
+  --diagram-line: rgba(255, 255, 255, 0.72);
+  --diagram-fixed-point: #b8c4d9;
+  --diagram-drag-point: #ef5350;
+  --diagram-drag-stroke: #ffffff;
+  --diagram-text: #f8fafc;
+  --diagram-angle-text: #f9fafb;
+  --diagram-accent-text: #f2d089;
+  --bg: #111723;
+  --bg-panel: rgba(22, 28, 42, 0.96);
+  --bg-soft: #1b2434;
+  --bg-elevated: #162031;
+  --text: #edf2fb;
+  --text-soft: #b9c6dc;
+  --heading: #f4f8ff;
+
+  --primary: #d1a34e;
+  --primary-strong: #e3bc73;
+  --primary-soft: rgba(209, 163, 78, 0.18);
+  --accent: #7fb4ff;
+  --accent-soft: rgba(127, 180, 255, 0.18);
+
+  --border: rgba(163, 183, 220, 0.16);
+  --border-strong: rgba(163, 183, 220, 0.30);
+  --line: rgba(163, 183, 220, 0.14);
+  --shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 20px 48px rgba(0, 0, 0, 0.35);
+
+  --gold: #f0c56c;
+  --blue: #8ec5ff;
+  --blue-strong: #dbeaff;
+  --green: #79d59e;
+  --cyan: #7ce4ff;
+  --muted: #adbbd0;
+  --nav-hover-text: #101724;
+
+  --svg-circle: rgba(218, 231, 255, 0.55);
+  --svg-line: #b5c7e5;
+  --svg-fixed-point: #d8e6ff;
+  --svg-label: #f5f9ff;
+  --svg-accent-text: #ffd88f;
+  --svg-drag-fill: #ff7b7b;
+  --svg-drag-stroke: #132034;
+
+  background:
+    radial-gradient(circle at top right, rgba(127, 180, 255, 0.12), transparent 24%),
+    linear-gradient(180deg, #0f1520 0%, var(--bg) 100%);
+}
+
+body.colorblind-mode {
+  --primary: #8c510a;
+  --primary-strong: #6b3f08;
+  --primary-soft: rgba(140, 81, 10, 0.14);
+  --accent: #01665e;
+  --accent-soft: rgba(1, 102, 94, 0.14);
+  --blue: #01665e;
+  --blue-strong: #0d4b47;
+  --green: #5c7a00;
+  --gold: #8c510a;
+}
+
+body.dark-mode.colorblind-mode {
+  --primary: #f2b34c;
+  --primary-strong: #ffd083;
+  --accent: #68d9ca;
+  --blue: #68d9ca;
+  --blue-strong: #dffff9;
+  --green: #bedb39;
+  --gold: #f2b34c;
+  --svg-accent-text: #ffe5ae;
+}
+
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+body.high-contrast {
+  --border: rgba(20, 28, 44, 0.35);
+  --border-strong: rgba(20, 28, 44, 0.55);
+  --line: rgba(20, 28, 44, 0.35);
+  --svg-circle: rgba(20, 28, 44, 0.7);
+  --svg-label: #111111;
+}
+
+body.dark-mode.high-contrast {
+  --border: rgba(255, 255, 255, 0.35);
+  --border-strong: rgba(255, 255, 255, 0.55);
+  --line: rgba(255, 255, 255, 0.35);
+  --svg-circle: rgba(255, 255, 255, 0.78);
+  --svg-label: #ffffff;
+}
+
+body.large-font {
+  --font-scale: 1.1;
+}
+
+body.small-font {
+  --font-scale: 0.93;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
+  backdrop-filter: blur(14px);
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.25rem, 5vw, 1.7rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--blue-strong), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.breadcrumb {
+  font-size: .87rem;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.breadcrumb a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+nav button,
+.nav-link,
+.dropbtn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: 10px 18px;
+  font-size: .96rem;
+  font-weight: 600;
+  letter-spacing: .1px;
+  box-shadow: var(--shadow-sm);
+  transition: .2s ease;
+}
+
+nav button:hover,
+.nav-link:hover,
+.dropbtn:hover,
+nav button:focus-visible,
+.nav-link:focus-visible,
+.dropbtn:focus-visible {
+  background: var(--primary);
+  color: var(--nav-hover-text);
+  border-color: transparent;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+nav button.active-nav,
+.nav-link.active-nav,
+.dropbtn.active-nav {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border-color: transparent;
+}
+
+body.dark-mode nav button.active-nav,
+body.dark-mode .nav-link.active-nav,
+body.dark-mode .dropbtn.active-nav {
+  color: #101724;
+}
+
+.nav-group {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  border-radius: 18px;
+  z-index: 60;
+  overflow: hidden;
+}
+
+.nav-group.open .dropdown-content,
+.nav-group:hover .dropdown-content,
+.nav-group:focus-within .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background: var(--bg-soft);
+  color: var(--primary-strong);
+  transform: none;
+}
+
+.container {
+  width: min(var(--content-max), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 36px;
+}
+
+.card,
+.panel-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 24px;
+}
+
+.card {
+  padding: 22px;
+}
+
+.panel-box {
+  padding: 18px;
+}
+
+.center {
+  text-align: center;
+}
+
+.small-text {
+  color: var(--text-soft);
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 11px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+}
+
+body.dark-mode .btn.primary {
+  color: #101724;
+}
+
+.btn.secondary {
+  background: var(--bg-soft);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn.subtle-btn {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-soft);
+}
+
+button:disabled,
+.btn:disabled,
+.locked-btn {
+  cursor: not-allowed;
+  opacity: .65;
+  transform: none !important;
+}
+
+.status-pill,
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  font-size: .85rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.secondary-chip {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.footer,
+.site-footer {
+  margin-top: 30px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
+}
+
+.footer-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  color: var(--text-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .58);
+  backdrop-filter: blur(4px);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-content {
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  margin: 8vh auto;
+  padding: 24px 28px;
+  width: min(680px, 92vw);
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.modal-content h2 {
+  margin: 0 40px 16px 0;
+  color: var(--heading);
+}
+
+.close {
+  float: right;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.settings-panel,
+.info-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.settings-group,
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.settings-copy,
+.info-row>div {
+  display: grid;
+  gap: 4px;
+}
+
+.settings-copy span,
+.info-row span,
+.modal-note {
+  color: var(--text-soft);
+  font-size: .92rem;
+}
+
+.control-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mode-switch-btn,
+.font-size-btn,
+.toggle-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-switch-btn.active,
+.font-size-btn.active,
+.toggle-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border-color: transparent;
+}
+
+body.dark-mode .mode-switch-btn.active,
+body.dark-mode .font-size-btn.active,
+body.dark-mode .toggle-btn.active {
+  color: #101724;
+}
+
+@media (max-width: 900px) {
+
+  .settings-group,
+  .info-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .control-row {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  header {
+    padding: 12px 14px;
+  }
+
+  .container {
+    width: min(var(--content-max), calc(100% - 20px));
+    padding-top: 20px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  nav button,
+  .dropbtn {
+    padding: 9px 14px;
+    font-size: .92rem;
+  }
+}
+
+.font-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.font-slider-label {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.95rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+.font-slider-label-large {
+  font-size: 1.2rem;
+}
+
+.font-size-slider {
+  flex: 1;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-soft), var(--primary));
+  outline: none;
+}
+
+.font-size-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.font-size-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.font-slider-readout {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* ========== AI Assistant Widget ========== */
+.assistant {
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 24px !important;
+  z-index: 1000 !important;
+  width: 56px;
+  height: 56px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.assistant.dragging {
+  cursor: grabbing !important;
+}
+
+.assistant-trigger {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  padding: 0;
+}
+
+.assistant.dragging .assistant-trigger {
+  cursor: grabbing;
+}
+
+.assistant-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.assistant-panel {
+  position: absolute;
+  right: 0;
+  width: min(340px, 88vw);
+  max-height: min(420px, 70vh);
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.98);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 默认向上 */
+.assistant.expand-up .assistant-panel {
+  bottom: 52px;
+  transform-origin: bottom right;
+}
+
+/* 空间不够时向下 */
+.assistant.expand-down .assistant-panel {
+  top: 52px;
+  bottom: auto;
+  transform-origin: top right;
+}
+
+.assistant.open .assistant-panel,
+.assistant:hover:not(.dragging) .assistant-panel,
+.assistant:focus-within .assistant-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0s;
+}
+
+body.dark-mode .assistant-panel {
+  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
+}
+
+.assistant-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.assistant-header {
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--heading);
+}
+
+.assistant-header span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-selector {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.assistant-help {
+  font-size: 0.8rem;
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.assistant-answer-wrap {
+  flex: 1;
+  min-height: 120px;
+  max-height: 220px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.assistant-answer {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.assistant-answer.empty {
+  color: var(--text-soft);
+}
+
+.assistant-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.assistant-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.assistant-input:focus {
+  border-color: var(--primary);
+}
+
+.assistant-send-btn {
+  padding: 8px 16px;
+  border-radius: 40px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.assistant-send-btn:hover {
+  background: var(--primary-strong);
+}
+
+.assistant-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .assistant {
+    right: 12px !important;
+    bottom: 16px !important;
+  }
+
+  .assistant-panel {
+    width: min(300px, calc(100vw - 24px));
+  }
+}
+
+/* =========================================================
+   V3.5: 消除“骨架感” - 质感与深度提升 (Anti-Skeletal UI)
+   ========================================================= */
+
+/* 1. 增加背景的“数学/实验室”质感（点阵图）代替死板的纯色 */
+body {
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+  background-size: 24px 24px;
+  /* 数学坐标纸的点阵感 */
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+body.dark-mode::before {
+  opacity: 0.15;
+}
+
+/* 2. 打破生硬的边框：用“毛玻璃 (Glassmorphism)”和“弥散阴影”代替 1px 实线边框 */
+.card,
+.panel-box,
+.theorem-item {
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  /* 极高光边缘，弱化边框线 */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
+  backdrop-filter: blur(12px);
+  /* 毛玻璃透视效果 */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 24px 48px -12px rgba(53, 92, 154, 0.12) !important;
+  /* 深层弥散阴影，让卡片飘起来 */
+}
+
+body.dark-mode .card,
+body.dark-mode .panel-box,
+body.dark-mode .theorem-item {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  background: linear-gradient(145deg, rgba(30, 38, 56, 0.8), rgba(20, 25, 38, 0.4)) !important;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  /* 暗黑模式下的内部高光 */
+}
+
+/* 3. 让所有按钮看起来像真实的、有手感的按键，而不是一个色块 */
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong)) !important;
+  box-shadow:
+    0 4px 12px rgba(143, 106, 42, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  /* 顶部反光 */
+  border: none !important;
+}
+
+.btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 16px rgba(143, 106, 42, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 4. 打破方块阵列：在关键元素（如英雄区）增加不对称的视觉装饰 */
+.hero-panel::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  /* 不规则的流体形状 */
+  background: linear-gradient(135deg, rgba(200, 155, 44, 0.1), rgba(53, 92, 154, 0.1));
+  animation: morph 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: rotate(0deg);
+  }
+
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(10deg);
+  }
+}
+
+/* 保证层级关系，文字不被装饰遮挡 */
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   V4: Apple-esque Premium Design
+   Eliminating wireframes, embracing space, light, and glass.
+   ========================================================= */
+
+/* --- 1. 彻底干掉硬边框，用光影定义边界 --- */
+.card,
+.panel-box,
+.theorem-item {
+  border: none !important;
+  /* 彻底移除实体边框 */
+  background: rgba(255, 255, 255, 0.65) !important;
+  /* 更通透的毛玻璃 */
+  backdrop-filter: blur(24px) saturate(180%);
+  /* 苹果标志性的高模糊+高饱和背景透视 */
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 4px 24px -8px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+  /* 仅保留极细的内发光作为物理边缘 */
+  border-radius: 28px !important;
+  /* 增加圆角，更圆润 */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
+}
+
+/* 悬停时的悬浮感 */
+.room-tile:hover,
+.theorem-item.unlocked:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  box-shadow:
+    0 20px 40px -12px rgba(53, 92, 154, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 暗色模式的极致通透 */
+body.dark-mode .card,
+body.dark-mode .panel-box,
+body.dark-mode .theorem-item {
+  background: rgba(20, 25, 38, 0.45) !important;
+  box-shadow:
+    0 10px 40px -10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* --- 2. 导航栏重塑：仿 iOS 顶栏 --- */
+header {
+  background: rgba(255, 252, 246, 0.7) !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+body.dark-mode header {
+  background: rgba(15, 21, 32, 0.6) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* 导航按钮无边框化，悬停时出现柔和背景 */
+nav button,
+.nav-link,
+.dropbtn {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-soft) !important;
+  font-weight: 500 !important;
+}
+
+nav button:hover,
+.nav-link:hover,
+.dropbtn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: var(--text) !important;
+  transform: none !important;
+}
+
+nav button.active-nav,
+.nav-link.active-nav,
+.dropbtn.active-nav {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+}
+
+body.dark-mode nav button:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* --- 3. 字体层级与质感 (Typography) --- */
+h1 {
+  letter-spacing: -0.03em !important;
+  /* 苹果标题常用的紧凑字距 */
+  font-weight: 700 !important;
+}
+
+/* --- 4. Hero 区域：去除线框结构，拥抱留白 --- */
+.hero-panel {
+  padding: 60px 40px !important;
+  /* 巨大的呼吸空间 */
+}
+
+/* 柔和的背景环境光 */
+.hero-panel::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(200, 155, 44, 0.08) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- 5. 按钮的高级质感 --- */
+.btn {
+  border-radius: 999px !important;
+  /* 胶囊按钮 */
+  letter-spacing: 0.02em;
+}
+
+.btn.primary:hover {
+  transform: scale(1.02) !important;
+  /* 点击时的弹性呼吸 */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* --- 6. SVG 画布容器的无界感 --- */
+.diagram-wrap-enhanced {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#svg {
+  border: none !important;
+  border-radius: 20px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.06) !important;
+}
+
+body.dark-mode #svg {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* =========================================================
+   V11: Inclusive Design & Wellbeing Enforcements 
+   (Eye-care, Brutal High-Contrast, Legibility)
+   ========================================================= */
+
+/* --- 1. 护眼模式 (Eye-care Theme) --- */
+body.eye-care {
+  --bg: #fdf6e3;
+  --bg-panel: rgba(250, 243, 224, 0.98);
+  --bg-soft: #f4e8d1;
+  --bg-elevated: #fffcf5;
+  --text: #433422;
+  --text-soft: #7a6548;
+  --heading: #312515;
+  --primary: #b58900;
+  --primary-strong: #8a6800;
+  --primary-soft: rgba(181, 137, 0, 0.15);
+  --accent: #2aa198;
+  --border: rgba(181, 137, 0, 0.2);
+  --line: rgba(181, 137, 0, 0.15);
+  --svg-circle: rgba(181, 137, 0, 0.3);
+  --svg-line: #937b54;
+  --svg-label: #312515;
+  background: #fdf6e3 !important;
+}
+
+body.eye-care::before {
+  display: none !important;
+}
+
+/* --- 2. 暴力高对比度模式 (Brutal High-Contrast) --- */
+body.high-contrast * {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast {
+  --bg: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-soft: #f0f0f0;
+  --text: #000000;
+  --text-soft: #111111;
+  --heading: #000000;
+  --primary: #0000ff;
+  --primary-strong: #0000cc;
+  --gold: #cc6600;
+  background: #ffffff !important;
+}
+
+body.high-contrast header,
+body.high-contrast .card,
+body.high-contrast .panel-box,
+body.high-contrast .theorem-item,
+body.high-contrast .assistant:hover {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+}
+
+body.dark-mode.high-contrast {
+  --bg: #000000;
+  --bg-panel: #000000;
+  --bg-soft: #1a1a1a;
+  --text: #ffffff;
+  --text-soft: #eeeeee;
+  --heading: #ffffff;
+  --primary: #ffff00;
+  --primary-strong: #cccc00;
+  background: #000000 !important;
+}
+
+body.dark-mode.high-contrast header,
+body.dark-mode.high-contrast .card,
+body.dark-mode.high-contrast .panel-box,
+body.dark-mode.high-contrast .theorem-item {
+  background: #000000 !important;
+  border: 3px solid #ffffff !important;
+}
+
+body.high-contrast .btn.primary {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+
+body.dark-mode.high-contrast .btn.primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+body.high-contrast #svg {
+  background: #ffffff !important;
+  border: 3px solid #000000 !important;
+}
+
+body.dark-mode.high-contrast #svg {
+  background: #000000 !important;
+  border: 3px solid #ffffff !important;
+}
+
+/* --- 3. 易读排版模式 (Enhanced Legibility for Dyslexia) --- */
+body.legibility-mode {
+  font-family: "Comic Sans MS", "Arial", sans-serif !important;
+  line-height: 1.8 !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.05em !important;
+}
+
+body.legibility-mode h1,
+body.legibility-mode h2,
+body.legibility-mode h3 {
+  letter-spacing: 0.1em !important;
+  margin-bottom: 1rem !important;
+}
+
+body.legibility-mode p {
+  text-align: left !important;
+}
+
+/* --- 4. 彻底的减少动态效果 (Reduced Motion Enhancement) --- */
+body.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* ==========================================
+   Apple-like Settings Refresh
+   只覆盖 settings modal，不破坏整体架构
+   ========================================== */
+
+.modal-content {
+  width: min(620px, 92vw);
+  padding: 26px 24px 22px;
+  border-radius: 30px;
+}
+
+#modal-title {
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.close {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  background: rgba(127, 127, 127, 0.14);
+  box-shadow: none;
+  border: none;
+}
+
+.apple-settings-panel {
+  display: grid;
+  gap: 18px;
+  max-height: 66vh;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.settings-section {
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 28px rgba(20, 28, 44, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+body.dark-mode .settings-section {
+  background: rgba(24, 30, 43, 0.62);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.settings-section-title {
+  padding: 14px 18px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.settings-group.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+}
+
+.settings-group.settings-row::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 1px;
+  background: rgba(72, 86, 112, 0.12);
+}
+
+.settings-section .settings-group.settings-row:last-child::after {
+  display: none;
+}
+
+body.dark-mode .settings-group.settings-row::after {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.settings-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.settings-copy strong {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.settings-copy span {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text-soft);
+  max-width: 34ch;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.control-row.segmented-control {
+  justify-content: flex-start;
+}
+
+.segmented-control::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: var(--segment-thumb-width, 76px);
+  height: calc(100% - 6px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  transform: translateX(var(--segment-thumb-x, 0px));
+  transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width .28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background .22s ease,
+    box-shadow .22s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.segmented-control.no-thumb-transition::before {
+  transition: none !important;
+}
+
+/* segmented control */
+.segmented-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(120, 120, 128, 0.12);
+  padding: 3px;
+  border-radius: 999px;
+  gap: 0;
+  flex: 0 0 auto;
+  width: fit-content;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+body.dark-mode .segmented-control {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+body.dark-mode .segmented-control::before {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 6px 16px rgba(0, 0, 0, 0.28);
+}
+
+.mode-switch-btn {
+  position: relative;
+  z-index: 1;
+  border: none !important;
+  background: transparent !important;
+  color: var(--text-soft) !important;
+  box-shadow: none !important;
+  border-radius: 999px !important;
+  min-width: 76px;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+  transition: color .22s ease !important;
+}
+
+.mode-switch-btn:hover {
+  transform: none !important;
+  background: transparent !important;
+  color: var(--text) !important;
+}
+
+.mode-switch-btn.active {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #111827 !important;
+}
+
+body.dark-mode .mode-switch-btn.active {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+
+/* iOS-like switch */
+.ios-switch {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 52px;
+  height: 32px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ios-switch-track {
+  position: relative;
+  display: block;
+  width: 52px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgba(120, 120, 128, 0.32);
+  transition: background .22s ease;
+}
+
+.ios-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.16),
+    0 3px 8px rgba(0, 0, 0, 0.12);
+  transition: transform .22s ease;
+}
+
+.ios-switch.active .ios-switch-track {
+  background: var(--green);
+}
+
+.ios-switch.active .ios-switch-thumb {
+  transform: translateX(20px);
+}
+
+.ios-switch:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 60%, white);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+/* slider row */
+.settings-row-slider {
+  align-items: flex-start;
+}
+
+.settings-slider-block {
+  min-width: min(260px, 46vw);
+  max-width: 320px;
+}
+
+.font-slider-wrap {
+  margin-top: 2px;
+  gap: 10px;
+}
+
+.font-slider-label {
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+.font-size-slider {
+  height: 4px;
+  background: linear-gradient(90deg, rgba(120, 120, 128, 0.22), var(--primary));
+  border-radius: 999px;
+}
+
+.font-size-slider::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: #ffffff;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.font-size-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: #ffffff;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.font-slider-readout.compact {
+  margin-top: 10px;
+  justify-content: flex-end;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+.settings-note {
+  margin: 0;
+  padding: 0 4px 2px;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+
+.apple-settings-panel .toggle-btn {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .settings-group.settings-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .settings-copy span {
+    max-width: none;
+  }
+
+  .control-row {
+    justify-content: flex-start;
+  }
+
+  .settings-slider-block {
+    min-width: 100%;
+    max-width: none;
+  }
+
+  .segmented-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(120, 120, 128, 0.12);
+    gap: 0;
+    isolation: isolate;
+  }
+
+  .mode-switch-btn {
+    min-width: 68px;
+  }
+}
