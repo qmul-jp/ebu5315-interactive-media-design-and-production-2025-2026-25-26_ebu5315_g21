@@ -13,7 +13,7 @@
       <h1>Geometry Escape Lab</h1>
       <div class="breadcrumb">
         <a href="homepage.html">Home</a> &nbsp;›&nbsp;
-        <a href="index.html">Game</a> &nbsp;›&nbsp;
+        <a href="gamehome.html">Game</a> &nbsp;›&nbsp;
         <span id="archiveBreadcrumb">Theorem Collection</span>
       </div>
     </div>
@@ -56,7 +56,7 @@
     </section>
 
     <div class="center" style="margin-top:18px;">
-      <button class="btn primary" onclick="location.href='index.html'" id="backToGameBtn">Back to Game</button>
+      <button class="btn primary" onclick="location.href='gamehome.html'" id="backToGameBtn">Back to Game</button>
     </div>
   </main>
 
@@ -181,6 +181,7 @@
         const box = document.createElement("div");
         box.className = `theorem-item panel-box ${unlocked ? "unlocked" : "locked"}`;
 
+        // --- 已添加 onclick 按钮跳转功能 ---
         box.innerHTML = `
           <div class="theorem-item-main">
             <div class="theorem-icon">${item.icon}</div>
@@ -190,7 +191,7 @@
               <p>${unlocked ? item.property : at("lockedDesc")}</p>
             </div>
           </div>
-          <button class="btn ${unlocked ? "primary" : "secondary"}" ${unlocked ? "" : "disabled"}>
+          <button class="btn ${unlocked ? "primary" : "secondary"}" ${unlocked ? `onclick="location.href='play.html?level=${index + 1}'"` : "disabled"}>
             ${unlocked ? at("unlockedBtn") : at("lockedBtn")}
           </button>
         `;

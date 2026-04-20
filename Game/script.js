@@ -70,7 +70,6 @@ const GAME_I18N = {
     successMessage: "Perfect Alignment! The theorem is restored.", 
     warningMessage: "Geometry unstable. Adjust the points and try again.",
     
-    // --- V9: Lockdown Protocol ---
     exitAndReview: "Evacuate & Review",
     lockedStatus: "System Locked",
     noAttemptsMessage: "System Locked. Evacuate to the map and review the theory.",
@@ -82,7 +81,6 @@ const GAME_I18N = {
     diagramDescOuter: "Drag the red points outside and on the circle to form perfect tangents.",
     diagramDescAltSegment: "Drag the points to un-break the segment angles.",
     
-    // --- V8: Puzzle Challenge Missions & Hints ---
     room1Title: "Room 1 - Angle at the Centre", 
     room1Mission: "Move C out of the minor arc to restore the double angle rule.", 
     room1Objective: "Verify that ∠AOB = 2 × ∠ACB.", 
@@ -171,7 +169,6 @@ const GAME_I18N = {
     successMessage: "完美共振！几何定理已修复。", 
     warningMessage: "几何结构仍不稳定，继续调整红点。",
     
-    // --- V9: Lockdown Protocol ---
     exitAndReview: "撤离并复习",
     lockedStatus: "系统已锁死",
     noAttemptsMessage: "机关锁死。请先撤离房间，去复习一下几何定理再来挑战。",
@@ -183,7 +180,6 @@ const GAME_I18N = {
     diagramDescOuter: "在圆外和圆上拖动红点，形成完美的切线。",
     diagramDescAltSegment: "把点拖离错误的区域，让交替弧定理共鸣。",
     
-    // --- V8: Puzzle Challenge Missions & Hints ---
     room1Title: "房间 1 - 圆心角", 
     room1Mission: "C 点陷在了劣弧里，导致定理失效。把它拖出来。", 
     room1Objective: "验证 ∠AOB = 2 × ∠ACB。", 
@@ -254,16 +250,15 @@ function getRoomsData() {
   }));
 }
 
-// === V8 核心变动：刻意打乱的初始状态（Puzzle States） ===
 const state = {
-  room1: { aAngle: 135, bAngle: 35, cAngle: 85 }, // C陷在劣弧
-  room2: { aAngle: 150, bAngle: 50, cAngle: 270 }, // AB不是直径
-  room3: { aAngle: 150, bAngle: 30, cAngle: 240, dAngle: 90 }, // D在劣弧
-  room4: { aAngle: 220, bAngle: 40, cAngle: 140, dAngle: 320 }, // 蝴蝶结形状
-  room5: { tAngle: 235, L: { x: 90, y: 190 } }, // L控制切线角度（偏离90度）
-  room6: { P: { x: 320, y: 120 }, aAngle: 60, bAngle: 240 }, // A,B不是切点
-  room7: { P: { x: 320, y: 120 }, aAngle: 75, bAngle: 210 }, // A,B不是切点
-  room8: { aAngle: 130, bAngle: 35, cAngle: 85 } // C在错误的弓形
+  room1: { aAngle: 135, bAngle: 35, cAngle: 85 }, 
+  room2: { aAngle: 150, bAngle: 50, cAngle: 270 }, 
+  room3: { aAngle: 150, bAngle: 30, cAngle: 240, dAngle: 90 }, 
+  room4: { aAngle: 220, bAngle: 40, cAngle: 140, dAngle: 320 }, 
+  room5: { tAngle: 235, L: { x: 90, y: 190 } }, 
+  room6: { P: { x: 320, y: 120 }, aAngle: 60, bAngle: 240 }, 
+  room7: { P: { x: 320, y: 120 }, aAngle: 75, bAngle: 210 }, 
+  room8: { aAngle: 130, bAngle: 35, cAngle: 85 } 
 };
 
 init();
@@ -351,7 +346,7 @@ function onPointerDown(e) {
 
 function onPointerMove(e) {
   if (!draggingPoint || solved) return;
-  e.preventDefault(); // 防止移动端画面滑动
+  e.preventDefault(); 
   const pt = getSvgPoint(e);
   
   if (typeof playSound === 'function' && Math.random() > 0.6) playSound('drag');
@@ -398,7 +393,6 @@ function updateCircleConstrainedRoom(angle) {
   }
 }
 
-// === 核心判断与反馈逻辑 ===
 function evaluateRoom() {
   switch (currentLevel) {
     case 1: {
@@ -606,23 +600,21 @@ function checkRoom() {
     setTimeout(() => challengePanel.classList.remove('shake-animation'), 400);
   }
 
-  // 修改 checkRoom 里的锁死部分：
   if (attempts <= 0) {
     statusText.textContent = gt("lockedStatus");
-    setFeedback("warning", gt("noAttemptsMessage")); // 这里会显示建议复习的文案
+    setFeedback("warning", gt("noAttemptsMessage"));
     setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
     
     if (typeof playSound === 'function') playSound('lockdown');
     document.body.classList.add('lockdown-mode'); 
     
-    // 把按钮文字变成“撤离并复习”
     checkBtn.textContent = gt("exitAndReview"); 
-    checkBtn.classList.add("reboot-btn"); // 继续借用那个红色的高警报样式
+    checkBtn.classList.add("reboot-btn"); 
     
     checkBtn.removeEventListener("click", checkRoom);
     checkBtn.addEventListener("click", () => {
-      // 核心修改：不再是 reload 原地重启，而是强制踢回选关地图（或定理学习页）
-      window.location.href = "index.html"; 
+      // --- 路由已更新 ---
+      window.location.href = "gamehome.html"; 
     });
     return;
   }
@@ -687,7 +679,6 @@ function playSound(type) {
     gainNode.gain.setValueAtTime(0.2, now); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
     osc.start(now); osc.stop(now + 0.3);
   }else if (type === 'lockdown') {
-    // 刺耳的双段警报声
     osc.type = 'square';
     osc.frequency.setValueAtTime(400, now);
     osc.frequency.linearRampToValueAtTime(600, now + 0.3);
