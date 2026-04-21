@@ -1,6 +1,7 @@
 // ==========================================
 // Geometry Escape Lab - Core Logic (V8 - Puzzle Challenge)
 // Fixed: Introduced scrambled initial states to enforce real gameplay.
+// Enhanced: Added Timer, Hot/Cold Visual Feedback, and Particle Confetti.
 // ==========================================
 
 const svg = document.getElementById("svg");
@@ -11,6 +12,7 @@ const objectiveText = document.getElementById("objectiveText");
 const targetText = document.getElementById("targetAngle");
 const currentText = document.getElementById("current");
 const attemptsText = document.getElementById("attempts");
+const timerDisplay = document.getElementById("timerDisplay");
 const feedback = document.getElementById("feedback");
 const hintText = document.getElementById("hintText");
 const diagramDesc = document.getElementById("diagramDesc");
@@ -32,6 +34,8 @@ if (requestedLevel > unlockedLevel) {
 let attempts = 4;
 let solved = false;
 let draggingPoint = null;
+let timeLeft = 90; 
+let timerInterval = null;
 
 const center = { x: 200, y: 120 };
 const radius = 78;
@@ -52,6 +56,7 @@ const GAME_I18N = {
     targetRelationship: "Target Relationship",
     currentLabel: "Current", 
     attemptsLeft: "Attempts Left", 
+    timerLabel: "Time Left",
     checkChamber: "Check Chamber",
     nextRoom: "Next Room →", 
     backToRoomMap: "← Back to Room Map", 
@@ -72,7 +77,8 @@ const GAME_I18N = {
     
     exitAndReview: "Evacuate & Review",
     lockedStatus: "System Locked",
-    noAttemptsMessage: "System Locked. Evacuate to the map and review the theory.",
+    noAttemptsMessage: "Lockdown Triggered! Evacuate to the map and review the theory.",
+    timeUpMessage: "Time's Up! The geometric anomaly has stabilized. Evacuate.",
 
     roomProgress: "Room {n} / 8", 
     roomBreadcrumb: "Room {n}", 
@@ -151,6 +157,7 @@ const GAME_I18N = {
     targetRelationship: "目标关系",
     currentLabel: "当前值", 
     attemptsLeft: "剩余次数", 
+    timerLabel: "倒计时",
     checkChamber: "检查机关",
     nextRoom: "下一房间 →", 
     backToRoomMap: "← 返回地图", 
@@ -172,6 +179,7 @@ const GAME_I18N = {
     exitAndReview: "撤离并复习",
     lockedStatus: "系统已锁死",
     noAttemptsMessage: "机关锁死。请先撤离房间，去复习一下几何定理再来挑战。",
+    timeUpMessage: "时间耗尽！几何异常已固化。请撤离房间。",
 
     roomProgress: "第 {n} 关 / 共 8 关", 
     roomBreadcrumb: "房间 {n}", 
@@ -271,6 +279,7 @@ function applyStaticText() {
   setText("diagramTipText", gt("diagramTip")); setText("puzzleConsoleLabel", gt("puzzleConsole"));
   setText("chamberLockLabel", gt("chamberLock")); setText("targetRelationshipLabel", gt("targetRelationship"));
   setText("currentLabelText", gt("currentLabel")); setText("attemptsLeftLabel", gt("attemptsLeft"));
+  setText("timerLabelText", gt("timerLabel")); 
   setText("checkBtn", gt("checkChamber")); setText("nextBtn", gt("nextRoom")); setText("backBtn", gt("backToRoomMap"));
   setText("hintTitleText", gt("hintTitle")); setText("rewardTitleText", gt("rewardTitle"));
   setText("rewardText", gt("rewardText")); setText("playFooterText", gt("playFooter"));
@@ -301,6 +310,25 @@ function getDiagramDescription(level) {
   return gt("diagramDescCircle");
 }
 
+function startTimer() {
+  if (timerDisplay) timerDisplay.textContent = `${timeLeft}s`;
+  timerInterval = setInterval(() => {
+    if (solved || attempts <= 0) {
+      clearInterval(timerInterval);
+      return;
+    }
+    timeLeft--;
+    if (timerDisplay) {
+      timerDisplay.textContent = `${timeLeft}s`;
+      if (timeLeft <= 15) timerDisplay.classList.add("timer-warning");
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      triggerLockdown(gt("timeUpMessage"));
+    }
+  }, 1000);
+}
+
 function init() {
   applyStaticText();
   const rooms = getRoomsData(); const room = rooms[currentLevel - 1];
@@ -313,6 +341,7 @@ function init() {
   setFeedback("info", gt("moveThenCheck")); setHint(gt("hintDefault")); nextBtn.disabled = true;
   
   renderRoom();
+  startTimer();
 
   svg.addEventListener("pointerdown", onPointerDown);
   svg.addEventListener("pointermove", onPointerMove);
@@ -340,12 +369,14 @@ function syncLanguageAndText() {
 
 function onPointerDown(e) {
   const role = e.target?.dataset?.role;
-  if (!role || solved) return;
+  if (!role || solved || attempts <= 0 || timeLeft <= 0) return;
   draggingPoint = role;
+  // 给 body 加类，用于实现周围变暗的沉浸感
+  document.body.classList.add('is-dragging');
 }
 
 function onPointerMove(e) {
-  if (!draggingPoint || solved) return;
+  if (!draggingPoint || solved || attempts <= 0 || timeLeft <= 0) return;
   e.preventDefault(); 
   const pt = getSvgPoint(e);
   
@@ -364,7 +395,10 @@ function onPointerMove(e) {
   renderRoom();
 }
 
-function onPointerUp() { draggingPoint = null; }
+function onPointerUp() { 
+  draggingPoint = null; 
+  document.body.classList.remove('is-dragging');
+}
 
 function updateCircleConstrainedRoom(angle) {
   switch (currentLevel) {
@@ -452,120 +486,180 @@ function evaluateRoom() {
 
 function renderRoom() {
   const evalResult = evaluateRoom();
-  const isClose = evalResult.delta <= 3.5; 
-  const activeColor = isClose ? "var(--primary)" : "var(--svg-line)";
-  const activeWidth = isClose ? "4" : "2";
+  
+  // Game Feel: 冷热反馈 (Hot/Cold feedback)
+  const isSolved = evalResult.delta <= 3.5;
+  const isWarm = evalResult.delta <= 15 && !isSolved; 
+  
+  let activeClass = "";
+  if (isSolved) activeClass = "svg-solved";
+  else if (isWarm) activeClass = "svg-warm";
+
+  const strokeColor = "var(--svg-line)"; 
+  const activeWidth = isSolved ? "4" : (isWarm ? "3" : "2");
 
   let data;
   switch (currentLevel) {
-    case 1: data = renderRoom1(activeColor, activeWidth); break;
-    case 2: data = renderRoom2(activeColor, activeWidth); break;
-    case 3: data = renderRoom3(activeColor, activeWidth); break;
-    case 4: data = renderRoom4(activeColor, activeWidth); break;
-    case 5: data = renderRoom5(activeColor, activeWidth); break;
-    case 6: data = renderRoom6(activeColor, activeWidth); break;
-    case 7: data = renderRoom7(activeColor, activeWidth); break;
-    case 8: data = renderRoom8(activeColor, activeWidth); break;
+    case 1: data = renderRoom1(strokeColor, activeWidth, activeClass); break;
+    case 2: data = renderRoom2(strokeColor, activeWidth, activeClass); break;
+    case 3: data = renderRoom3(strokeColor, activeWidth, activeClass); break;
+    case 4: data = renderRoom4(strokeColor, activeWidth, activeClass); break;
+    case 5: data = renderRoom5(strokeColor, activeWidth, activeClass); break;
+    case 6: data = renderRoom6(strokeColor, activeWidth, activeClass); break;
+    case 7: data = renderRoom7(strokeColor, activeWidth, activeClass); break;
+    case 8: data = renderRoom8(strokeColor, activeWidth, activeClass); break;
   }
 
   svg.innerHTML = data.svg;
   currentText.innerHTML = `<strong>${gt("currentPrefix")}:</strong><br> ${data.current}`;
-  if (isClose) currentText.classList.add("close-value"); else currentText.classList.remove("close-value");
+  if (isSolved) currentText.classList.add("close-value"); else currentText.classList.remove("close-value");
 }
 
-function renderRoom1(ac, aw) {
+function renderRoom1(ac, aw, cls) {
   const O = center; const A = pointOnCircle(state.room1.aAngle); const B = pointOnCircle(state.room1.bAngle); const C = pointOnCircle(state.room1.cAngle);
   const centreAngle = angleAt(O, A, B); const circumAngle = angleAt(C, A, B);
   return {
     current: `∠AOB = ${fmt(centreAngle)}°<br>∠ACB = ${fmt(circumAngle)}°`,
-    svg: `${circleBase()} ${line(A, O)} ${line(B, O)} ${line(A, C, ac, aw)} ${line(B, C, ac, aw)}
+    svg: `${circleBase()} ${line(A, O)} ${line(B, O)} ${line(A, C, ac, aw, cls)} ${line(B, C, ac, aw, cls)}
           ${fixedPointSvg(O, "O")} ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(C, "C", "C")}
           ${angleLabelBetweenRays(O, A, B, `∠AOB ${fmt(centreAngle)}°`, 34)} ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(circumAngle)}°`, 24)}`
   };
 }
 
-function renderRoom2(ac, aw) {
+function renderRoom2(ac, aw, cls) {
   const O = center; const A = pointOnCircle(state.room2.aAngle); const B = pointOnCircle(state.room2.bAngle); const C = pointOnCircle(state.room2.cAngle);
   const angle = angleAt(C, A, B);
   return {
     current: `∠ACB = ${fmt(angle)}°`,
-    svg: `${circleBase()} ${line(A, B)} ${line(A, C, ac, aw)} ${line(B, C, ac, aw)}
+    svg: `${circleBase()} ${line(A, B)} ${line(A, C, ac, aw, cls)} ${line(B, C, ac, aw, cls)}
           ${fixedPointSvg(O, "O")} ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(C, "C", "C")}
           ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(angle)}°`, 24)}`
   };
 }
 
-function renderRoom3(ac, aw) {
+function renderRoom3(ac, aw, cls) {
   const A = pointOnCircle(state.room3.aAngle); const B = pointOnCircle(state.room3.bAngle); const C = pointOnCircle(state.room3.cAngle); const D = pointOnCircle(state.room3.dAngle);
   const angle1 = angleAt(C, A, B); const angle2 = angleAt(D, A, B);
   return {
     current: `∠ACB = ${fmt(angle1)}°<br>∠ADB = ${fmt(angle2)}°`,
-    svg: `${circleBase()} ${line(A, C, ac, aw)} ${line(B, C, ac, aw)} ${line(A, D, ac, aw)} ${line(B, D, ac, aw)} ${line(A, B)}
+    svg: `${circleBase()} ${line(A, C, ac, aw, cls)} ${line(B, C, ac, aw, cls)} ${line(A, D, ac, aw, cls)} ${line(B, D, ac, aw, cls)} ${line(A, B)}
           ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(C, "C", "C")} ${dragPointSvg(D, "D", "D")}
           ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(angle1)}°`, 22)} ${angleLabelAtVertex(D, A, B, `∠ADB ${fmt(angle2)}°`, 22)}`
   };
 }
 
-function renderRoom4(ac, aw) {
+function renderRoom4(ac, aw, cls) {
   const A = pointOnCircle(state.room4.aAngle); const B = pointOnCircle(state.room4.bAngle); const C = pointOnCircle(state.room4.cAngle); const D = pointOnCircle(state.room4.dAngle);
   const angleABC = angleAt(B, A, C); const angleADC = angleAt(D, A, C); const sum = angleABC + angleADC;
   return {
     current: `∠ABC = ${fmt(angleABC)}°<br>∠ADC = ${fmt(angleADC)}°<br>Sum = ${fmt(sum)}°`,
-    svg: `${circleBase()} ${polyline([A, B, C, D, A], ac, aw)}
+    svg: `${circleBase()} ${polyline([A, B, C, D, A], ac, aw, cls)}
           ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(C, "C", "C")} ${dragPointSvg(D, "D", "D")}
           ${angleLabelAtVertex(B, A, C, `∠ABC ${fmt(angleABC)}°`, 22)} ${angleLabelAtVertex(D, A, C, `∠ADC ${fmt(angleADC)}°`, 22)}`
   };
 }
 
-function renderRoom5(ac, aw) {
+function renderRoom5(ac, aw, cls) {
   const O = center; const T = pointOnCircle(state.room5.tAngle); const L = state.room5.L;
   const angleOTL = angleAt(T, O, L);
   const dx = L.x - T.x, dy = L.y - T.y; const mag = Math.hypot(dx,dy) || 1;
   const p1 = { x: T.x - dx/mag * 200, y: T.y - dy/mag * 200 }; const p2 = { x: T.x + dx/mag * 200, y: T.y + dy/mag * 200 };
   return {
     current: `∠OTL = ${fmt(angleOTL)}°`,
-    svg: `${circleBase()} ${line(O, T)} ${line(p1, p2, ac, aw)}
+    svg: `${circleBase()} ${line(O, T)} ${line(p1, p2, ac, aw, cls)}
           ${fixedPointSvg(O, "O")} ${dragPointSvg(T, "T", "T")} ${dragPointSvg(L, "L", "L")}
           ${freeLabel(T.x + 10, T.y + 20, `∠OTL ${fmt(angleOTL)}°`)}`
   };
 }
 
-function renderRoom6(ac, aw) {
+function renderRoom6(ac, aw, cls) {
   const O = center; const P = state.room6.P; const A = pointOnCircle(state.room6.aAngle); const B = pointOnCircle(state.room6.bAngle);
   const OAP = angleAt(A, center, P); const OBP = angleAt(B, center, P);
   const PA = distance(P, A); const PB = distance(P, B);
   return {
     current: `∠OAP = ${fmt(OAP)}°, ∠OBP = ${fmt(OBP)}°<br>PA = ${fmt(PA)}, PB = ${fmt(PB)}`,
-    svg: `${circleBase()} ${line(O, A)} ${line(O, B)} ${line(P, A, ac, aw)} ${line(P, B, ac, aw)}
+    svg: `${circleBase()} ${line(O, A)} ${line(O, B)} ${line(P, A, ac, aw, cls)} ${line(P, B, ac, aw, cls)}
           ${fixedPointSvg(O, "O")} ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(P, "P", "P")}
           ${freeLabel(A.x - 20, A.y + 20, `∠OAP ${fmt(OAP)}°`)} ${freeLabel(B.x - 20, B.y - 10, `∠OBP ${fmt(OBP)}°`)}`
   };
 }
 
-function renderRoom7(ac, aw) {
+function renderRoom7(ac, aw, cls) {
   const O = center; const P = state.room7.P; const A = pointOnCircle(state.room7.aAngle); const B = pointOnCircle(state.room7.bAngle);
   const OAP = angleAt(A, center, P); const OBP = angleAt(B, center, P);
   const APB = angleAt(P, A, B); const AOB = angleAt(O, A, B); const sum = APB + AOB;
   return {
     current: `∠OAP: ${fmt(OAP)}°, ∠OBP: ${fmt(OBP)}°<br>∠APB + ∠AOB = ${fmt(sum)}°`,
-    svg: `${circleBase()} ${line(O, A)} ${line(O, B)} ${line(P, A, ac, aw)} ${line(P, B, ac, aw)}
+    svg: `${circleBase()} ${line(O, A)} ${line(O, B)} ${line(P, A, ac, aw, cls)} ${line(P, B, ac, aw, cls)}
           ${fixedPointSvg(O, "O")} ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(P, "P", "P")}
           ${angleLabelAtVertex(P, A, B, `∠APB ${fmt(APB)}°`, 24)} ${angleLabelBetweenRays(O, A, B, `∠AOB ${fmt(AOB)}°`, 32)}`
   };
 }
 
-function renderRoom8(ac, aw) {
+function renderRoom8(ac, aw, cls) {
   const A = pointOnCircle(state.room8.aAngle); const B = pointOnCircle(state.room8.bAngle); const C = pointOnCircle(state.room8.cAngle);
   const tangent = tangentLineAt(B, 180);
   const tangentAngle = angleBetweenLineAndChordAtPoint(B, tangent.direction, A);
   const segmentAngle = angleAt(C, A, B);
   return {
     current: `Tangent-chord = ${fmt(tangentAngle)}°<br>∠ACB = ${fmt(segmentAngle)}°`,
-    svg: `${circleBase()} ${line(tangent.p1, tangent.p2, ac, aw)} ${line(A, B, ac, aw)} ${line(A, C, ac, aw)} ${line(B, C, ac, aw)}
+    svg: `${circleBase()} ${line(tangent.p1, tangent.p2, ac, aw, cls)} ${line(A, B, ac, aw, cls)} ${line(A, C, ac, aw, cls)} ${line(B, C, ac, aw, cls)}
           ${dragPointSvg(A, "A", "A")} ${dragPointSvg(B, "B", "B")} ${dragPointSvg(C, "C", "C")}
           ${freeLabel(B.x - 30, B.y + 30, `Tangent-chord ${fmt(tangentAngle)}°`)}
           ${angleLabelAtVertex(C, A, B, `∠ACB ${fmt(segmentAngle)}°`, 24)}`
   };
+}
+
+// 物理撒花特效引擎 (Canvas)
+function fireConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confetti-canvas';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#e24b4b', '#355c9a', '#8f6a2a', '#22c55e', '#f59e0b', '#38bdf8'];
+  
+  for(let i=0; i<120; i++) {
+    particles.push({
+      x: canvas.width / 2, 
+      y: canvas.height / 2 + 100,
+      vx: (Math.random() - 0.5) * 25, 
+      vy: (Math.random() - 1) * 25 - 5,
+      size: Math.random() * 8 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * 360, 
+      rotSpeed: (Math.random() - 0.5) * 15
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = false;
+    particles.forEach(p => {
+      p.x += p.vx; 
+      p.y += p.vy; 
+      p.vy += 0.6; // Gravity
+      p.rot += p.rotSpeed;
+      if (p.y < canvas.height + 50) active = true;
+      
+      ctx.save(); 
+      ctx.translate(p.x, p.y); 
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color; 
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.restore();
+    });
+
+    if (active) {
+      requestAnimationFrame(animate);
+    } else {
+      canvas.remove(); 
+    }
+  }
+  animate();
 }
 
 function checkRoom() {
@@ -576,11 +670,20 @@ function checkRoom() {
 
   if (result.passed) {
     solved = true;
+    clearInterval(timerInterval); // 停止倒计时
     if (typeof playSound === 'function') playSound('success'); 
+    
+    fireConfetti(); // 触发撒花
+
     statusText.textContent = gt("solvedStatus");
     setFeedback("success", gt("successMessage"));
     setHint(gt("hintDefault"));
     nextBtn.disabled = false; 
+
+    let starsEarned = 1;
+    if (timeLeft > 60 && attempts >= 3) starsEarned = 3;
+    else if (timeLeft > 30 || attempts >= 2) starsEarned = 2;
+    localStorage.setItem(`room${currentLevel}_stars`, starsEarned.toString());
 
     if (currentLevel === unlockedLevel && unlockedLevel < 8) {
       unlockedLevel += 1;
@@ -590,6 +693,8 @@ function checkRoom() {
       highestCleared = currentLevel;
       localStorage.setItem("highestCleared", String(highestCleared));
     }
+    
+    renderRoom(); 
     return;
   }
 
@@ -601,28 +706,31 @@ function checkRoom() {
   }
 
   if (attempts <= 0) {
-    statusText.textContent = gt("lockedStatus");
-    setFeedback("warning", gt("noAttemptsMessage"));
-    setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
-    
-    if (typeof playSound === 'function') playSound('lockdown');
-    document.body.classList.add('lockdown-mode'); 
-    
-    checkBtn.textContent = gt("exitAndReview"); 
-    checkBtn.classList.add("reboot-btn"); 
-    
-    checkBtn.removeEventListener("click", checkRoom);
-    checkBtn.addEventListener("click", () => {
-      // --- 路由已更新 ---
-      window.location.href = "gamehome.html"; 
-    });
-    return;
-  }
-  statusText.textContent = gt("failedStatus");
-  setFeedback("warning", gt("warningMessage"));
+    triggerLockdown(gt("noAttemptsMessage"));
+  } else {
+    statusText.textContent = gt("failedStatus");
+    setFeedback("warning", gt("warningMessage"));
 
-  if (attempts === 3) setHint(`${gt("hintShortPrefix")}${getRoomsData()[currentLevel - 1].shortHint}`);
-  else setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
+    if (attempts === 3) setHint(`${gt("hintShortPrefix")}${getRoomsData()[currentLevel - 1].shortHint}`);
+    else setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
+  }
+}
+
+function triggerLockdown(msg) {
+  statusText.textContent = gt("lockedStatus");
+  setFeedback("warning", msg);
+  setHint(`${gt("hintDeepPrefix")}${getRoomsData()[currentLevel - 1].deepHint}`);
+  
+  if (typeof playSound === 'function') playSound('lockdown');
+  document.body.classList.add('lockdown-mode'); 
+  
+  checkBtn.textContent = gt("exitAndReview"); 
+  checkBtn.classList.add("reboot-btn"); 
+  
+  checkBtn.removeEventListener("click", checkRoom);
+  checkBtn.addEventListener("click", () => {
+    window.location.href = "gamehome.html"; 
+  });
 }
 
 function goNextRoom() {
@@ -632,8 +740,8 @@ function goNextRoom() {
 }
 
 // SVG Drawing Helpers
-function line(a, b, stroke = "var(--svg-line)", width = "2") { return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${stroke}" stroke-width="${width}" style="transition: all 0.2s" />`; }
-function polyline(points, stroke = "var(--blue)", width = "2") { return `<polyline points="${points.map(p=>`${p.x},${p.y}`).join(" ")}" fill="none" stroke="${stroke}" stroke-width="${width}" style="transition: all 0.2s"/>`; }
+function line(a, b, stroke = "var(--svg-line)", width = "2", cls = "") { return `<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${stroke}" stroke-width="${width}" style="transition: all 0.2s" />`; }
+function polyline(points, stroke = "var(--blue)", width = "2", cls = "") { return `<polyline class="${cls}" points="${points.map(p=>`${p.x},${p.y}`).join(" ")}" fill="none" stroke="${stroke}" stroke-width="${width}" style="transition: all 0.2s"/>`; }
 function circleBase() { return `<circle cx="${center.x}" cy="${center.y}" r="${radius}" fill="none" stroke="var(--svg-circle)" stroke-width="2"/>`; }
 function pointOnCircle(angleDeg) { const rad = degToRad(angleDeg); return { x: center.x + radius * Math.cos(rad), y: center.y - radius * Math.sin(rad) }; }
 function tangentLineAt(T, halfLen = 170) { const dx = T.x - center.x, dy = T.y - center.y, mag = Math.hypot(dx, dy) || 1; return { p1: { x: T.x + dy/mag * halfLen, y: T.y - dx/mag * halfLen }, p2: { x: T.x - dy/mag * halfLen, y: T.y + dx/mag * halfLen }, direction: { x: -dy/mag, y: dx/mag } }; }
@@ -658,7 +766,7 @@ function angleLabelBetweenRays(vertex, p1, p2, text, radiusLabel = 34) { return 
 function normalizeVector(v) { const mag = Math.hypot(v.x, v.y) || 1; return { x: v.x / mag, y: v.y / mag }; }
 
 // ==========================================
-// 音效引擎
+// 音效引擎 (保持原样)
 // ==========================================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
