@@ -7,7 +7,75 @@ const settingsBtn = document.getElementById('settingsBtn');
 const contactBtn = document.getElementById('contactBtn');
 const supportBtn = document.getElementById('supportBtn');
 const accessibilityBtn = document.getElementById('accessibilityBtn');
+const privacyBtn = document.getElementById('privacyBtn');
 const dropdownButtons = document.querySelectorAll('.dropbtn');
+
+const COOKIE_KEY = 'cookieConsent';
+const COOKIE_BANNER_ID = 'cookieBanner';
+
+function getCookieConsent() {
+  try {
+    return localStorage.getItem(COOKIE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function hasConsent() {
+  return getCookieConsent() === 'accepted';
+}
+
+function safeSetItem(key, value) {
+  if (!hasConsent()) return;
+  try {
+    localStorage.setItem(key, value);
+  } catch { }
+}
+
+function safeRemoveItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch { }
+}
+
+function clearSavedPreferences() {
+  [
+    'theme',
+    'fontScale',
+    'language',
+    'colorblindMode',
+    'reducedMotion',
+    'highContrast',
+    'legibilityMode',
+    ASSISTANT_POSITION_KEY
+  ].forEach(safeRemoveItem);
+}
+
+function ensureCookieBannerExists() {
+  let banner = document.getElementById(COOKIE_BANNER_ID);
+  if (banner) return banner;
+
+  banner = document.createElement('div');
+  banner.id = COOKIE_BANNER_ID;
+  banner.className = 'cookie-banner';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-live', 'polite');
+  banner.setAttribute('aria-label', 'Cookie consent banner');
+  banner.innerHTML = `
+    <div class="cookie-banner__content">
+      <div class="cookie-banner__text">
+        <h3 data-cookie-role="title"></h3>
+        <p data-cookie-role="desc"></p>
+      </div>
+      <div class="cookie-banner__actions">
+        <button id="cookieDeclineBtn" class="btn secondary" type="button"></button>
+        <button id="cookieAcceptBtn" class="btn primary" type="button"></button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+  return banner;
+}
 
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
@@ -57,6 +125,22 @@ const I18N = {
     contactUs: 'Contact us',
     aboutProject: 'About this project',
     accessibilityHelp: 'Accessibility help',
+    privacyPolicy: 'Privacy Policy',
+    cookieSettings: 'Cookie settings',
+    cookieSettingsDesc: 'Review or change your data preference choice.',
+    reviewChoice: 'Review choice',
+    reopenCookieBanner: 'Change cookie choice',
+    privacyTitle: 'Privacy Policy',
+    privacyHeading: 'Privacy & Data Policy',
+    privacyDesc: 'This website stores only essential local preferences on your device, such as theme, language, font size, accessibility options and assistant position.',
+    privacyPoint1: 'No personal identity information is collected.',
+    privacyPoint2: 'No external server database is used for storing user profiles.',
+    privacyPoint3: 'You can accept or decline local preference storage at any time.',
+    privacyPoint4: 'If you decline, the website will still work, but your preferences will not be remembered next time.',
+    cookieBannerTitle: 'Privacy & Data Notice',
+    cookieBannerDesc: 'We use local storage on your device to save preferences such as theme, language, font size and accessibility settings. No personal identity information is collected.',
+    cookieAccept: 'Accept',
+    cookieDecline: 'Decline',
 
     contactTitle: 'Contact us',
     supportTitle: 'About this project',
@@ -122,6 +206,22 @@ const I18N = {
     contactUs: '联系我们',
     aboutProject: '关于项目',
     accessibilityHelp: '无障碍帮助',
+    privacyPolicy: '隐私政策',
+    cookieSettings: 'Cookie 设置',
+    cookieSettingsDesc: '查看或重新选择你的数据偏好。',
+    reviewChoice: '重新选择',
+    reopenCookieBanner: '重新选择 Cookie',
+    privacyTitle: '隐私政策',
+    privacyHeading: '隐私与数据政策',
+    privacyDesc: '本网站只会在你的设备本地保存必要偏好设置，例如主题、语言、字体大小、无障碍选项和助手位置。',
+    privacyPoint1: '不会收集任何可识别个人身份的信息。',
+    privacyPoint2: '不会使用外部服务器数据库来存储用户资料。',
+    privacyPoint3: '你可以随时接受或拒绝本地偏好存储。',
+    privacyPoint4: '如果你拒绝，网站仍可正常使用，但下次访问时不会记住你的偏好。',
+    cookieBannerTitle: '隐私与数据说明',
+    cookieBannerDesc: '我们会在你的设备上使用本地存储来保存主题、语言、字体大小和无障碍设置等偏好信息，不会收集任何个人身份信息。',
+    cookieAccept: '接受',
+    cookieDecline: '拒绝',
 
     contactTitle: '联系我们',
     supportTitle: '关于项目',
@@ -152,6 +252,7 @@ const I18N = {
 const ASSISTANT_POSITION_KEY = 'assistantPosition';
 
 function getSavedAssistantPosition() {
+  if (!hasConsent()) return null;
   try {
     return JSON.parse(localStorage.getItem(ASSISTANT_POSITION_KEY) || 'null');
   } catch {
@@ -160,7 +261,7 @@ function getSavedAssistantPosition() {
 }
 
 function saveAssistantPosition(x, y) {
-  localStorage.setItem(ASSISTANT_POSITION_KEY, JSON.stringify({ x: Math.round(x), y: Math.round(y) }));
+  safeSetItem(ASSISTANT_POSITION_KEY, JSON.stringify({ x: Math.round(x), y: Math.round(y) }));
 }
 
 function clampAssistantPosition(x, y, el) {
@@ -266,7 +367,12 @@ function enableAssistantDragging() {
 let assistantWidget = null;
 
 function getStored(name, fallback) {
-  return localStorage.getItem(name) || fallback;
+  if (!hasConsent()) return fallback;
+  try {
+    return localStorage.getItem(name) || fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function getCurrentLanguage() {
@@ -278,41 +384,47 @@ function t(key) {
   return I18N[lang]?.[key] || I18N.en[key] || key;
 }
 
-function applyTheme(theme) {
+function applyTheme(theme, options = {}) {
+  const { persist = true } = options;
   document.body.classList.remove('dark-mode', 'eye-care');
   if (theme === 'dark') document.body.classList.add('dark-mode');
   if (theme === 'eye-care') document.body.classList.add('eye-care');
-  localStorage.setItem('theme', theme);
+  if (persist) safeSetItem('theme', theme);
 }
 
-function applyFontScale(scale) {
+function applyFontScale(scale, options = {}) {
+  const { persist = true } = options;
   const numericScale = Math.max(0.85, Math.min(1.3, Number(scale) || 1));
   document.documentElement.style.setProperty('--font-scale', numericScale);
-  localStorage.setItem('fontScale', numericScale.toFixed(2));
+  if (persist) safeSetItem('fontScale', numericScale.toFixed(2));
 }
 
 function getCurrentFontScale() {
   return getStored('fontScale', '1.00');
 }
 
-function applyColorblindMode(enabled) {
+function applyColorblindMode(enabled, options = {}) {
+  const { persist = true } = options;
   document.body.classList.toggle('colorblind-mode', enabled);
-  localStorage.setItem('colorblindMode', enabled ? 'on' : 'off');
+  if (persist) safeSetItem('colorblindMode', enabled ? 'on' : 'off');
 }
 
-function applyReducedMotion(enabled) {
+function applyReducedMotion(enabled, options = {}) {
+  const { persist = true } = options;
   document.body.classList.toggle('reduce-motion', enabled);
-  localStorage.setItem('reducedMotion', enabled ? 'on' : 'off');
+  if (persist) safeSetItem('reducedMotion', enabled ? 'on' : 'off');
 }
 
-function applyHighContrast(enabled) {
+function applyHighContrast(enabled, options = {}) {
+  const { persist = true } = options;
   document.body.classList.toggle('high-contrast', enabled);
-  localStorage.setItem('highContrast', enabled ? 'on' : 'off');
+  if (persist) safeSetItem('highContrast', enabled ? 'on' : 'off');
 }
 
-function applyLegibility(enabled) {
+function applyLegibility(enabled, options = {}) {
+  const { persist = true } = options;
   document.body.classList.toggle('legibility-mode', enabled);
-  localStorage.setItem('legibilityMode', enabled ? 'on' : 'off');
+  if (persist) safeSetItem('legibilityMode', enabled ? 'on' : 'off');
 }
 
 function emitLanguageChanged(lang) {
@@ -321,8 +433,23 @@ function emitLanguageChanged(lang) {
   );
 }
 
-function applyLanguage(lang) {
-  localStorage.setItem('language', lang);
+function updateCookieBannerLanguage() {
+  const banner = document.getElementById(COOKIE_BANNER_ID);
+  if (!banner) return;
+  const titleEl = banner.querySelector('[data-cookie-role="title"]');
+  const descEl = banner.querySelector('[data-cookie-role="desc"]');
+  const acceptBtn = banner.querySelector('#cookieAcceptBtn');
+  const declineBtn = banner.querySelector('#cookieDeclineBtn');
+
+  if (titleEl) titleEl.textContent = t('cookieBannerTitle');
+  if (descEl) descEl.textContent = t('cookieBannerDesc');
+  if (acceptBtn) acceptBtn.textContent = t('cookieAccept');
+  if (declineBtn) declineBtn.textContent = t('cookieDecline');
+}
+
+function applyLanguage(lang, options = {}) {
+  const { persist = true } = options;
+  if (persist) safeSetItem('language', lang);
   document.documentElement.lang = lang === 'zh' ? 'zh' : 'en';
 
   const navHomeBtn = document.getElementById('navHomeBtn');
@@ -332,6 +459,7 @@ function applyLanguage(lang) {
   const contactBtnEl = document.getElementById('contactBtn');
   const supportBtnEl = document.getElementById('supportBtn');
   const accessibilityBtnEl = document.getElementById('accessibilityBtn');
+  const privacyBtnEl = document.getElementById('privacyBtn');
   const aboutBtn = document.querySelector('.dropbtn');
 
   if (navHomeBtn) navHomeBtn.textContent = t('home');
@@ -341,7 +469,10 @@ function applyLanguage(lang) {
   if (contactBtnEl) contactBtnEl.textContent = t('contactUs');
   if (supportBtnEl) supportBtnEl.textContent = t('aboutProject');
   if (accessibilityBtnEl) accessibilityBtnEl.textContent = t('accessibilityHelp');
+  if (privacyBtnEl) privacyBtnEl.textContent = t('privacyPolicy');
   if (aboutBtn) aboutBtn.textContent = t('about');
+
+  updateCookieBannerLanguage();
 
   if (assistantWidget) {
     updateAssistantLanguageUI(lang);
@@ -351,13 +482,13 @@ function applyLanguage(lang) {
 }
 
 function restorePreferences() {
-  applyTheme(getStored('theme', 'light'));
-  applyFontScale(getStored('fontScale', '1.00'));
-  applyColorblindMode(getStored('colorblindMode', 'off') === 'on');
-  applyReducedMotion(getStored('reducedMotion', 'off') === 'on');
-  applyHighContrast(getStored('highContrast', 'off') === 'on');
-  applyLegibility(getStored('legibilityMode', 'off') === 'on');
-  applyLanguage(getStored('language', 'en'));
+  applyTheme(getStored('theme', 'light'), { persist: false });
+  applyFontScale(getStored('fontScale', '1.00'), { persist: false });
+  applyColorblindMode(getStored('colorblindMode', 'off') === 'on', { persist: false });
+  applyReducedMotion(getStored('reducedMotion', 'off') === 'on', { persist: false });
+  applyHighContrast(getStored('highContrast', 'off') === 'on', { persist: false });
+  applyLegibility(getStored('legibilityMode', 'off') === 'on', { persist: false });
+  applyLanguage(getStored('language', 'en'), { persist: false });
 }
 
 function buildContactHTML() {
@@ -416,6 +547,23 @@ function buildAccessibilityHTML() {
           <span>${t('accessibilityTipDesc')}</span>
         </div>
       </div>
+    </div>
+  `;
+}
+
+function buildPrivacyHTML() {
+  return `
+    <div class="info-panel">
+      <div class="info-row">
+        <div>
+          <strong>${t('privacyHeading')}</strong>
+          <span>${t('privacyDesc')}</span>
+        </div>
+      </div>
+      <div class="info-row"><div><span>• ${t('privacyPoint1')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint2')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint3')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint4')}</span></div></div>
     </div>
   `;
 }
@@ -576,6 +724,16 @@ function getSettingsHTML() {
             ${buildSwitch('legibilityMode', legibility, t('legibility'))}
           </div>
         </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('cookieSettings')}</strong>
+            <span>${t('cookieSettingsDesc')}</span>
+          </div>
+          <div class="control-row">
+            <button id="reopenCookieBannerBtn" class="btn secondary" type="button">${t('reopenCookieBanner')}</button>
+          </div>
+        </div>
       </div>
 
       <p class="settings-note">${t('savedNote')}</p>
@@ -588,7 +746,6 @@ function openSettingsPanel(preservedScrollTop = 0) {
   bindSettingsControls();
   restoreSettingsPanelScrollTop(preservedScrollTop);
 
-  // 保证容器渲染完成后再计算滑块宽度和位置
   setTimeout(() => {
     requestAnimationFrame(() => {
       updateAllSegmentedThumbs(modalTextContainer, false);
@@ -607,7 +764,6 @@ window.addEventListener('resize', () => {
 function bindSettingsControls() {
   if (!modalTextContainer) return;
 
-  // 主题切换
   modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newTheme = btn.dataset.value;
@@ -624,7 +780,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 语言切换
   modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
     btn.addEventListener('click', () => {
       const newLang = btn.dataset.value;
@@ -663,7 +818,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 辅助功能开关
   ['colorblindMode', 'reducedMotion', 'highContrast', 'legibilityMode'].forEach(setting => {
     modalTextContainer.querySelectorAll(`[data-setting='${setting}']`).forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -681,7 +835,6 @@ function bindSettingsControls() {
     });
   });
 
-  // 字体滑动条
   const fontSlider = document.getElementById('fontSizeSlider');
   const fontSizeValue = document.getElementById('fontSizeValue');
   const fontSizePreset = document.getElementById('fontSizePreset');
@@ -698,6 +851,69 @@ function bindSettingsControls() {
       applyFontScale(fontSlider.value);
       updateSliderUI(fontSlider.value);
     });
+  }
+
+  const reopenCookieBannerBtn = document.getElementById('reopenCookieBannerBtn');
+  if (reopenCookieBannerBtn) {
+    reopenCookieBannerBtn.addEventListener('click', () => {
+      reopenCookieBanner();
+      closeModal();
+    });
+  }
+}
+
+function reopenCookieBanner() {
+  const banner = ensureCookieBannerExists();
+  updateCookieBannerLanguage();
+  banner.classList.add('show');
+}
+
+function hideCookieBanner() {
+  const banner = document.getElementById(COOKIE_BANNER_ID);
+  if (banner) banner.classList.remove('show');
+}
+
+function handleConsentAcceptance() {
+  try {
+    localStorage.setItem(COOKIE_KEY, 'accepted');
+  } catch { }
+  hideCookieBanner();
+}
+
+function handleConsentDecline() {
+  try {
+    localStorage.setItem(COOKIE_KEY, 'declined');
+  } catch { }
+  clearSavedPreferences();
+  hideCookieBanner();
+  applyTheme('light', { persist: false });
+  applyFontScale(1, { persist: false });
+  applyColorblindMode(false, { persist: false });
+  applyReducedMotion(false, { persist: false });
+  applyHighContrast(false, { persist: false });
+  applyLegibility(false, { persist: false });
+  applyLanguage('en', { persist: false });
+}
+
+function initCookieConsent() {
+  const banner = ensureCookieBannerExists();
+  updateCookieBannerLanguage();
+
+  const acceptBtn = banner.querySelector('#cookieAcceptBtn');
+  const declineBtn = banner.querySelector('#cookieDeclineBtn');
+
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', handleConsentAcceptance);
+  }
+
+  if (declineBtn) {
+    declineBtn.addEventListener('click', handleConsentDecline);
+  }
+
+  if (!getCookieConsent()) {
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
   }
 }
 
@@ -752,6 +968,13 @@ function bindGlobalUI() {
     accessibilityBtn.addEventListener('click', (e) => {
       e.preventDefault();
       openModal(t('accessibilityTitle'), buildAccessibilityHTML());
+    });
+  }
+
+  if (privacyBtn) {
+    privacyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(t('privacyTitle'), buildPrivacyHTML());
     });
   }
 
@@ -902,7 +1125,6 @@ function bindAssistantEvents() {
 }
 
 function createAssistantWidget() {
-  // 移除旧版助理（如果存在）
   const existing = document.querySelector('.assistant');
   if (existing) existing.remove();
 
@@ -940,7 +1162,6 @@ function createAssistantWidget() {
   enableAssistantDragging();
 }
 
-// UI 核心更新机制
 function updateSegmentedThumb(group, animate = true) {
   if (!group) return;
 
@@ -968,6 +1189,7 @@ function updateAllSegmentedThumbs(scope = document, animate = true) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  initCookieConsent();
   restorePreferences();
   bindDropdowns();
   bindNavigation();

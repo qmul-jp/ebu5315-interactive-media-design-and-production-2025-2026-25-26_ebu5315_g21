@@ -1620,3 +1620,88 @@ body.dark-mode .mode-switch-btn.active {
     min-width: 68px;
   }
 }
+
+
+/* ==========================================
+   Cookie Banner + Privacy Entry
+   ========================================== */
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1200;
+  display: none;
+}
+
+.cookie-banner.show {
+  display: block;
+}
+
+.cookie-banner__content {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.cookie-banner__text {
+  display: grid;
+  gap: 6px;
+}
+
+.cookie-banner__text h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--heading);
+}
+
+.cookie-banner__text p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+  max-width: 72ch;
+}
+
+.cookie-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cookie-banner__actions .btn {
+  min-width: 120px;
+}
+
+@media (max-width: 760px) {
+  .cookie-banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .cookie-banner__content {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .cookie-banner__actions {
+    justify-content: stretch;
+  }
+
+  .cookie-banner__actions .btn {
+    width: 100%;
+  }
+}
