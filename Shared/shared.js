@@ -79,8 +79,8 @@ function ensureCookieBannerExists() {
 
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
-  navGameBtn: 'index.html',
-  navQuizBtn: 'quiz.html'
+  navGameBtn: 'gamehome.html',
+  navQuizBtn: 'index.html'
 };
 
 const I18N = {
