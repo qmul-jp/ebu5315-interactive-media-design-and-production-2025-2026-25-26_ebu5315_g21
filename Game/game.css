@@ -1878,3 +1878,19 @@ body.is-dragging .diagram-card {
   pointer-events: none;
   z-index: 9999;
 }
+
+/* =========================================================
+   Gamehome 标题单行显示优化
+   ========================================================= */
+.hero-panel-centered .hero-copy h1 {
+  /* 强制文本在同一行显示，不换行 */
+  white-space: nowrap; 
+  /* 调整自适应字号：最小值变小(1.2rem)，中间缩放比例调整(3.5vw)，最大值保持(3rem) 
+     这样可以确保在小屏幕手机上也能强行挤在一行而不溢出屏幕 */
+  font-size: clamp(1.2rem, 3.5vw, 3rem); 
+}
+
+/* 如果你的外层容器有 padding 限制导致还差一点点，可以加上这个消除可能的溢出滚动条 */
+.hero-panel-centered {
+  overflow-x: hidden; 
+}
