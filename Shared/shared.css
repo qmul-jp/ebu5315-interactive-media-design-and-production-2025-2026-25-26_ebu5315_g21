@@ -1,1730 +1,1212 @@
-/* =========================================================
-   shared.css
-   Shared theme, navigation, modal and accessibility system
-   ========================================================= */
-
-* {
-  box-sizing: border-box;
-}
-
-:root {
-  --diagram-circle: #d9dde5;
-  --diagram-line: #7b8494;
-  --diagram-fixed-point: #aeb8cc;
-  --diagram-drag-point: #e24b4b;
-  --diagram-drag-stroke: #ffffff;
-  --diagram-text: #243247;
-  --diagram-angle-text: #111827;
-  --diagram-accent-text: #7a5c2e;
-  --bg: #f6f3ec;
-  --bg-panel: rgba(255, 252, 246, 0.96);
-  --bg-soft: #f2ebe0;
-  --bg-elevated: #fffdf8;
-  --text: #243042;
-  --text-soft: #5b6778;
-  --heading: #1b2433;
-
-  --primary: #8f6a2a;
-  --primary-strong: #6f5220;
-  --primary-soft: rgba(143, 106, 42, 0.12);
-  --accent: #355c9a;
-  --accent-soft: rgba(53, 92, 154, 0.12);
-
-  --border: rgba(72, 86, 112, 0.14);
-  --border-strong: rgba(72, 86, 112, 0.28);
-  --line: rgba(72, 86, 112, 0.12);
-  --shadow-sm: 0 4px 10px rgba(31, 41, 55, 0.05);
-  --shadow-md: 0 16px 36px rgba(31, 41, 55, 0.10);
-
-  --radius-xl: 28px;
-  --radius-lg: 999px;
-  --radius-md: 20px;
-  --radius-sm: 14px;
-
-  --gold: #b78935;
-  --blue: #355c9a;
-  --blue-strong: #273d66;
-  --green: #3d8d62;
-  --cyan: #5fc7ff;
-  --muted: #657286;
-
-  --svg-circle: rgba(72, 86, 112, 0.28);
-  --svg-line: #6c7890;
-  --svg-fixed-point: #586578;
-  --svg-label: #182130;
-  --svg-accent-text: #6f5220;
-  --svg-drag-fill: #df3d3d;
-  --svg-drag-stroke: #ffffff;
-
-  --font-scale: 1;
-  --content-max: 1400px;
-  --nav-hover-text: #ffffff;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-  font-size: calc(16px * var(--font-scale));
-  background:
-    radial-gradient(circle at top right, rgba(200, 155, 44, 0.07), transparent 24%),
-    linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
-  color: var(--text);
-  transition: background-color .25s ease, color .25s ease, font-size .2s ease;
-  line-height: 1.5;
-}
-
-body.dark-mode {
-  --diagram-circle: #f3f4f6;
-  --diagram-line: rgba(255, 255, 255, 0.72);
-  --diagram-fixed-point: #b8c4d9;
-  --diagram-drag-point: #ef5350;
-  --diagram-drag-stroke: #ffffff;
-  --diagram-text: #f8fafc;
-  --diagram-angle-text: #f9fafb;
-  --diagram-accent-text: #f2d089;
-  --bg: #111723;
-  --bg-panel: rgba(22, 28, 42, 0.96);
-  --bg-soft: #1b2434;
-  --bg-elevated: #162031;
-  --text: #edf2fb;
-  --text-soft: #b9c6dc;
-  --heading: #f4f8ff;
-
-  --primary: #d1a34e;
-  --primary-strong: #e3bc73;
-  --primary-soft: rgba(209, 163, 78, 0.18);
-  --accent: #7fb4ff;
-  --accent-soft: rgba(127, 180, 255, 0.18);
-
-  --border: rgba(163, 183, 220, 0.16);
-  --border-strong: rgba(163, 183, 220, 0.30);
-  --line: rgba(163, 183, 220, 0.14);
-  --shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 20px 48px rgba(0, 0, 0, 0.35);
-
-  --gold: #f0c56c;
-  --blue: #8ec5ff;
-  --blue-strong: #dbeaff;
-  --green: #79d59e;
-  --cyan: #7ce4ff;
-  --muted: #adbbd0;
-  --nav-hover-text: #101724;
-
-  --svg-circle: rgba(218, 231, 255, 0.55);
-  --svg-line: #b5c7e5;
-  --svg-fixed-point: #d8e6ff;
-  --svg-label: #f5f9ff;
-  --svg-accent-text: #ffd88f;
-  --svg-drag-fill: #ff7b7b;
-  --svg-drag-stroke: #132034;
-
-  background:
-    radial-gradient(circle at top right, rgba(127, 180, 255, 0.12), transparent 24%),
-    linear-gradient(180deg, #0f1520 0%, var(--bg) 100%);
-}
-
-body.colorblind-mode {
-  --primary: #8c510a;
-  --primary-strong: #6b3f08;
-  --primary-soft: rgba(140, 81, 10, 0.14);
-  --accent: #01665e;
-  --accent-soft: rgba(1, 102, 94, 0.14);
-  --blue: #01665e;
-  --blue-strong: #0d4b47;
-  --green: #5c7a00;
-  --gold: #8c510a;
-}
-
-body.dark-mode.colorblind-mode {
-  --primary: #f2b34c;
-  --primary-strong: #ffd083;
-  --accent: #68d9ca;
-  --blue: #68d9ca;
-  --blue-strong: #dffff9;
-  --green: #bedb39;
-  --gold: #f2b34c;
-  --svg-accent-text: #ffe5ae;
-}
-
-body.reduce-motion *,
-body.reduce-motion *::before,
-body.reduce-motion *::after {
-  animation: none !important;
-  transition: none !important;
-  scroll-behavior: auto !important;
-}
-
-body.high-contrast {
-  --border: rgba(20, 28, 44, 0.35);
-  --border-strong: rgba(20, 28, 44, 0.55);
-  --line: rgba(20, 28, 44, 0.35);
-  --svg-circle: rgba(20, 28, 44, 0.7);
-  --svg-label: #111111;
-}
-
-body.dark-mode.high-contrast {
-  --border: rgba(255, 255, 255, 0.35);
-  --border-strong: rgba(255, 255, 255, 0.55);
-  --line: rgba(255, 255, 255, 0.35);
-  --svg-circle: rgba(255, 255, 255, 0.78);
-  --svg-label: #ffffff;
-}
-
-body.large-font {
-  --font-scale: 1.1;
-}
-
-body.small-font {
-  --font-scale: 0.93;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-img,
-svg,
-video {
-  display: block;
-  max-width: 100%;
-}
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
-  backdrop-filter: blur(14px);
-  padding: 14px 24px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.header-left {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-
-header h1 {
-  margin: 0;
-  font-size: clamp(1.25rem, 5vw, 1.7rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--blue-strong), var(--primary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  white-space: nowrap;
-}
-
-.breadcrumb {
-  font-size: .87rem;
-  color: var(--text-soft);
-  white-space: nowrap;
-}
-
-.breadcrumb a {
-  color: var(--accent);
-  font-weight: 600;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-nav button,
-.nav-link,
-.dropbtn {
-  appearance: none;
-  border: 1px solid var(--border);
-  background: var(--bg-soft);
-  color: var(--text);
-  cursor: pointer;
-  border-radius: var(--radius-lg);
-  padding: 10px 18px;
-  font-size: .96rem;
-  font-weight: 600;
-  letter-spacing: .1px;
-  box-shadow: var(--shadow-sm);
-  transition: .2s ease;
-}
-
-nav button:hover,
-.nav-link:hover,
-.dropbtn:hover,
-nav button:focus-visible,
-.nav-link:focus-visible,
-.dropbtn:focus-visible {
-  background: var(--primary);
-  color: var(--nav-hover-text);
-  border-color: transparent;
-  transform: translateY(-1px);
-  outline: none;
-}
-
-nav button.active-nav,
-.nav-link.active-nav,
-.dropbtn.active-nav {
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-  color: #fff;
-  border-color: transparent;
-}
-
-body.dark-mode nav button.active-nav,
-body.dark-mode .nav-link.active-nav,
-body.dark-mode .dropbtn.active-nav {
-  color: #101724;
-}
-
-.nav-group {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  min-width: 220px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  border-radius: 18px;
-  z-index: 60;
-  overflow: hidden;
-}
-
-.nav-group.open .dropdown-content,
-.nav-group:hover .dropdown-content,
-.nav-group:focus-within .dropdown-content {
-  display: block;
-}
-
-.dropdown-content a,
-.dropdown-content button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 12px 16px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  box-shadow: none;
-  border-radius: 0;
-}
-
-.dropdown-content a:hover,
-.dropdown-content button:hover {
-  background: var(--bg-soft);
-  color: var(--primary-strong);
-  transform: none;
-}
-
-.container {
-  width: min(var(--content-max), calc(100% - 32px));
-  margin: 0 auto;
-  padding: 28px 0 36px;
-}
-
-.card,
-.panel-box {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  border-radius: 24px;
-}
-
-.card {
-  padding: 22px;
-}
-
-.panel-box {
-  padding: 18px;
-}
-
-.center {
-  text-align: center;
-}
-
-.small-text {
-  color: var(--text-soft);
-}
-
-.btn {
-  appearance: none;
-  border: 1px solid transparent;
-  border-radius: 16px;
-  padding: 11px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-.btn.primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-  color: #fff;
-}
-
-body.dark-mode .btn.primary {
-  color: #101724;
-}
-
-.btn.secondary {
-  background: var(--bg-soft);
-  border-color: var(--border);
-  color: var(--text);
-}
-
-.btn.subtle-btn {
-  background: transparent;
-  border-color: var(--border);
-  color: var(--text-soft);
-}
-
-button:disabled,
-.btn:disabled,
-.locked-btn {
-  cursor: not-allowed;
-  opacity: .65;
-  transform: none !important;
-}
-
-.status-pill,
-.status-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--primary-soft);
-  color: var(--primary-strong);
-  font-size: .85rem;
-  font-weight: 700;
-  border: 1px solid transparent;
-}
-
-.secondary-chip {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.footer,
-.site-footer {
-  margin-top: 30px;
-  padding: 18px 24px;
-  border-top: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
-}
-
-.footer-inner {
-  max-width: var(--content-max);
-  margin: 0 auto;
-  color: var(--text-soft);
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .58);
-  backdrop-filter: blur(4px);
-}
-
-.modal.show {
-  display: block;
-}
-
-.modal-content {
-  background-color: var(--bg-elevated);
-  color: var(--text);
-  margin: 8vh auto;
-  padding: 24px 28px;
-  width: min(680px, 92vw);
-  border-radius: 28px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-}
-
-.modal-content h2 {
-  margin: 0 40px 16px 0;
-  color: var(--heading);
-}
-
-.close {
-  float: right;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--bg-soft);
-  color: var(--text);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.settings-panel,
-.info-panel {
-  display: grid;
-  gap: 14px;
-}
-
-.settings-group,
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  padding: 14px 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-}
-
-.settings-copy,
-.info-row>div {
-  display: grid;
-  gap: 4px;
-}
-
-.settings-copy span,
-.info-row span,
-.modal-note {
-  color: var(--text-soft);
-  font-size: .92rem;
-}
-
-.control-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.mode-switch-btn,
-.font-size-btn,
-.toggle-btn {
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  color: var(--text);
-  border-radius: 12px;
-  padding: 9px 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.mode-switch-btn.active,
-.font-size-btn.active,
-.toggle-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-  color: #fff;
-  border-color: transparent;
-}
-
-body.dark-mode .mode-switch-btn.active,
-body.dark-mode .font-size-btn.active,
-body.dark-mode .toggle-btn.active {
-  color: #101724;
-}
-
-@media (max-width: 900px) {
-
-  .settings-group,
-  .info-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .control-row {
-    justify-content: flex-start;
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const modalTextContainer = document.getElementById('modal-text');
+const closeModalBtn = document.querySelector('.close');
+
+const settingsBtn = document.getElementById('settingsBtn');
+const contactBtn = document.getElementById('contactBtn');
+const supportBtn = document.getElementById('supportBtn');
+const accessibilityBtn = document.getElementById('accessibilityBtn');
+const privacyBtn = document.getElementById('privacyBtn');
+const dropdownButtons = document.querySelectorAll('.dropbtn');
+
+const COOKIE_KEY = 'cookieConsent';
+const COOKIE_BANNER_ID = 'cookieBanner';
+
+function getCookieConsent() {
+  try {
+    return localStorage.getItem(COOKIE_KEY);
+  } catch {
+    return null;
   }
 }
 
-@media (max-width: 640px) {
-  header {
-    padding: 12px 14px;
+function hasConsent() {
+  return getCookieConsent() === 'accepted';
+}
+
+function safeSetItem(key, value) {
+  if (!hasConsent()) return;
+  try {
+    localStorage.setItem(key, value);
+  } catch { }
+}
+
+function safeRemoveItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch { }
+}
+
+function clearSavedPreferences() {
+  [
+    'theme',
+    'fontScale',
+    'language',
+    'colorblindMode',
+    'reducedMotion',
+    'highContrast',
+    'legibilityMode',
+    ASSISTANT_POSITION_KEY
+  ].forEach(safeRemoveItem);
+}
+
+function ensureCookieBannerExists() {
+  let banner = document.getElementById(COOKIE_BANNER_ID);
+  if (banner) return banner;
+
+  banner = document.createElement('div');
+  banner.id = COOKIE_BANNER_ID;
+  banner.className = 'cookie-banner';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-live', 'polite');
+  banner.setAttribute('aria-label', 'Cookie consent banner');
+  banner.innerHTML = `
+    <div class="cookie-banner__content">
+      <div class="cookie-banner__text">
+        <h3 data-cookie-role="title"></h3>
+        <p data-cookie-role="desc"></p>
+      </div>
+      <div class="cookie-banner__actions">
+        <button id="cookieDeclineBtn" class="btn secondary" type="button"></button>
+        <button id="cookieAcceptBtn" class="btn primary" type="button"></button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+  return banner;
+}
+
+const NAV_TARGETS = {
+  navHomeBtn: 'homepage.html',
+  navGameBtn: 'gamehome.html',
+  navQuizBtn: 'index.html'
+};
+
+const I18N = {
+  en: {
+    settings: 'Settings',
+    themeMode: 'Theme mode',
+    themeDesc: 'Choose the overall appearance.',
+    light: 'Light',
+    eyeCare: 'Eye-Care',
+    dark: 'Dark',
+
+    language: 'Language',
+    languageDesc: 'Choose the display language.',
+    english: 'English',
+    chinese: '中文',
+
+    fontSize: 'Font size',
+    fontSizeDesc: 'Adjust text size smoothly across the page.',
+    small: 'Small',
+    medium: 'Medium',
+    large: 'Large',
+
+    colourFriendly: 'Colour-friendly mode',
+    colourFriendlyDesc: 'Use a palette that is easier to distinguish.',
+    reducedMotion: 'Reduced motion',
+    reducedMotionDesc: 'Lower visual motion for a calmer experience.',
+    highContrast: 'High contrast',
+    highContrastDesc: 'Increase separation between text and background.',
+    legibility: 'Enhanced legibility',
+    legibilityDesc: 'Increase line spacing and letter spacing for dyslexic users.',
+    on: 'On',
+    off: 'Off',
+    savedNote: 'These preferences are saved automatically for the next visit.',
+
+    appearanceSection: 'Appearance',
+    accessibilitySection: 'Accessibility',
+
+    home: 'Home',
+    game: 'Game',
+    quiz: 'Quiz',
+    about: 'About ▼',
+    contactUs: 'Contact us',
+    aboutProject: 'About this project',
+    accessibilityHelp: 'Accessibility help',
+    privacyPolicy: 'Privacy Policy',
+    cookieSettings: 'Cookie settings',
+    cookieSettingsDesc: 'Review or change your data preference choice.',
+    reviewChoice: 'Review choice',
+    reopenCookieBanner: 'Change cookie choice',
+    privacyTitle: 'Privacy Policy',
+    privacyHeading: 'Privacy & Data Policy',
+    privacyDesc: 'This website stores only essential local preferences on your device, such as theme, language, font size, accessibility options and assistant position.',
+    privacyPoint1: 'No personal identity information is collected.',
+    privacyPoint2: 'No external server database is used for storing user profiles.',
+    privacyPoint3: 'You can accept or decline local preference storage at any time.',
+    privacyPoint4: 'If you decline, the website will still work, but your preferences will not be remembered next time.',
+    cookieBannerTitle: 'Privacy & Data Notice',
+    cookieBannerDesc: 'We use local storage on your device to save preferences such as theme, language, font size and accessibility settings. No personal identity information is collected.',
+    cookieAccept: 'Accept',
+    cookieDecline: 'Decline',
+
+    contactTitle: 'Contact us',
+    supportTitle: 'About this project',
+    accessibilityTitle: 'Accessibility help',
+
+    contactHeading: 'Project contacts',
+    contactDesc: 'Reach the team directly by email.',
+
+    supportHeading: 'About this project',
+    supportDesc: 'Geometry Escape Lab is an interactive circle-theorem learning website with game, theorem archive and quiz navigation.',
+    supportGoalHeading: 'Design goal',
+    supportGoalDesc: 'Keep the interface visually consistent, readable and easy to use in both light and dark mode.',
+
+    accessibilityHeading: 'Inclusive options included',
+    accessibilityDesc: 'Adjustable font size, dark mode, colour-friendly palette, high contrast and reduced motion are all available in Settings.',
+    accessibilityTipHeading: 'Best viewing tip',
+    accessibilityTipDesc: 'If colours are hard to distinguish, turn on Colour-friendly mode and High contrast together.',
+
+    assistantTitle: '🤖 AI Assistant',
+    assistantPlaceholder: 'e.g., semicircle theorem',
+    assistantHelp: 'Ask me about circle theorems!',
+    assistantSend: 'Send'
+  },
+
+  zh: {
+    settings: '设置',
+    themeMode: '主题模式',
+    themeDesc: '选择页面整体外观。',
+    light: '浅色',
+    eyeCare: '护眼',
+    dark: '深色',
+
+    language: '语言',
+    languageDesc: '切换界面显示语言。',
+    english: 'English',
+    chinese: '中文',
+
+    fontSize: '字体大小',
+    fontSizeDesc: '拖动滑块可平滑调整整页文字大小。',
+    small: '小',
+    medium: '中',
+    large: '大',
+
+    colourFriendly: '色彩友好模式',
+    colourFriendlyDesc: '使用更容易区分的配色方案。',
+    reducedMotion: '减少动态效果',
+    reducedMotionDesc: '降低页面动态效果，获得更平静的浏览体验。',
+    highContrast: '高对比度',
+    highContrastDesc: '增强文字与背景之间的区分度。',
+    legibility: '易读排版',
+    legibilityDesc: '强制增大字间距与行高，提升阅读清晰度。',
+    on: '开',
+    off: '关',
+    savedNote: '这些设置会自动保存，下次访问时仍然生效。',
+
+    appearanceSection: '外观',
+    accessibilitySection: '辅助功能',
+
+    home: '首页',
+    game: '游戏',
+    quiz: '测验',
+    about: '关于 ▼',
+    contactUs: '联系我们',
+    aboutProject: '关于项目',
+    accessibilityHelp: '无障碍帮助',
+    privacyPolicy: '隐私政策',
+    cookieSettings: 'Cookie 设置',
+    cookieSettingsDesc: '查看或重新选择你的数据偏好。',
+    reviewChoice: '重新选择',
+    reopenCookieBanner: '重新选择 Cookie',
+    privacyTitle: '隐私政策',
+    privacyHeading: '隐私与数据政策',
+    privacyDesc: '本网站只会在你的设备本地保存必要偏好设置，例如主题、语言、字体大小、无障碍选项和助手位置。',
+    privacyPoint1: '不会收集任何可识别个人身份的信息。',
+    privacyPoint2: '不会使用外部服务器数据库来存储用户资料。',
+    privacyPoint3: '你可以随时接受或拒绝本地偏好存储。',
+    privacyPoint4: '如果你拒绝，网站仍可正常使用，但下次访问时不会记住你的偏好。',
+    cookieBannerTitle: '隐私与数据说明',
+    cookieBannerDesc: '我们会在你的设备上使用本地存储来保存主题、语言、字体大小和无障碍设置等偏好信息，不会收集任何个人身份信息。',
+    cookieAccept: '接受',
+    cookieDecline: '拒绝',
+
+    contactTitle: '联系我们',
+    supportTitle: '关于项目',
+    accessibilityTitle: '无障碍帮助',
+
+    contactHeading: '项目联系方式',
+    contactDesc: '你可以通过邮箱直接联系小组成员。',
+
+    supportHeading: '关于项目',
+    supportDesc: 'Geometry Escape Lab 是一个用于学习圆定理的交互式网站，包含游戏、定理档案和测验导航。',
+    supportGoalHeading: '设计目标',
+    supportGoalDesc: '让界面在浅色和深色模式下都保持统一、清晰且易用。',
+
+    accessibilityHeading: '已包含的无障碍选项',
+    accessibilityDesc: '设置中提供了字体大小调整、深色模式、色彩友好模式、高对比度和减少动态效果。',
+    accessibilityTipHeading: '最佳使用建议',
+    accessibilityTipDesc: '如果颜色不容易区分，可以同时开启色彩友好模式和高对比度。',
+
+    assistantTitle: '🤖 AI 助手',
+    assistantPlaceholder: '例如：半圆定理',
+    assistantHelp: '问我任何圆定理问题！',
+    assistantSend: '发送'
   }
 
-  .container {
-    width: min(var(--content-max), calc(100% - 20px));
-    padding-top: 20px;
-  }
+};
 
-  .card {
-    padding: 18px;
-  }
+// ----- 新增：AI Assistant 可拖拽位置存储 -----
+const ASSISTANT_POSITION_KEY = 'assistantPosition';
 
-  nav {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  nav button,
-  .dropbtn {
-    padding: 9px 14px;
-    font-size: .92rem;
-  }
-}
-
-.font-slider-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.font-slider-label {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 0.95rem;
-  min-width: 18px;
-  text-align: center;
-}
-
-.font-slider-label-large {
-  font-size: 1.2rem;
-}
-
-.font-size-slider {
-  flex: 1;
-  appearance: none;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary-soft), var(--primary));
-  outline: none;
-}
-
-.font-size-slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--bg-elevated);
-  border: 2px solid var(--primary);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.font-size-slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--bg-elevated);
-  border: 2px solid var(--primary);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.font-slider-readout {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  color: var(--text-soft);
-  font-size: 0.92rem;
-  font-weight: 600;
-}
-
-/* ========== AI Assistant Widget ========== */
-.assistant {
-  position: fixed !important;
-  right: 20px !important;
-  bottom: 24px !important;
-  z-index: 1000 !important;
-  width: 56px;
-  height: 56px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
-}
-
-.assistant.dragging {
-  cursor: grabbing !important;
-}
-
-.assistant-trigger {
-  width: 56px;
-  height: 56px;
-  border: none;
-  border-radius: 50%;
-  background: var(--primary);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: grab;
-  padding: 0;
-}
-
-.assistant.dragging .assistant-trigger {
-  cursor: grabbing;
-}
-
-.assistant-icon {
-  font-size: 1.8rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.assistant-panel {
-  position: absolute;
-  right: 0;
-  width: min(340px, 88vw);
-  max-height: min(420px, 70vh);
-  padding: 16px 18px;
-  border-radius: 24px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: scale(0.98);
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    visibility 0s linear 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.assistant.expand-left .assistant-panel {
-  right: 0;
-  left: auto;
-}
-
-.assistant.expand-right .assistant-panel {
-  left: 0;
-  right: auto;
-}
-
-.assistant.expand-up .assistant-panel {
-  bottom: 52px;
-  top: auto;
-}
-
-.assistant.expand-down .assistant-panel {
-  top: 52px;
-  bottom: auto;
-}
-
-.assistant.expand-up.expand-left .assistant-panel {
-  transform-origin: bottom right;
-}
-
-.assistant.expand-up.expand-right .assistant-panel {
-  transform-origin: bottom left;
-}
-
-.assistant.expand-down.expand-left .assistant-panel {
-  transform-origin: top right;
-}
-
-.assistant.expand-down.expand-right .assistant-panel {
-  transform-origin: top left;
-}
-
-.assistant.open .assistant-panel,
-.assistant:hover:not(.dragging) .assistant-panel,
-.assistant:focus-within .assistant-panel {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: scale(1);
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    visibility 0s linear 0s;
-}
-
-body.dark-mode .assistant-panel {
-  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
-}
-
-.assistant-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 0;
-}
-
-.assistant-header {
-  font-weight: 700;
-  font-size: 1.05rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--heading);
-}
-
-.assistant-header span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.lang-selector {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 40px;
-  padding: 5px 12px;
-  font-size: 0.8rem;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.assistant-help {
-  font-size: 0.8rem;
-  margin: 0;
-  color: var(--text-soft);
-}
-
-.assistant-answer-wrap {
-  flex: 1;
-  min-height: 120px;
-  max-height: 220px;
-  overflow-y: auto;
-  border-radius: 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  padding: 12px;
-}
-
-.assistant-answer {
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: var(--text);
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-
-.assistant-answer.empty {
-  color: var(--text-soft);
-}
-
-.assistant-input-group {
-  display: flex;
-  gap: 8px;
-}
-
-.assistant-input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 40px;
-  border: 1px solid var(--border);
-  background: var(--bg-soft);
-  color: var(--text);
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.assistant-input:focus {
-  border-color: var(--primary);
-}
-
-.assistant-send-btn {
-  padding: 8px 16px;
-  border-radius: 40px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.assistant-send-btn:hover {
-  background: var(--primary-strong);
-}
-
-.assistant-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-@media (max-width: 640px) {
-  .assistant {
-    right: 12px !important;
-    bottom: 16px !important;
-  }
-
-  .assistant-panel {
-    width: min(300px, calc(100vw - 24px));
+function getSavedAssistantPosition() {
+  if (!hasConsent()) return null;
+  try {
+    return JSON.parse(localStorage.getItem(ASSISTANT_POSITION_KEY) || 'null');
+  } catch {
+    return null;
   }
 }
 
-/* =========================================================
-   V3.5: 消除“骨架感” - 质感与深度提升 (Anti-Skeletal UI)
-   ========================================================= */
-
-/* 1. 增加背景的“数学/实验室”质感（点阵图）代替死板的纯色 */
-body {
-  position: relative;
+function saveAssistantPosition(x, y) {
+  safeSetItem(ASSISTANT_POSITION_KEY, JSON.stringify({ x: Math.round(x), y: Math.round(y) }));
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
-  background-size: 24px 24px;
-  /* 数学坐标纸的点阵感 */
-  opacity: 0.3;
-  pointer-events: none;
+function clampAssistantPosition(x, y, el) {
+  if (!el) return { x: 0, y: 0 };
+  const rect = el.getBoundingClientRect();
+  const maxX = Math.max(0, window.innerWidth - rect.width);
+  const maxY = Math.max(0, window.innerHeight - rect.height);
+  return { x: Math.max(0, Math.min(x, maxX)), y: Math.max(0, Math.min(y, maxY)) };
 }
 
-body.dark-mode::before {
-  opacity: 0.15;
+function applyAssistantPosition(el, x, y) {
+  if (!el) return;
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+  el.style.right = 'auto';
+  el.style.bottom = 'auto';
 }
 
-/* 2. 打破生硬的边框：用“毛玻璃 (Glassmorphism)”和“弥散阴影”代替 1px 实线边框 */
-.card,
-.panel-box,
-.theorem-item {
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  /* 极高光边缘，弱化边框线 */
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
-  backdrop-filter: blur(12px);
-  /* 毛玻璃透视效果 */
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.02),
-    0 24px 48px -12px rgba(53, 92, 154, 0.12) !important;
-  /* 深层弥散阴影，让卡片飘起来 */
-}
-
-body.dark-mode .card,
-body.dark-mode .panel-box,
-body.dark-mode .theorem-item {
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  background: linear-gradient(145deg, rgba(30, 38, 56, 0.8), rgba(20, 25, 38, 0.4)) !important;
-  box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  /* 暗黑模式下的内部高光 */
-}
-
-/* 3. 让所有按钮看起来像真实的、有手感的按键，而不是一个色块 */
-.btn.primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong)) !important;
-  box-shadow:
-    0 4px 12px rgba(143, 106, 42, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  /* 顶部反光 */
-  border: none !important;
-}
-
-.btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 16px rgba(143, 106, 42, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-}
-
-/* 4. 打破方块阵列：在关键元素（如英雄区）增加不对称的视觉装饰 */
-.hero-panel::before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 300px;
-  height: 300px;
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-  /* 不规则的流体形状 */
-  background: linear-gradient(135deg, rgba(200, 155, 44, 0.1), rgba(53, 92, 154, 0.1));
-  animation: morph 8s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes morph {
-  0% {
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    transform: rotate(0deg);
-  }
-
-  100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    transform: rotate(10deg);
+function restoreAssistantPosition() {
+  if (!assistantWidget) return;
+  const saved = getSavedAssistantPosition();
+  if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') {
+    requestAnimationFrame(() => {
+      if (!assistantWidget) return;
+      const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+      applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    });
+  } else {
+    requestAnimationFrame(() => {
+      if (!assistantWidget) return;
+      const rect = assistantWidget.getBoundingClientRect();
+      applyAssistantPosition(assistantWidget, rect.left, rect.top);
+      saveAssistantPosition(rect.left, rect.top);
+    });
   }
 }
 
-/* 保证层级关系，文字不被装饰遮挡 */
-.hero-copy {
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================================================
-   V4: Apple-esque Premium Design
-   Eliminating wireframes, embracing space, light, and glass.
-   ========================================================= */
-
-/* --- 1. 彻底干掉硬边框，用光影定义边界 --- */
-.card,
-.panel-box,
-.theorem-item {
-  border: none !important;
-  /* 彻底移除实体边框 */
-  background: rgba(255, 255, 255, 0.65) !important;
-  /* 更通透的毛玻璃 */
-  backdrop-filter: blur(24px) saturate(180%);
-  /* 苹果标志性的高模糊+高饱和背景透视 */
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow:
-    0 4px 24px -8px rgba(0, 0, 0, 0.04),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
-  /* 仅保留极细的内发光作为物理边缘 */
-  border-radius: 28px !important;
-  /* 增加圆角，更圆润 */
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
-}
-
-/* 悬停时的悬浮感 */
-.room-tile:hover,
-.theorem-item.unlocked:hover {
-  transform: translateY(-8px) scale(1.01) !important;
-  box-shadow:
-    0 20px 40px -12px rgba(53, 92, 154, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
-}
-
-/* 暗色模式的极致通透 */
-body.dark-mode .card,
-body.dark-mode .panel-box,
-body.dark-mode .theorem-item {
-  background: rgba(20, 25, 38, 0.45) !important;
-  box-shadow:
-    0 10px 40px -10px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
-}
-
-/* --- 2. 导航栏重塑：仿 iOS 顶栏 --- */
-header {
-  background: rgba(255, 252, 246, 0.7) !important;
-  backdrop-filter: blur(20px) saturate(150%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
-}
-
-body.dark-mode header {
-  background: rgba(15, 21, 32, 0.6) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
-}
-
-/* 导航按钮无边框化，悬停时出现柔和背景 */
-nav button,
-.nav-link,
-.dropbtn {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: var(--text-soft) !important;
-  font-weight: 500 !important;
-}
-
-nav button:hover,
-.nav-link:hover,
-.dropbtn:hover {
-  background: rgba(0, 0, 0, 0.04) !important;
-  color: var(--text) !important;
-  transform: none !important;
-}
-
-nav button.active-nav,
-.nav-link.active-nav,
-.dropbtn.active-nav {
-  color: var(--text) !important;
-  font-weight: 700 !important;
-}
-
-body.dark-mode nav button:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-}
-
-/* --- 3. 字体层级与质感 (Typography) --- */
-h1 {
-  letter-spacing: -0.03em !important;
-  /* 苹果标题常用的紧凑字距 */
-  font-weight: 700 !important;
-}
-
-/* --- 4. Hero 区域：去除线框结构，拥抱留白 --- */
-.hero-panel {
-  padding: 60px 40px !important;
-  /* 巨大的呼吸空间 */
-}
-
-/* 柔和的背景环境光 */
-.hero-panel::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 60%;
-  height: 140%;
-  background: radial-gradient(circle, rgba(200, 155, 44, 0.08) 0%, transparent 70%);
-  filter: blur(40px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-copy {
-  position: relative;
-  z-index: 1;
-}
-
-/* --- 5. 按钮的高级质感 --- */
-.btn {
-  border-radius: 999px !important;
-  /* 胶囊按钮 */
-  letter-spacing: 0.02em;
-}
-
-.btn.primary:hover {
-  transform: scale(1.02) !important;
-  /* 点击时的弹性呼吸 */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* --- 6. SVG 画布容器的无界感 --- */
-.diagram-wrap-enhanced {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-#svg {
-  border: none !important;
-  border-radius: 20px !important;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4)) !important;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.06) !important;
-}
-
-body.dark-mode #svg {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 12px 32px -8px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* =========================================================
-   V11: Inclusive Design & Wellbeing Enforcements 
-   (Eye-care, Brutal High-Contrast, Legibility)
-   ========================================================= */
-
-/* --- 1. 护眼模式 (Eye-care Theme) --- */
-body.eye-care {
-  --bg: #fdf6e3;
-  --bg-panel: rgba(250, 243, 224, 0.98);
-  --bg-soft: #f4e8d1;
-  --bg-elevated: #fffcf5;
-  --text: #433422;
-  --text-soft: #7a6548;
-  --heading: #312515;
-  --primary: #b58900;
-  --primary-strong: #8a6800;
-  --primary-soft: rgba(181, 137, 0, 0.15);
-  --accent: #2aa198;
-  --border: rgba(181, 137, 0, 0.2);
-  --line: rgba(181, 137, 0, 0.15);
-  --svg-circle: rgba(181, 137, 0, 0.3);
-  --svg-line: #937b54;
-  --svg-label: #312515;
-  background: #fdf6e3 !important;
-}
-
-body.eye-care::before {
-  display: none !important;
-}
-
-/* --- 2. 暴力高对比度模式 (Brutal High-Contrast) --- */
-body.high-contrast * {
-  text-shadow: none !important;
-  box-shadow: none !important;
-}
-
-body.high-contrast {
-  --bg: #ffffff;
-  --bg-panel: #ffffff;
-  --bg-soft: #f0f0f0;
-  --text: #000000;
-  --text-soft: #111111;
-  --heading: #000000;
-  --primary: #0000ff;
-  --primary-strong: #0000cc;
-  --gold: #cc6600;
-  background: #ffffff !important;
-}
-
-body.high-contrast header,
-body.high-contrast .card,
-body.high-contrast .panel-box,
-body.high-contrast .theorem-item,
-body.high-contrast .assistant:hover {
-  background: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 3px solid #000000 !important;
-  border-radius: 8px !important;
-}
-
-body.dark-mode.high-contrast {
-  --bg: #000000;
-  --bg-panel: #000000;
-  --bg-soft: #1a1a1a;
-  --text: #ffffff;
-  --text-soft: #eeeeee;
-  --heading: #ffffff;
-  --primary: #ffff00;
-  --primary-strong: #cccc00;
-  background: #000000 !important;
-}
-
-body.dark-mode.high-contrast header,
-body.dark-mode.high-contrast .card,
-body.dark-mode.high-contrast .panel-box,
-body.dark-mode.high-contrast .theorem-item {
-  background: #000000 !important;
-  border: 3px solid #ffffff !important;
-}
-
-body.high-contrast .btn.primary {
-  background: #000000 !important;
-  color: #ffffff !important;
-  border: 2px solid #000000 !important;
-}
-
-body.dark-mode.high-contrast .btn.primary {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 2px solid #ffffff !important;
-}
-
-body.high-contrast #svg {
-  background: #ffffff !important;
-  border: 3px solid #000000 !important;
-}
-
-body.dark-mode.high-contrast #svg {
-  background: #000000 !important;
-  border: 3px solid #ffffff !important;
-}
-
-/* --- 3. 易读排版模式 (Enhanced Legibility for Dyslexia) --- */
-body.legibility-mode {
-  font-family: "Comic Sans MS", "Arial", sans-serif !important;
-  line-height: 1.8 !important;
-  letter-spacing: 0.05em !important;
-  word-spacing: 0.05em !important;
-}
-
-body.legibility-mode h1,
-body.legibility-mode h2,
-body.legibility-mode h3 {
-  letter-spacing: 0.1em !important;
-  margin-bottom: 1rem !important;
-}
-
-body.legibility-mode p {
-  text-align: left !important;
-}
-
-/* --- 4. 彻底的减少动态效果 (Reduced Motion Enhancement) --- */
-body.reduce-motion * {
-  animation: none !important;
-  transition: none !important;
-  transform: none !important;
-}
-
-/* ==========================================
-   Apple-like Settings Refresh
-   只覆盖 settings modal，不破坏整体架构
-   ========================================== */
-
-.modal-content {
-  width: min(620px, 92vw);
-  padding: 26px 24px 22px;
-  border-radius: 30px;
-}
-
-#modal-title {
-  font-size: 1.45rem;
-  letter-spacing: -0.02em;
-  margin-bottom: 16px;
-}
-
-.close {
-  width: 32px;
-  height: 32px;
-  font-size: 20px;
-  background: rgba(127, 127, 127, 0.14);
-  box-shadow: none;
-  border: none;
-}
-
-.apple-settings-panel {
-  display: grid;
-  gap: 18px;
-  max-height: 66vh;
-  overflow-y: auto;
-  padding-right: 2px;
-}
-
-.settings-section {
-  background: rgba(255, 255, 255, 0.58);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow:
-    0 10px 28px rgba(20, 28, 44, 0.05),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.42);
-}
-
-body.dark-mode .settings-section {
-  background: rgba(24, 30, 43, 0.62);
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.settings-section-title {
-  padding: 14px 18px 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-}
-
-.settings-group.settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 16px 18px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  position: relative;
-}
-
-.settings-group.settings-row::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 0;
-  height: 1px;
-  background: rgba(72, 86, 112, 0.12);
-}
-
-.settings-section .settings-group.settings-row:last-child::after {
-  display: none;
-}
-
-body.dark-mode .settings-group.settings-row::after {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.settings-copy {
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-  flex: 1;
-}
-
-.settings-copy strong {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.settings-copy span {
-  font-size: 0.92rem;
-  line-height: 1.4;
-  color: var(--text-soft);
-  max-width: 34ch;
-}
-
-.control-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.control-row.segmented-control {
-  justify-content: flex-start;
-}
-
-.segmented-control::before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: var(--segment-thumb-width, 76px);
-  height: calc(100% - 6px);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.06);
-  transform: translateX(var(--segment-thumb-x, 0px));
-  transition: transform .28s cubic-bezier(0.2, 0.8, 0.2, 1),
-    width .28s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background .22s ease,
-    box-shadow .22s ease;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.segmented-control.no-thumb-transition::before {
-  transition: none !important;
-}
-
-/* segmented control */
-.segmented-control {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  background: rgba(120, 120, 128, 0.12);
-  padding: 3px;
-  border-radius: 999px;
-  gap: 0;
-  flex: 0 0 auto;
-  width: fit-content;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-body.dark-mode .segmented-control {
-  background: rgba(255, 255, 255, 0.09);
-}
-
-body.dark-mode .segmented-control::before {
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 6px 16px rgba(0, 0, 0, 0.28);
-}
-
-.mode-switch-btn {
-  position: relative;
-  z-index: 1;
-  border: none !important;
-  background: transparent !important;
-  color: var(--text-soft) !important;
-  box-shadow: none !important;
-  border-radius: 999px !important;
-  min-width: 76px;
-  padding: 8px 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.01em;
-  transition: color .22s ease !important;
-}
-
-.mode-switch-btn:hover {
-  transform: none !important;
-  background: transparent !important;
-  color: var(--text) !important;
-}
-
-.mode-switch-btn.active {
-  background: transparent !important;
-  box-shadow: none !important;
-  color: #111827 !important;
-}
-
-body.dark-mode .mode-switch-btn.active {
-  background: transparent !important;
-  color: #f8fafc !important;
-}
-
-/* iOS-like switch */
-.ios-switch {
-  appearance: none;
-  border: none;
-  background: transparent;
-  padding: 0;
-  width: 52px;
-  height: 32px;
-  cursor: pointer;
-  box-shadow: none;
-}
-
-.ios-switch-track {
-  position: relative;
-  display: block;
-  width: 52px;
-  height: 32px;
-  border-radius: 999px;
-  background: rgba(120, 120, 128, 0.32);
-  transition: background .22s ease;
-}
-
-.ios-switch-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.16),
-    0 3px 8px rgba(0, 0, 0, 0.12);
-  transition: transform .22s ease;
-}
-
-.ios-switch.active .ios-switch-track {
-  background: var(--green);
-}
-
-.ios-switch.active .ios-switch-thumb {
-  transform: translateX(20px);
-}
-
-.ios-switch:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 60%, white);
-  outline-offset: 3px;
-  border-radius: 999px;
-}
-
-/* slider row */
-.settings-row-slider {
-  align-items: flex-start;
-}
-
-.settings-slider-block {
-  min-width: min(260px, 46vw);
-  max-width: 320px;
-}
-
-.font-slider-wrap {
-  margin-top: 2px;
-  gap: 10px;
-}
-
-.font-slider-label {
-  color: var(--text-soft);
-  font-weight: 700;
-}
-
-.font-size-slider {
-  height: 4px;
-  background: linear-gradient(90deg, rgba(120, 120, 128, 0.22), var(--primary));
-  border-radius: 999px;
-}
-
-.font-size-slider::-webkit-slider-thumb {
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: #ffffff;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.16),
-    0 6px 14px rgba(0, 0, 0, 0.08);
-}
-
-.font-size-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: #ffffff;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.16),
-    0 6px 14px rgba(0, 0, 0, 0.08);
-}
-
-.font-slider-readout.compact {
-  margin-top: 10px;
-  justify-content: flex-end;
-  font-size: 0.88rem;
-  color: var(--text-soft);
-  font-weight: 700;
-}
-
-.settings-note {
-  margin: 0;
-  padding: 0 4px 2px;
-  text-align: center;
-  font-size: 0.88rem;
-  color: var(--text-soft);
-}
-
-.apple-settings-panel .toggle-btn {
-  display: none;
-}
-
-@media (max-width: 760px) {
-  .settings-group.settings-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
-  }
-
-  .settings-copy span {
-    max-width: none;
-  }
-
-  .control-row {
-    justify-content: flex-start;
-  }
-
-  .settings-slider-block {
-    min-width: 100%;
-    max-width: none;
-  }
-
-  .segmented-control {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding: 3px;
-    border-radius: 999px;
-    background: rgba(120, 120, 128, 0.12);
-    gap: 0;
-    isolation: isolate;
-  }
-
-  .mode-switch-btn {
-    min-width: 68px;
+function enableAssistantDragging() {
+  if (!assistantWidget) return;
+  let isDragging = false, startPointerX = 0, startPointerY = 0, startLeft = 0, startTop = 0, moved = false;
+
+  const getPoint = (e) => {
+    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  };
+  const canStartDrag = (target) => !!target.closest('.assistant-trigger');
+
+  const onStart = (e) => {
+    if (!assistantWidget || !canStartDrag(e.target)) return;
+    const point = getPoint(e);
+    const rect = assistantWidget.getBoundingClientRect();
+    isDragging = true;
+    moved = false;
+    startPointerX = point.x;
+    startPointerY = point.y;
+    startLeft = rect.left;
+    startTop = rect.top;
+    assistantWidget.classList.add('dragging');
+    e.preventDefault();
+  };
+
+  const onMove = (e) => {
+    if (!isDragging || !assistantWidget) return;
+    const point = getPoint(e);
+    const dx = point.x - startPointerX;
+    const dy = point.y - startPointerY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    const pos = clampAssistantPosition(startLeft + dx, startTop + dy, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    e.preventDefault();
+  };
+
+  const onEnd = () => {
+    if (!isDragging || !assistantWidget) return;
+    isDragging = false;
+    assistantWidget.classList.remove('dragging');
+    const rect = assistantWidget.getBoundingClientRect();
+    const pos = clampAssistantPosition(rect.left, rect.top, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+    setTimeout(() => { moved = false; }, 0);
+  };
+
+  assistantWidget.addEventListener('mousedown', onStart);
+  assistantWidget.addEventListener('touchstart', onStart, { passive: false });
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+  window.addEventListener('resize', () => {
+    if (!assistantWidget) return;
+    const saved = getSavedAssistantPosition();
+    if (!saved) return;
+    const pos = clampAssistantPosition(saved.x, saved.y, assistantWidget);
+    applyAssistantPosition(assistantWidget, pos.x, pos.y);
+    saveAssistantPosition(pos.x, pos.y);
+  });
+
+  assistantWidget.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+}
+
+let assistantWidget = null;
+
+function getStored(name, fallback) {
+  if (!hasConsent()) return fallback;
+  try {
+    return localStorage.getItem(name) || fallback;
+  } catch {
+    return fallback;
   }
 }
 
-
-/* ==========================================
-   Cookie Banner + Privacy Entry
-   ========================================== */
-.cookie-banner {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  z-index: 1200;
-  display: none;
+function getCurrentLanguage() {
+  return getStored('language', 'en');
 }
 
-.cookie-banner.show {
-  display: block;
+function t(key) {
+  const lang = getCurrentLanguage();
+  return I18N[lang]?.[key] || I18N.en[key] || key;
 }
 
-.cookie-banner__content {
-  width: min(980px, 100%);
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 20px;
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+function applyTheme(theme, options = {}) {
+  const { persist = true } = options;
+  document.body.classList.remove('dark-mode', 'eye-care');
+  if (theme === 'dark') document.body.classList.add('dark-mode');
+  if (theme === 'eye-care') document.body.classList.add('eye-care');
+  if (persist) safeSetItem('theme', theme);
 }
 
-.cookie-banner__text {
-  display: grid;
-  gap: 6px;
+function applyFontScale(scale, options = {}) {
+  const { persist = true } = options;
+  const numericScale = Math.max(0.85, Math.min(1.3, Number(scale) || 1));
+  document.documentElement.style.setProperty('--font-scale', numericScale);
+  if (persist) safeSetItem('fontScale', numericScale.toFixed(2));
 }
 
-.cookie-banner__text h3 {
-  margin: 0;
-  font-size: 1.02rem;
-  color: var(--heading);
+function getCurrentFontScale() {
+  return getStored('fontScale', '1.00');
 }
 
-.cookie-banner__text p {
-  margin: 0;
-  color: var(--text-soft);
-  line-height: 1.5;
-  max-width: 72ch;
+function applyColorblindMode(enabled, options = {}) {
+  const { persist = true } = options;
+  document.body.classList.toggle('colorblind-mode', enabled);
+  if (persist) safeSetItem('colorblindMode', enabled ? 'on' : 'off');
 }
 
-.cookie-banner__actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+function applyReducedMotion(enabled, options = {}) {
+  const { persist = true } = options;
+  document.body.classList.toggle('reduce-motion', enabled);
+  if (persist) safeSetItem('reducedMotion', enabled ? 'on' : 'off');
 }
 
-.cookie-banner__actions .btn {
-  min-width: 120px;
+function applyHighContrast(enabled, options = {}) {
+  const { persist = true } = options;
+  document.body.classList.toggle('high-contrast', enabled);
+  if (persist) safeSetItem('highContrast', enabled ? 'on' : 'off');
 }
 
-@media (max-width: 760px) {
-  .cookie-banner {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
+function applyLegibility(enabled, options = {}) {
+  const { persist = true } = options;
+  document.body.classList.toggle('legibility-mode', enabled);
+  if (persist) safeSetItem('legibilityMode', enabled ? 'on' : 'off');
+}
+
+function emitLanguageChanged(lang) {
+  window.dispatchEvent(
+    new CustomEvent('languageChanged', { detail: { lang } })
+  );
+}
+
+function updateCookieBannerLanguage() {
+  const banner = document.getElementById(COOKIE_BANNER_ID);
+  if (!banner) return;
+  const titleEl = banner.querySelector('[data-cookie-role="title"]');
+  const descEl = banner.querySelector('[data-cookie-role="desc"]');
+  const acceptBtn = banner.querySelector('#cookieAcceptBtn');
+  const declineBtn = banner.querySelector('#cookieDeclineBtn');
+
+  if (titleEl) titleEl.textContent = t('cookieBannerTitle');
+  if (descEl) descEl.textContent = t('cookieBannerDesc');
+  if (acceptBtn) acceptBtn.textContent = t('cookieAccept');
+  if (declineBtn) declineBtn.textContent = t('cookieDecline');
+}
+
+function applyLanguage(lang, options = {}) {
+  const { persist = true } = options;
+  if (persist) safeSetItem('language', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh' : 'en';
+
+  const navHomeBtn = document.getElementById('navHomeBtn');
+  const navGameBtn = document.getElementById('navGameBtn');
+  const navQuizBtn = document.getElementById('navQuizBtn');
+  const settingsBtnEl = document.getElementById('settingsBtn');
+  const contactBtnEl = document.getElementById('contactBtn');
+  const supportBtnEl = document.getElementById('supportBtn');
+  const accessibilityBtnEl = document.getElementById('accessibilityBtn');
+  const privacyBtnEl = document.getElementById('privacyBtn');
+  const aboutBtn = document.querySelector('.dropbtn');
+
+  if (navHomeBtn) navHomeBtn.textContent = t('home');
+  if (navGameBtn) navGameBtn.textContent = t('game');
+  if (navQuizBtn) navQuizBtn.textContent = t('quiz');
+  if (settingsBtnEl) settingsBtnEl.textContent = t('settings');
+  if (contactBtnEl) contactBtnEl.textContent = t('contactUs');
+  if (supportBtnEl) supportBtnEl.textContent = t('aboutProject');
+  if (accessibilityBtnEl) accessibilityBtnEl.textContent = t('accessibilityHelp');
+  if (privacyBtnEl) privacyBtnEl.textContent = t('privacyPolicy');
+  if (aboutBtn) aboutBtn.textContent = t('about');
+
+  updateCookieBannerLanguage();
+
+  if (assistantWidget) {
+    updateAssistantLanguageUI(lang);
   }
 
-  .cookie-banner__content {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 16px;
-  }
+  emitLanguageChanged(lang);
+}
 
-  .cookie-banner__actions {
-    justify-content: stretch;
-  }
+function restorePreferences() {
+  applyTheme(getStored('theme', 'light'), { persist: false });
+  applyFontScale(getStored('fontScale', '1.00'), { persist: false });
+  applyColorblindMode(getStored('colorblindMode', 'off') === 'on', { persist: false });
+  applyReducedMotion(getStored('reducedMotion', 'off') === 'on', { persist: false });
+  applyHighContrast(getStored('highContrast', 'off') === 'on', { persist: false });
+  applyLegibility(getStored('legibilityMode', 'off') === 'on', { persist: false });
+  applyLanguage(getStored('language', 'en'), { persist: false });
+}
 
-  .cookie-banner__actions .btn {
-    width: 100%;
+function buildContactHTML() {
+  return `
+    <div class="info-panel">
+      <div class="info-row">
+        <div>
+          <strong>${t('contactHeading')}</strong>
+          <span>${t('contactDesc')}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div><strong>Yining Qin</strong><span>3029970043@qq.com</span></div>
+      </div>
+      <div class="info-row">
+        <div><strong>Yafei Yang</strong><span>1662060048@qq.com</span></div>
+      </div>
+      <div class="info-row">
+        <div><strong>Yiran Fan</strong><span>van52985@foxmail.com</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function buildSupportHTML() {
+  return `
+    <div class="info-panel">
+      <div class="info-row">
+        <div>
+          <strong>${t('supportHeading')}</strong>
+          <span>${t('supportDesc')}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div>
+          <strong>${t('supportGoalHeading')}</strong>
+          <span>${t('supportGoalDesc')}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildAccessibilityHTML() {
+  return `
+    <div class="info-panel">
+      <div class="info-row">
+        <div>
+          <strong>${t('accessibilityHeading')}</strong>
+          <span>${t('accessibilityDesc')}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div>
+          <strong>${t('accessibilityTipHeading')}</strong>
+          <span>${t('accessibilityTipDesc')}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildPrivacyHTML() {
+  return `
+    <div class="info-panel">
+      <div class="info-row">
+        <div>
+          <strong>${t('privacyHeading')}</strong>
+          <span>${t('privacyDesc')}</span>
+        </div>
+      </div>
+      <div class="info-row"><div><span>• ${t('privacyPoint1')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint2')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint3')}</span></div></div>
+      <div class="info-row"><div><span>• ${t('privacyPoint4')}</span></div></div>
+    </div>
+  `;
+}
+
+function openModal(title, html) {
+  if (!modal || !modalTitle || !modalTextContainer) return;
+  modalTitle.textContent = title;
+  modalTextContainer.innerHTML = html;
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  if (!modal) return;
+  modal.classList.remove('show');
+}
+
+function getFontLabel(scale) {
+  const value = Number(scale);
+  if (value <= 0.92) return t('small');
+  if (value >= 1.16) return t('large');
+  return t('medium');
+}
+
+function getSettingsPanelScrollTop() {
+  if (!modalTextContainer) return 0;
+  const panel = modalTextContainer.querySelector('.apple-settings-panel, .settings-panel');
+  return panel ? panel.scrollTop : 0;
+}
+
+function restoreSettingsPanelScrollTop(scrollTop = 0) {
+  if (!modalTextContainer) return;
+  const panel = modalTextContainer.querySelector('.apple-settings-panel, .settings-panel');
+  if (panel) {
+    panel.scrollTop = scrollTop;
   }
 }
+
+function getSettingsHTML() {
+  const theme = getStored('theme', 'light');
+  const fontScale = getCurrentFontScale();
+  const colorblind = getStored('colorblindMode', 'off') === 'on';
+  const reducedMotion = getStored('reducedMotion', 'off') === 'on';
+  const highContrast = getStored('highContrast', 'off') === 'on';
+  const legibility = getStored('legibilityMode', 'off') === 'on';
+  const language = getCurrentLanguage();
+
+  const buildSwitch = (settingName, enabled, ariaLabel) => `
+    <button
+      type="button"
+      class="ios-switch ${enabled ? 'active' : ''}"
+      data-setting="${settingName}"
+      data-value="toggle"
+      role="switch"
+      aria-checked="${enabled ? 'true' : 'false'}"
+      aria-label="${ariaLabel}"
+    >
+      <span class="ios-switch-track">
+        <span class="ios-switch-thumb"></span>
+      </span>
+    </button>
+  `;
+
+  return `
+    <div class="settings-panel apple-settings-panel">
+      <div class="settings-section">
+        <div class="settings-section-title">${t('appearanceSection')}</div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('themeMode')}</strong>
+            <span>${t('themeDesc')}</span>
+          </div>
+          <div class="control-row segmented-control" role="tablist" aria-label="${t('themeMode')}">
+            <button type="button" data-setting="theme" data-value="light" class="mode-switch-btn ${theme === 'light' ? 'active' : ''}">${t('light')}</button>
+            <button type="button" data-setting="theme" data-value="eye-care" class="mode-switch-btn ${theme === 'eye-care' ? 'active' : ''}">${t('eyeCare')}</button>
+            <button type="button" data-setting="theme" data-value="dark" class="mode-switch-btn ${theme === 'dark' ? 'active' : ''}">${t('dark')}</button>
+          </div>
+        </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('language')}</strong>
+            <span>${t('languageDesc')}</span>
+          </div>
+          <div class="control-row segmented-control" data-segment="language" role="tablist" aria-label="${t('language')}">
+            <button type="button" data-setting="language" data-value="en" class="mode-switch-btn ${language === 'en' ? 'active' : ''}">${t('english')}</button>
+            <button type="button" data-setting="language" data-value="zh" class="mode-switch-btn ${language === 'zh' ? 'active' : ''}">${t('chinese')}</button>
+          </div>
+        </div>
+
+        <div class="settings-group settings-row settings-row-slider">
+          <div class="settings-copy">
+            <strong>${t('fontSize')}</strong>
+            <span>${t('fontSizeDesc')}</span>
+          </div>
+          <div class="settings-slider-block">
+            <div class="font-slider-wrap">
+              <span class="font-slider-label">A</span>
+              <input
+                id="fontSizeSlider"
+                class="font-size-slider"
+                type="range"
+                min="0.85"
+                max="1.30"
+                step="0.01"
+                value="${fontScale}"
+                aria-label="${t('fontSize')}"
+              />
+              <span class="font-slider-label font-slider-label-large">A</span>
+            </div>
+            <div class="font-slider-readout compact">
+              <span id="fontSizeValue">${Math.round(Number(fontScale) * 100)}%</span>
+              <span id="fontSizePreset">${getFontLabel(fontScale)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">${t('accessibilitySection')}</div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('colourFriendly')}</strong>
+            <span>${t('colourFriendlyDesc')}</span>
+          </div>
+          <div class="control-row">
+            ${buildSwitch('colorblindMode', colorblind, t('colourFriendly'))}
+          </div>
+        </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('highContrast')}</strong>
+            <span>${t('highContrastDesc')}</span>
+          </div>
+          <div class="control-row">
+            ${buildSwitch('highContrast', highContrast, t('highContrast'))}
+          </div>
+        </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('reducedMotion')}</strong>
+            <span>${t('reducedMotionDesc')}</span>
+          </div>
+          <div class="control-row">
+            ${buildSwitch('reducedMotion', reducedMotion, t('reducedMotion'))}
+          </div>
+        </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('legibility')}</strong>
+            <span>${t('legibilityDesc')}</span>
+          </div>
+          <div class="control-row">
+            ${buildSwitch('legibilityMode', legibility, t('legibility'))}
+          </div>
+        </div>
+
+        <div class="settings-group settings-row">
+          <div class="settings-copy">
+            <strong>${t('cookieSettings')}</strong>
+            <span>${t('cookieSettingsDesc')}</span>
+          </div>
+          <div class="control-row">
+            <button id="reopenCookieBannerBtn" class="btn secondary" type="button">${t('reopenCookieBanner')}</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="settings-note">${t('savedNote')}</p>
+    </div>
+  `;
+}
+
+function openSettingsPanel(preservedScrollTop = 0) {
+  openModal(t('settings'), getSettingsHTML());
+  bindSettingsControls();
+  restoreSettingsPanelScrollTop(preservedScrollTop);
+
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      updateAllSegmentedThumbs(modalTextContainer, false);
+    });
+  }, 10);
+}
+
+window.addEventListener('resize', () => {
+  if (modal.classList.contains('show')) {
+    updateAllSegmentedThumbs(document, false);
+  }
+  if (modal && modal.classList.contains('show')) updateAllSegmentedThumbs(document, false);
+  updateAssistantPanelDirection();
+});
+
+function bindSettingsControls() {
+  if (!modalTextContainer) return;
+
+  modalTextContainer.querySelectorAll("[data-setting='theme']").forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const newTheme = btn.dataset.value;
+      const currentTheme = getStored('theme', 'light');
+      if (newTheme === currentTheme) return;
+
+      applyTheme(newTheme);
+
+      const group = btn.closest('.segmented-control');
+      group?.querySelectorAll('.mode-switch-btn').forEach((item) => {
+        item.classList.toggle('active', item === btn);
+      });
+      updateSegmentedThumb(group, true);
+    });
+  });
+
+  modalTextContainer.querySelectorAll("[data-setting='language']").forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const newLang = btn.dataset.value;
+      const currentLang = getStored('language', 'en');
+      if (newLang === currentLang) return;
+
+      const oldGroup = btn.closest('.segmented-control');
+      const oldActiveBtn = oldGroup?.querySelector('.mode-switch-btn.active');
+
+      const oldThumbX = oldActiveBtn
+        ? oldActiveBtn.offsetLeft - oldGroup.querySelector('.mode-switch-btn').offsetLeft
+        : 0;
+      const oldThumbWidth = oldActiveBtn
+        ? oldActiveBtn.offsetWidth
+        : 76;
+
+      const scrollTop = getSettingsPanelScrollTop();
+
+      applyLanguage(newLang);
+      openSettingsPanel(scrollTop);
+
+      requestAnimationFrame(() => {
+        updateAllSegmentedThumbs(modalTextContainer, false);
+        const newLanguageGroup = modalTextContainer.querySelector('[data-segment="language"]');
+        if (!newLanguageGroup) return;
+
+        newLanguageGroup.classList.add('no-thumb-transition');
+        newLanguageGroup.style.setProperty('--segment-thumb-x', `${oldThumbX}px`);
+        newLanguageGroup.style.setProperty('--segment-thumb-width', `${oldThumbWidth}px`);
+
+        void newLanguageGroup.offsetWidth;
+
+        newLanguageGroup.classList.remove('no-thumb-transition');
+        updateSegmentedThumb(newLanguageGroup, true);
+      });
+    });
+  });
+
+  ['colorblindMode', 'reducedMotion', 'highContrast', 'legibilityMode'].forEach(setting => {
+    modalTextContainer.querySelectorAll(`[data-setting='${setting}']`).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isCurrentlyOn = getStored(setting, 'off') === 'on';
+        const enabled = !isCurrentlyOn;
+
+        if (setting === 'colorblindMode') applyColorblindMode(enabled);
+        if (setting === 'reducedMotion') applyReducedMotion(enabled);
+        if (setting === 'highContrast') applyHighContrast(enabled);
+        if (setting === 'legibilityMode') applyLegibility(enabled);
+
+        btn.classList.toggle('active', enabled);
+        btn.setAttribute('aria-checked', enabled ? 'true' : 'false');
+      });
+    });
+  });
+
+  const fontSlider = document.getElementById('fontSizeSlider');
+  const fontSizeValue = document.getElementById('fontSizeValue');
+  const fontSizePreset = document.getElementById('fontSizePreset');
+
+  if (fontSlider) {
+    const updateSliderUI = (value) => {
+      if (fontSizeValue) fontSizeValue.textContent = `${Math.round(Number(value) * 100)}%`;
+      if (fontSizePreset) fontSizePreset.textContent = getFontLabel(value);
+    };
+
+    updateSliderUI(fontSlider.value);
+
+    fontSlider.addEventListener('input', () => {
+      applyFontScale(fontSlider.value);
+      updateSliderUI(fontSlider.value);
+    });
+  }
+
+  const reopenCookieBannerBtn = document.getElementById('reopenCookieBannerBtn');
+  if (reopenCookieBannerBtn) {
+    reopenCookieBannerBtn.addEventListener('click', () => {
+      reopenCookieBanner();
+      closeModal();
+    });
+  }
+}
+
+function reopenCookieBanner() {
+  const banner = ensureCookieBannerExists();
+  updateCookieBannerLanguage();
+  banner.classList.add('show');
+}
+
+function hideCookieBanner() {
+  const banner = document.getElementById(COOKIE_BANNER_ID);
+  if (banner) banner.classList.remove('show');
+}
+
+function handleConsentAcceptance() {
+  try {
+    localStorage.setItem(COOKIE_KEY, 'accepted');
+  } catch { }
+  hideCookieBanner();
+}
+
+function handleConsentDecline() {
+  try {
+    localStorage.setItem(COOKIE_KEY, 'declined');
+  } catch { }
+  clearSavedPreferences();
+  hideCookieBanner();
+  applyTheme('light', { persist: false });
+  applyFontScale(1, { persist: false });
+  applyColorblindMode(false, { persist: false });
+  applyReducedMotion(false, { persist: false });
+  applyHighContrast(false, { persist: false });
+  applyLegibility(false, { persist: false });
+  applyLanguage('en', { persist: false });
+}
+
+function initCookieConsent() {
+  const banner = ensureCookieBannerExists();
+  updateCookieBannerLanguage();
+
+  const acceptBtn = banner.querySelector('#cookieAcceptBtn');
+  const declineBtn = banner.querySelector('#cookieDeclineBtn');
+
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', handleConsentAcceptance);
+  }
+
+  if (declineBtn) {
+    declineBtn.addEventListener('click', handleConsentDecline);
+  }
+
+  if (!getCookieConsent()) {
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function bindNavigation() {
+  Object.entries(NAV_TARGETS).forEach(([id, target]) => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        window.location.href = target;
+      });
+    }
+  });
+}
+
+function bindDropdowns() {
+  dropdownButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const parent = button.closest('.nav-group');
+      if (!parent) return;
+      parent.classList.toggle('open');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-group.open').forEach((group) => {
+      group.classList.remove('open');
+    });
+  });
+}
+
+function bindGlobalUI() {
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => openSettingsPanel(0));
+  }
+
+  if (contactBtn) {
+    contactBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(t('contactTitle'), buildContactHTML());
+    });
+  }
+
+  if (supportBtn) {
+    supportBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(t('supportTitle'), buildSupportHTML());
+    });
+  }
+
+  if (accessibilityBtn) {
+    accessibilityBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(t('accessibilityTitle'), buildAccessibilityHTML());
+    });
+  }
+
+  if (privacyBtn) {
+    privacyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(t('privacyTitle'), buildPrivacyHTML());
+    });
+  }
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeModal);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+}
+
+/* ---------- AI Assistant ---------- */
+
+function getAIReply(question, lang) {
+  const lowerQ = question.toLowerCase();
+
+  if (lang === 'zh') {
+    if (lowerQ.includes('圆心角') || lowerQ.includes('中心角') || lowerQ.includes('center')) {
+      return '📐 圆心角定理：圆心角是圆周角的两倍。∠AOB = 2∠ACB';
+    }
+    if (lowerQ.includes('半圆') || lowerQ.includes('semicircle')) {
+      return '🔵 半圆定理：直径所对的圆周角是90°（直角）。';
+    }
+    if (lowerQ.includes('切线') || lowerQ.includes('tangent')) {
+      return '🌀 半径垂直于切线。半径与切点连线垂直于切线。';
+    }
+    if (lowerQ.includes('弦') || lowerQ.includes('chord')) {
+      return '🎵 垂径定理：垂直于弦的直径平分弦。';
+    }
+    return '✨ 我可以解释：圆心角定理、半圆定理、切线与半径、圆内接四边形、弦切角等。再问我更多吧！';
+  }
+
+  if (lowerQ.includes('center') || lowerQ.includes('centre')) {
+    return '📐 Theorem: The angle at the center is twice the angle at the circumference. ∠AOB = 2∠ACB';
+  }
+  if (lowerQ.includes('semicircle')) {
+    return '🔵 Angle in a semicircle is always 90° (right angle).';
+  }
+  if (lowerQ.includes('tangent')) {
+    return '🌀 The radius to a point of tangency is perpendicular to the tangent.';
+  }
+  if (lowerQ.includes('chord')) {
+    return '🎵 Perpendicular from center to chord bisects the chord.';
+  }
+  return '✨ I can explain: angle at center, semicircle theorem, tangent-radius, cyclic quadrilateral, alternate segment. Ask me!';
+}
+
+function updateAssistantLanguageUI(lang) {
+  if (!assistantWidget) return;
+  const tData = I18N[lang] || I18N.en;
+  const headerSpan = assistantWidget.querySelector('.assistant-header span');
+  const helpP = assistantWidget.querySelector('.assistant-help');
+  const inputField = assistantWidget.querySelector('.assistant-input');
+  const sendButton = assistantWidget.querySelector('.assistant-send-btn');
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
+
+  if (headerSpan) headerSpan.innerHTML = tData.assistantTitle || '🤖 AI Assistant';
+  if (helpP) helpP.textContent = tData.assistantHelp || 'Ask me about circle theorems!';
+  if (inputField) inputField.placeholder = tData.assistantPlaceholder || 'e.g., semicircle theorem';
+  if (sendButton) sendButton.textContent = tData.assistantSend || 'Send';
+  if (langSelector && langSelector.value !== lang) langSelector.value = lang;
+
+  if (answerBox && answerBox.classList.contains('empty')) {
+    answerBox.textContent = lang === 'zh' ? '在这里输入问题，答案会显示在这个窗口中。' : 'Ask a question and the answer will appear here.';
+  }
+}
+
+function updateAssistantPanelDirection() {
+  if (!assistantWidget) return;
+  const panel = assistantWidget.querySelector('.assistant-panel');
+  if (!panel) return;
+
+  assistantWidget.classList.remove('expand-up', 'expand-down', 'expand-left', 'expand-right');
+
+  const widgetRect = assistantWidget.getBoundingClientRect();
+  const estimatedPanelHeight = Math.min(panel.scrollHeight || 260, window.innerHeight * 0.7);
+  const estimatedPanelWidth = Math.min(panel.offsetWidth || 340, window.innerWidth * 0.88);
+  const gap = 12;
+
+  const spaceAbove = widgetRect.top;
+  const spaceBelow = window.innerHeight - widgetRect.bottom;
+  const spaceLeft = widgetRect.left;
+  const spaceRight = window.innerWidth - widgetRect.right;
+
+  if (spaceAbove >= estimatedPanelHeight + gap || spaceAbove >= spaceBelow) {
+    assistantWidget.classList.add('expand-up');
+  } else {
+    assistantWidget.classList.add('expand-down');
+  }
+
+  if (spaceLeft >= estimatedPanelWidth - widgetRect.width + gap || spaceLeft >= spaceRight) {
+    assistantWidget.classList.add('expand-left');
+  } else {
+    assistantWidget.classList.add('expand-right');
+  }
+}
+
+function bindAssistantEvents() {
+  if (!assistantWidget) return;
+  const langSelector = assistantWidget.querySelector('.lang-selector');
+  const input = assistantWidget.querySelector('.assistant-input');
+  const sendBtn = assistantWidget.querySelector('.assistant-send-btn');
+  const answerBox = assistantWidget.querySelector('.assistant-answer');
+  const panel = assistantWidget.querySelector('.assistant-panel');
+
+  if (langSelector) {
+    langSelector.addEventListener('change', (e) => applyLanguage(e.target.value));
+  }
+
+  const setAssistantAnswer = (text, isEmpty = false) => {
+    if (!answerBox) return;
+    answerBox.textContent = text;
+    answerBox.classList.toggle('empty', isEmpty);
+    updateAssistantPanelDirection();
+  };
+
+  const sendMessage = () => {
+    const question = input?.value.trim() || '';
+    const lang = getCurrentLanguage();
+    if (!question) {
+      const emptyMsg = lang === 'zh' ? '请输入一个关于圆定理的问题！' : 'Please ask something about circle theorems!';
+      setAssistantAnswer(emptyMsg, false);
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
+      return;
+    }
+    const reply = getAIReply(question, lang);
+    setAssistantAnswer(reply, false);
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+    input.value = '';
+    input.focus();
+  };
+
+  if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+  if (input) {
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    input.addEventListener('focus', () => {
+      assistantWidget.classList.add('open');
+      updateAssistantPanelDirection();
+    });
+  }
+  if (panel) panel.addEventListener('mouseenter', () => {
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+  });
+  assistantWidget.addEventListener('mouseenter', () => {
+    assistantWidget.classList.add('open');
+    updateAssistantPanelDirection();
+  });
+  assistantWidget.addEventListener('mouseleave', () => {
+    if (!assistantWidget.classList.contains('dragging')) assistantWidget.classList.remove('open');
+  });
+}
+
+function createAssistantWidget() {
+  const existing = document.querySelector('.assistant');
+  if (existing) existing.remove();
+
+  const assistantDiv = document.createElement('div');
+  assistantDiv.className = 'assistant';
+  assistantDiv.innerHTML = `
+    <button class="assistant-trigger" type="button" aria-label="Open AI assistant">
+      <span class="assistant-icon">🤖</span>
+    </button>
+    <div class="assistant-panel">
+      <div class="assistant-content">
+        <div class="assistant-header">
+          <span>🤖 AI Assistant</span>
+          <select class="lang-selector" aria-label="Language switch">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+        <p class="assistant-help">Ask me about circle theorems!</p>
+        <div class="assistant-answer-wrap">
+          <div class="assistant-answer empty">Ask a question and the answer will appear here.</div>
+        </div>
+        <div class="assistant-input-group">
+          <input type="text" class="assistant-input" placeholder="e.g., semicircle theorem" />
+          <button class="assistant-send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(assistantDiv);
+  assistantWidget = assistantDiv;
+  bindAssistantEvents();
+  updateAssistantLanguageUI(getCurrentLanguage());
+  restoreAssistantPosition();
+  enableAssistantDragging();
+}
+
+function updateSegmentedThumb(group, animate = true) {
+  if (!group) return;
+
+  const activeBtn = group.querySelector('.mode-switch-btn.active');
+  if (!activeBtn) return;
+
+  if (!animate) {
+    group.classList.add('no-thumb-transition');
+  }
+
+  group.style.setProperty('--segment-thumb-x', `${activeBtn.offsetLeft}px`);
+  group.style.setProperty('--segment-thumb-width', `${activeBtn.offsetWidth}px`);
+
+  if (!animate) {
+    requestAnimationFrame(() => {
+      group.classList.remove('no-thumb-transition');
+    });
+  }
+}
+
+function updateAllSegmentedThumbs(scope = document, animate = true) {
+  scope.querySelectorAll('.segmented-control').forEach((group) => {
+    updateSegmentedThumb(group, animate);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initCookieConsent();
+  restorePreferences();
+  bindDropdowns();
+  bindNavigation();
+  bindGlobalUI();
+  createAssistantWidget();
+});
