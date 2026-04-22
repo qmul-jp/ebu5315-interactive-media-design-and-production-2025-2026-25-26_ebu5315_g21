@@ -733,17 +733,40 @@ body.dark-mode .toggle-btn.active {
   flex-direction: column;
 }
 
-/* 默认向上 */
-.assistant.expand-up .assistant-panel {
-  bottom: 52px;
-  transform-origin: bottom right;
+.assistant.expand-left .assistant-panel {
+  right: 0;
+  left: auto;
 }
 
-/* 空间不够时向下 */
+.assistant.expand-right .assistant-panel {
+  left: 0;
+  right: auto;
+}
+
+.assistant.expand-up .assistant-panel {
+  bottom: 52px;
+  top: auto;
+}
+
 .assistant.expand-down .assistant-panel {
   top: 52px;
   bottom: auto;
+}
+
+.assistant.expand-up.expand-left .assistant-panel {
+  transform-origin: bottom right;
+}
+
+.assistant.expand-up.expand-right .assistant-panel {
+  transform-origin: bottom left;
+}
+
+.assistant.expand-down.expand-left .assistant-panel {
   transform-origin: top right;
+}
+
+.assistant.expand-down.expand-right .assistant-panel {
+  transform-origin: top left;
 }
 
 .assistant.open .assistant-panel,
