@@ -1522,10 +1522,8 @@ body.dark-mode .mode-switch-btn.active {
   height: 28px;
   border-radius: 50%;
   background: #fff;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.16),
-    0 3px 8px rgba(0, 0, 0, 0.12);
-  transition: transform .22s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 3px 8px rgba(0, 0, 0, 0.12);
+  transition: left 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .ios-switch.active .ios-switch-track {
@@ -1533,7 +1531,7 @@ body.dark-mode .mode-switch-btn.active {
 }
 
 .ios-switch.active .ios-switch-thumb {
-  transform: translateX(20px);
+  left: 22px;
 }
 
 .ios-switch:focus-visible {
