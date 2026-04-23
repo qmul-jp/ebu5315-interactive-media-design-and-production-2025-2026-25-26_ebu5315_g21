@@ -45,12 +45,30 @@ The website is built with **HTML, CSS, and JavaScript only**, with no server or 
 - GitHub
 
 ## Repository Structure
-This repository contains shared files and section files for Homepage, Game, and Quiz.  
-The structure will be further refined as the project develops in later versions.
 
-- shared.css
-- shared.js
-- README.md
+The project is modularly structured. `shared.js` and `shared.css` form the core foundation used by all team members to ensure consistent styling, accessibility, and navigation. The three main functional sections (Homepage, Game, and Quiz) are developed independently on top of this foundation with their own specific files.
+
+### 1. Shared Foundation
+All pages include these files to maintain a consistent global user experience:
+* **`shared.css`**: Defines global visual standards, including CSS variables, typography, and an Apple-style glassmorphism design. It also contains overrides for appearance themes (Light, Dark, Eye-Care) and accessibility features (Brutal High Contrast, Enhanced Legibility, Reduced Motion).
+* **`shared.js`**: Provides global interactive logic, including navigation routing, the UI engine for the Settings modal, and persistent user preference management via `localStorage`. It utilizes global event listeners to enable seamless, no-reload bilingual switching and AI assistant integration.
+
+### 2. Homepage Section (by Yining Qin)
+* **`homepage.html`**: The main landing page, featuring interactive SVG carousels to visually demonstrate core circle theorem concepts.
+
+### 3. Game Section (by Yafei Yang)
+* **`gamehome.html`**: The main entry point for the game, featuring an 8-room quest map, progress tracking (star system), and archive unlock status.
+* **`play.html`**: The core level page containing the interactive SVG puzzle rooms, puzzle console, and real-time feedback system.
+* **`theorems.html`**: The theorem archive, which progressively unlocks detailed geometric properties and dynamic demonstrations as the user clears rooms.
+* **`complete.html`**: The final completion screen, showcasing achievements and guiding users to the full archive.
+* **`game.css`**: Specific styling for game-specific UI, mission strips, puzzle consoles, and level feedback effects.
+* **`script.js`**: The core game engine, handling SVG point-dragging algorithms, real-time geometric theorem validation, timers, confetti particle effects, and the Web Audio API sound effect engine.
+
+### 4. Quiz Section (by Yiran Fan)
+* **`index.html`**: The main interface for the knowledge quiz module.
+* **`main.css`**: Specific styling for quiz layouts and question cards.
+* **`main.js`**: The logic engine handling quiz interactions, progress control, and result calculations.
+* **`api.js`**: Manages the dynamic retrieval and handling of the question bank data.
 
 ## Version Control
 Each team member works on their own branch and contributes to the project through GitHub version control.
