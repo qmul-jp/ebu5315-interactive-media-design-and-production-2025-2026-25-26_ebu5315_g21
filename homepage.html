@@ -406,70 +406,214 @@
       border-radius: var(--radius-md);
     }
 
+    /* ========== 手机端完美适配：文字在上，图片在下 ========== */
     @media (max-width: 880px) {
       .slider {
         padding: 20px 48px;
         min-height: auto;
       }
 
-      .slide.slide-in-right,
-      .slide.slide-in-left,
-      .slide.slide-out-left,
-      .slide.slide-out-right {
-        inset: 20px 48px;
-      }
-
       .slide-layout {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 20px;
+        /* 确保上下排列且间距舒适 */
+        align-items: flex-start;
+        /* 文字顶部对齐，避免图片被过度挤出 */
       }
 
       .slide-copy {
         max-width: none;
         padding-left: 20px;
-        padding-right: 0;
+        padding-right: 20px;
+        padding-bottom: 12px;
+        /* 给图片留出呼吸空间 */
+        text-align: left;
+        width: 100%;
+        order: 1;
+        /* 显式保证文字在第一层 */
       }
 
-      .slide-copy,
       .slide-visual {
+        order: 2;
+        /* 图片放在文字下方 */
+        padding-right: 0;
+        /* 移除右侧过度的留白 */
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+
+      .slide-copy h3 {
+        font-size: 1.7rem;
         text-align: center;
       }
 
-      .slide-copy .slide-equation {
-        justify-content: center;
+      .slide-copy p {
+        text-align: center;
+        font-size: 1rem;
+      }
+
+      .slide-equation {
+        white-space: normal;
+        /* 手机端如果公式太长允许换行，避免横向溢出 */
+        text-align: center;
+        align-self: center;
+        background: var(--primary-soft);
+        font-size: 0.9rem;
       }
 
       .slide-visual-frame {
-        max-width: min(100%, 420px);
+        max-width: min(100%, 320px);
         margin: 0 auto;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .slider {
-        padding: 16px 42px 44px;
-      }
-
-      .slide.slide-in-right,
-      .slide.slide-in-left,
-      .slide.slide-out-left,
-      .slide.slide-out-right {
-        inset: 16px 42px 44px;
+        padding: 12px;
       }
 
       .prev,
       .next {
-        font-size: 20px;
-        padding: 7px 10px;
+        width: 44px;
+        height: 44px;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 36, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      .slider-dots {
+        bottom: 8px;
+        gap: 14px;
+      }
+
+      .slider-dot {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    /* 针对非常窄的手机 (≤560px) 做微调，确保图文皆舒适 */
+    @media (max-width: 560px) {
+      .slider {
+        padding: 16px 42px 50px;
+      }
+
+      .slide-copy {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .slide-copy h3 {
+        font-size: 1.45rem;
+      }
+
+      .slide-copy p {
+        font-size: 0.94rem;
+        line-height: 1.55;
       }
 
       .slide-visual-frame {
-        padding: 10px;
-        border-radius: 20px;
+        padding: 8px;
       }
 
-      .slide-visual svg {
-        border-radius: 14px;
+      .prev,
+      .next {
+        width: 38px;
+        height: 38px;
+        font-size: 24px;
+      }
+
+      .slider-dots {
+        bottom: 12px;
+      }
+    }
+
+    /* 防止任何意外横幅滚动条 */
+    body {
+      overflow-x: hidden;
+    }
+
+    /* ===== Slide mobile layout fix ===== */
+    @media (max-width: 900px) {
+      .slider {
+        min-height: auto;
+        padding: 20px 20px 56px;
+      }
+
+      .slide {
+        align-items: flex-start;
+      }
+
+      .slide-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .slide-copy {
+        order: 1;
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0;
+        text-align: center;
+        align-items: center;
+      }
+
+      .slide-visual {
+        order: 2;
+        width: 100%;
+        padding-right: 0 !important;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .slide-equation {
+        align-self: center;
+        white-space: normal;
+        text-align: center;
+      }
+
+      .slide-visual-frame {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+
+      .prev {
+        left: 8px;
+      }
+
+      .next {
+        right: 8px;
+      }
+    }
+
+    /* ===== Key fix: adaptive height for mobile ===== */
+    @media (max-width: 900px) {
+
+      .slider {
+        min-height: unset;
+        /* Remove fixed height */
+        height: auto;
+        overflow: visible;
+        /* Allow content to expand */
+      }
+
+      .slide {
+        position: relative;
+        /* No longer absolutely positioned */
+        inset: auto;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+      }
+
+      /* Only display the active slide */
+      .slide:not(.active) {
+        display: none;
       }
     }
   </style>
@@ -805,7 +949,7 @@
   </footer>
 
   <script>
-    /* ===== Homepage I18N dictionary ===== */
+    /* ===== Homepage I18N dictionary (保持不变) ===== */
     const HOMEPAGE_I18N = {
       en: {
         breadcrumb: "Home",
