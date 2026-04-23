@@ -4,7 +4,10 @@
    ========================================================= */
 
 /* ===== Hero ===== */
-
+/* 必须添加在 game.css 最顶部 */
+* {
+    box-sizing: border-box;
+}
 .hero-panel,
 .play-hero {
   display: grid;
@@ -1902,16 +1905,37 @@ body.is-dragging .diagram-card {
   }
 
   /* 压缩标题框的内边距，给文字留出更多横向空间 */
-  .header-box {
-    padding: 24px 16px; 
-    margin-bottom: 20px;
-    border-radius: var(--radius-md);
-  }
+.header-box {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: clamp(20px, 5vw, 40px); 
+    background: var(--bg-panel);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    
+    width: 100%;
+    max-width: 100%;
+    
+    /* 核心修复 1：强制高度自动适应内容，文字有几行就撑多高 */
+    height: auto !important; 
+    
+    /* 核心修复 2：千万不要加 overflow: hidden; 如果之前有，请一定要删掉！ */
+}
 
-  /* 稍微缩小副标题文字 */
-  .header-box p {
-    font-size: 0.95rem; 
-  }
+.header-box h1 {
+    font-size: clamp(1.8rem, 8vw, 3.2rem);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+    
+    /* 核心修复 3：稍微增加行高，防止上下两行英文字母（比如 g 和 j）互相打架或被切边 */
+    line-height: 1.35; 
+    
+    /* 核心修复 4：双重保险的换行断字规则 */
+    word-wrap: break-word;
+    word-break: break-word; 
+    white-space: normal;
+}
 
   /* 如果你有房间列表网格，确保在手机上强制单列显示 */
   .room-grid {
