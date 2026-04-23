@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Geometry Escape Lab | Home</title>
-
   <link rel="stylesheet" href="shared.css">
-
-
   <style>
     /* ===== Homepage styles ===== */
     .hero {
@@ -17,15 +13,12 @@
       border-radius: var(--radius-xl);
       margin-bottom: 32px;
       text-align: center;
-
       border: none;
       box-shadow: var(--shadow-sm);
     }
-
     .hero h2 {
       font-size: clamp(2rem, 4vw, 3.1rem);
     }
-
     .hero p {
       color: var(--text-soft);
       line-height: 1.35;
@@ -33,7 +26,6 @@
       margin-left: auto;
       margin-right: auto;
     }
-
     .buttons {
       display: flex;
       flex-direction: column;
@@ -41,7 +33,6 @@
       gap: 16px;
       margin: 28px 0 32px;
     }
-
     .buttons button {
       width: min(90%, 700px);
       padding: 20px;
@@ -49,40 +40,32 @@
       font-size: 1.4rem;
       font-weight: 700;
       cursor: pointer;
-
       background: var(--bg-soft);
       border: none;
       outline: none;
       box-shadow: var(--shadow-sm);
-
       color: var(--text);
     }
-
     .buttons button:hover {
       background: var(--primary);
       color: var(--nav-hover-text);
     }
-
     .content {
       display: grid;
       gap: 24px;
     }
-
     .card {
       background: var(--bg-panel);
       padding: 24px;
       border-radius: var(--radius-md);
-
       border: none;
       box-shadow: var(--shadow-sm);
     }
-
     .card.slider {
       width: min(100%, 1200px);
       margin: 0 auto;
       box-sizing: border-box;
     }
-
     .slider {
       position: relative;
       overflow: hidden;
@@ -90,11 +73,10 @@
       padding: clamp(18px, 3vw, 28px) clamp(46px, 6vw, 68px);
       min-height: 480px;
       box-sizing: border-box;
-
       display: flex;
       align-items: stretch;
+      transition: height 0.3s ease; /* 平滑高度变化 */
     }
-
     .slide {
       position: absolute;
       inset: 0;
@@ -108,7 +90,6 @@
       transform: translateX(100%);
       transition: transform 0.55s ease, opacity 0.55s ease, visibility 0.55s ease;
     }
-
     .slide.active {
       opacity: 1;
       visibility: visible;
@@ -116,35 +97,31 @@
       transform: translateX(0);
       z-index: 2;
     }
-
+    /* 方向动画类 - 根据用户期望：向前(下一张) -> 新内容向右滑入，当前向左退出；向后(上一张) -> 新内容向左滑入，当前向右退出 */
     .slide.exit-left {
       opacity: 0;
       visibility: hidden;
       transform: translateX(-100%);
       z-index: 1;
     }
-
     .slide.exit-right {
       opacity: 0;
       visibility: hidden;
       transform: translateX(100%);
       z-index: 1;
     }
-
     .slide.enter-from-right {
       opacity: 0;
       visibility: visible;
       transform: translateX(100%);
       z-index: 3;
     }
-
     .slide.enter-from-left {
       opacity: 0;
       visibility: visible;
       transform: translateX(-100%);
       z-index: 3;
     }
-
     .slide-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
@@ -153,65 +130,53 @@
       width: 100%;
       min-height: 100%;
     }
-
     .slide-copy {
       text-align: left;
       min-width: 0;
       width: 100%;
       max-width: none;
-
       margin-left: 0;
       padding-left: 80px;
       padding-right: 0;
-
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-
     .slide-copy h3 {
       margin: 0 0 14px;
       font-size: clamp(1.4rem, 2.4vw, 2rem);
       color: var(--heading);
       letter-spacing: -0.01em;
     }
-
     .slide-copy p {
       margin: 0 0 12px;
       color: var(--text-soft);
       line-height: 1.7;
     }
-
     .slide-copy h3,
     .slide-copy p {
       overflow-wrap: break-word;
       word-break: break-word;
     }
-
     .slide-equation {
       display: inline-block;
       width: fit-content;
       max-width: 100%;
       align-self: flex-start;
-
       padding: 4px 10px;
       margin-top: 4px;
-
       border-radius: 999px;
       background: var(--primary-soft);
       color: var(--primary-strong);
-
       font-weight: 700;
       letter-spacing: 0.01em;
       white-space: nowrap;
     }
-
     @media (max-width: 880px) {
       .slide-equation {
         align-self: center;
       }
     }
-
     .slide-visual {
       width: 100%;
       display: flex;
@@ -221,7 +186,6 @@
       justify-content: flex-end;
       padding-right: 80px;
     }
-
     .slide-visual-frame {
       width: 100%;
       max-width: 360px;
@@ -232,13 +196,11 @@
       border: 1px solid rgba(54, 76, 112, 0.08);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
     }
-
     body.dark-mode .slide-visual-frame {
       background: linear-gradient(145deg, rgba(27, 36, 52, 0.95), rgba(22, 32, 49, 0.95));
       border-color: rgba(255, 255, 255, 0.06);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     }
-
     .slide-visual svg {
       width: 100%;
       height: 100%;
@@ -247,20 +209,17 @@
       border: 1px solid rgba(54, 76, 112, 0.12);
       border-radius: 18px;
     }
-
     .slide-visual text {
       font-family: 'Segoe UI', Roboto, Arial, sans-serif;
       font-size: 13px;
       fill: var(--svg-label);
       user-select: none;
     }
-
     .diagram-circle {
       fill: none;
       stroke: var(--svg-circle);
       stroke-width: 2;
     }
-
     .diagram-line {
       stroke: var(--svg-line);
       stroke-width: 2.1;
@@ -268,56 +227,44 @@
       stroke-linejoin: round;
       fill: none;
     }
-
     .diagram-line.soft {
       stroke-width: 1.6;
       stroke-dasharray: 5 4;
     }
-
     .diagram-line.accent {
       stroke: var(--gold);
     }
-
     .diagram-line.blue {
       stroke: var(--blue);
     }
-
     .diagram-line.green {
       stroke: var(--green);
     }
-
     .diagram-point {
       stroke: var(--svg-drag-stroke);
       stroke-width: 2;
     }
-
     .diagram-point.gold {
       fill: var(--gold);
     }
-
     .diagram-point.blue {
       fill: var(--blue);
     }
-
     .diagram-point.green {
       fill: var(--green);
     }
-
     .diagram-point.muted {
       fill: var(--svg-fixed-point);
     }
-
     .diagram-angle {
       fill: rgba(143, 106, 42, 0.12);
       stroke: rgba(143, 106, 42, 0.28);
       stroke-width: 1.2;
     }
-
     body.dark-mode .diagram-angle {
       fill: rgba(209, 163, 78, 0.16);
       stroke: rgba(209, 163, 78, 0.30);
     }
-
     .prev,
     .next {
       position: absolute;
@@ -333,22 +280,17 @@
       z-index: 3;
       transition: transform 0.2s ease, background 0.2s ease;
     }
-
     .prev:hover,
     .next:hover {
       transform: translateY(-50%) scale(1.05);
       background: var(--primary);
     }
-
     .prev {
       left: 14px;
     }
-
     .next {
       right: 14px;
     }
-
-
     .slider-dots {
       position: absolute;
       left: 50%;
@@ -360,7 +302,6 @@
       align-items: center;
       justify-content: center;
     }
-
     .slider-dot {
       width: 10px;
       height: 10px;
@@ -372,177 +313,56 @@
       transition: transform 0.25s ease, background 0.25s ease, opacity 0.25s ease;
       opacity: 0.75;
     }
-
     .slider-dot:hover {
       transform: scale(1.15);
       opacity: 1;
     }
-
     .slider-dot.active {
       background: var(--primary);
       transform: scale(1.2);
       opacity: 1;
     }
-
     body.dark-mode .slider-dot {
       background: rgba(255, 255, 255, 0.28);
     }
-
     body.dark-mode .slider-dot.active {
       background: var(--primary);
     }
-
     .ad-container {
       display: flex;
       align-items: center;
       justify-content: center;
-
       padding: 40px 20px;
       min-height: 250px;
-
       text-align: center;
       color: var(--text-soft);
       background: var(--bg-soft);
       border-radius: var(--radius-md);
     }
 
-    /* ========== 手机端完美适配：文字在上，图片在下 ========== */
-    @media (max-width: 880px) {
-      .slider {
-        padding: 20px 48px;
-        min-height: auto;
-      }
-
-      .slide-layout {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        /* 确保上下排列且间距舒适 */
-        align-items: flex-start;
-        /* 文字顶部对齐，避免图片被过度挤出 */
-      }
-
-      .slide-copy {
-        max-width: none;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 12px;
-        /* 给图片留出呼吸空间 */
-        text-align: left;
-        width: 100%;
-        order: 1;
-        /* 显式保证文字在第一层 */
-      }
-
-      .slide-visual {
-        order: 2;
-        /* 图片放在文字下方 */
-        padding-right: 0;
-        /* 移除右侧过度的留白 */
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 18px;
-      }
-
-      .slide-copy h3 {
-        font-size: 1.7rem;
-        text-align: center;
-      }
-
-      .slide-copy p {
-        text-align: center;
-        font-size: 1rem;
-      }
-
-      .slide-equation {
-        white-space: normal;
-        /* 手机端如果公式太长允许换行，避免横向溢出 */
-        text-align: center;
-        align-self: center;
-        background: var(--primary-soft);
-        font-size: 0.9rem;
-      }
-
-      .slide-visual-frame {
-        max-width: min(100%, 320px);
-        margin: 0 auto;
-        padding: 12px;
-      }
-
-      .prev,
-      .next {
-        width: 44px;
-        height: 44px;
-        font-size: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(15, 23, 36, 0.6);
-        backdrop-filter: blur(4px);
-      }
-
-      .slider-dots {
-        bottom: 8px;
-        gap: 14px;
-      }
-
-      .slider-dot {
-        width: 12px;
-        height: 12px;
-      }
-    }
-
-    /* 针对非常窄的手机 (≤560px) 做微调，确保图文皆舒适 */
-    @media (max-width: 560px) {
-      .slider {
-        padding: 16px 42px 50px;
-      }
-
-      .slide-copy {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-
-      .slide-copy h3 {
-        font-size: 1.45rem;
-      }
-
-      .slide-copy p {
-        font-size: 0.94rem;
-        line-height: 1.55;
-      }
-
-      .slide-visual-frame {
-        padding: 8px;
-      }
-
-      .prev,
-      .next {
-        width: 38px;
-        height: 38px;
-        font-size: 24px;
-      }
-
-      .slider-dots {
-        bottom: 12px;
-      }
-    }
-
-    /* 防止任何意外横幅滚动条 */
-    body {
-      overflow-x: hidden;
-    }
-
-    /* ===== Slide mobile layout fix ===== */
+    /* 手机端完美适配 + 保留 absolute 动画 (移除之前破坏动画的样式) */
     @media (max-width: 900px) {
       .slider {
         min-height: auto;
         padding: 20px 20px 56px;
+        /* 保持 relative 容器, 高度由 JS 动态调整，确保动画可见 */
       }
-
       .slide {
-        align-items: flex-start;
+        /* 保持 absolute 定位，不移除动画 */
+        position: absolute;
+        inset: 0;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
       }
-
+      .slide.active {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        position: relative; /* 为了让父容器高度撑开，active 改为 relative 但过渡依旧存在？需要谨慎：active slide 需要撑开高度，同时其他 slide 隐藏。使用 flex 方案更好: 不使用 relative，而是用 JS 动态设置高度 */
+        position: absolute; /* 保持 absolute 让所有 slide 脱离文档流，靠父容器 min-height 撑开不准确，因此必须用 JS 实时更新 slider 高度 */
+      }
+      /* 关键：所有 slide 都 absolute，父容器高度无法自动撑开，因此需要在每次切换后重新计算 slider 高度 */
       .slide-layout {
         display: flex;
         flex-direction: column;
@@ -550,7 +370,6 @@
         gap: 20px;
         width: 100%;
       }
-
       .slide-copy {
         order: 1;
         width: 100%;
@@ -561,7 +380,6 @@
         text-align: center;
         align-items: center;
       }
-
       .slide-visual {
         order: 2;
         width: 100%;
@@ -569,706 +387,273 @@
         justify-content: center;
         align-items: center;
       }
-
       .slide-equation {
         align-self: center;
         white-space: normal;
         text-align: center;
       }
-
       .slide-visual-frame {
         width: 100%;
         max-width: 320px;
         margin: 0 auto;
       }
-
+      .prev, .next {
+        width: 44px;
+        height: 44px;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 36, 0.6);
+        backdrop-filter: blur(4px);
+      }
       .prev {
         left: 8px;
       }
-
       .next {
         right: 8px;
       }
+      .slider-dots {
+        bottom: 8px;
+        gap: 14px;
+      }
+      .slider-dot {
+        width: 12px;
+        height: 12px;
+      }
     }
-
-    /* ===== Key fix: adaptive height for mobile ===== */
-    @media (max-width: 900px) {
-
+    @media (max-width: 560px) {
       .slider {
-        min-height: unset;
-        /* Remove fixed height */
-        height: auto;
-        overflow: visible;
-        /* Allow content to expand */
+        padding: 16px 42px 50px;
       }
-
-      .slide {
-        position: relative;
-        /* No longer absolutely positioned */
-        inset: auto;
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: none !important;
+      .slide-copy {
+        padding-left: 8px;
+        padding-right: 8px;
       }
-
-      /* Only display the active slide */
-      .slide:not(.active) {
-        display: none;
+      .slide-copy h3 {
+        font-size: 1.45rem;
       }
+      .slide-copy p {
+        font-size: 0.94rem;
+        line-height: 1.55;
+      }
+      .slide-visual-frame {
+        padding: 8px;
+      }
+      .prev, .next {
+        width: 38px;
+        height: 38px;
+        font-size: 24px;
+      }
+      .slider-dots {
+        bottom: 12px;
+      }
+    }
+    body {
+      overflow-x: hidden;
     }
   </style>
-
-
-  <!-- shared logic (navigation, settings, language) -->
   <script src="shared.js" defer></script>
 </head>
-
 <body>
 
-  <header>
-    <div class="header-left">
-      <h1>Geometry Escape Lab</h1>
-      <div class="breadcrumb">
-        <span data-role="breadcrumb-home"></span>
-      </div>
-    </div>
-
-    <nav>
-      <button id="navHomeBtn"></button>
-      <button id="navGameBtn"></button>
-      <button id="navQuizBtn"></button>
-      <button id="settingsBtn"></button>
-
-      <div class="nav-group">
-        <button class="dropbtn"></button>
-        <div class="dropdown-content">
-          <a href="#" id="contactBtn"></a>
-          <a href="#" id="supportBtn"></a>
-          <a href="#" id="accessibilityBtn"></a>
-          <a href="#" id="privacyBtn">Privacy Policy</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- modal (shared.js controlled) -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <button class="close">&times;</button>
-      <h2 id="modal-title"></h2>
-      <div id="modal-text"></div>
-    </div>
+<header>
+  <div class="header-left">
+    <h1>Geometry Escape Lab</h1>
+    <div class="breadcrumb"><span data-role="breadcrumb-home"></span></div>
   </div>
-
-  <div class="container">
-
-    <!-- Hero -->
-    <div class="hero">
-      <h2 data-role="hero-title"></h2>
-      <p data-role="hero-sub"></p>
-      <p data-role="hero-desc"></p>
-    </div>
-
-    <!-- Main buttons -->
-    <div class="buttons">
-      <button id="gameMainBtn" data-role="game-btn"></button>
-      <button id="quizMainBtn" data-role="quiz-btn"></button>
-    </div>
-
-    <!-- Content -->
-    <div class="content">
-
-
-      <!-- Carousel -->
-      <div class="card slider">
-        <div class="slide active">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide1-title"></h3>
-              <p data-role="slide1-text1"></p>
-              <p class="slide-equation" data-role="slide1-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Angle at the centre diagram">
-                  <circle class="diagram-circle" cx="160" cy="108" r="74" />
-                  <line class="diagram-line accent" x1="160" y1="108" x2="105" y2="158" />
-                  <line class="diagram-line accent" x1="160" y1="108" x2="226" y2="150" />
-                  <line class="diagram-line blue soft" x1="146" y1="35" x2="105" y2="158" />
-                  <line class="diagram-line blue soft" x1="146" y1="35" x2="226" y2="150" />
-                  <path id="angle-s1-center" class="diagram-angle" />
-                  <path id="angle-s1-top" class="diagram-angle" />
-                  <circle class="diagram-point muted" cx="160" cy="108" r="5" />
-                  <circle class="diagram-point blue" cx="146" cy="35" r="5" />
-                  <circle class="diagram-point gold" cx="105" cy="158" r="5" />
-                  <circle class="diagram-point gold" cx="226" cy="150" r="5" />
-                  <text x="166" y="104">O</text>
-                  <text x="136" y="30">C</text>
-                  <text x="94" y="170">A</text>
-                  <text x="232" y="163">B</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide2-title"></h3>
-              <p data-role="slide2-text1"></p>
-              <p class="slide-equation" data-role="slide2-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Angle in a semicircle diagram">
-                  <circle class="diagram-circle" cx="160" cy="118" r="72" />
-                  <line class="diagram-line" x1="88" y1="118" x2="232" y2="118" />
-                  <line class="diagram-line blue" x1="160" y1="46" x2="88" y2="118" />
-                  <line class="diagram-line blue" x1="160" y1="46" x2="232" y2="118" />
-                  <path id="angle-s2-top" class="diagram-angle" />
-                  <circle class="diagram-point gold" cx="88" cy="118" r="5" />
-                  <circle class="diagram-point gold" cx="232" cy="118" r="5" />
-                  <circle class="diagram-point blue" cx="160" cy="46" r="5" />
-                  <circle class="diagram-point muted" cx="160" cy="118" r="4" />
-                  <text x="80" y="135">A</text>
-                  <text x="236" y="135">B</text>
-                  <text x="165" y="40">C</text>
-                  <text x="166" y="112">O</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide3-title"></h3>
-              <p data-role="slide3-text1"></p>
-              <p class="slide-equation" data-role="slide3-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Angles in the same segment diagram">
-                  <circle class="diagram-circle" cx="160" cy="110" r="72" />
-                  <line class="diagram-line accent" x1="106" y1="154" x2="226" y2="146" />
-                  <line class="diagram-line blue" x1="126" y1="52" x2="106" y2="154" />
-                  <line class="diagram-line blue" x1="126" y1="52" x2="226" y2="146" />
-                  <line class="diagram-line green" x1="198" y1="46" x2="106" y2="154" />
-                  <line class="diagram-line green" x1="198" y1="46" x2="226" y2="146" />
-                  <path id="angle-s3-left" class="diagram-angle" />
-                  <path id="angle-s3-right" class="diagram-angle" />
-                  <circle class="diagram-point gold" cx="106" cy="154" r="5" />
-                  <circle class="diagram-point gold" cx="226" cy="146" r="5" />
-                  <circle class="diagram-point blue" cx="126" cy="52" r="5" />
-                  <circle class="diagram-point green" cx="198" cy="46" r="5" />
-                  <text x="95" y="168">A</text>
-                  <text x="231" y="159">B</text>
-                  <text x="116" y="46">C</text>
-                  <text x="203" y="40">D</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide4-title"></h3>
-              <p data-role="slide4-text1"></p>
-              <p class="slide-equation" data-role="slide4-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Cyclic quadrilateral diagram">
-                  <circle class="diagram-circle" cx="160" cy="110" r="72" />
-                  <polygon points="118,52 230,91 194,173 101,151" fill="none" class="diagram-line blue" />
-                  <path id="angle-s4-right" class="diagram-angle" />
-                  <path id="angle-s4-left" class="diagram-angle" />
-                  <circle class="diagram-point blue" cx="118" cy="52" r="5" />
-                  <circle class="diagram-point gold" cx="230" cy="91" r="5" />
-                  <circle class="diagram-point green" cx="194" cy="173" r="5" />
-                  <circle class="diagram-point gold" cx="101" cy="151" r="5" />
-                  <text x="108" y="46">A</text>
-                  <text x="236" y="95">B</text>
-                  <text x="199" y="187">C</text>
-                  <text x="89" y="165">D</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide5-title"></h3>
-              <p data-role="slide5-text1"></p>
-              <p class="slide-equation" data-role="slide5-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Radius to tangent diagram">
-                  <circle class="diagram-circle" cx="136" cy="110" r="64" />
-                  <line class="diagram-line accent" x1="136" y1="110" x2="200" y2="110" />
-                  <line class="diagram-line blue" x1="200" y1="38" x2="200" y2="182" />
-                  <path id="angle-s5" class="diagram-angle" />
-                  <circle class="diagram-point muted" cx="136" cy="110" r="5" />
-                  <circle class="diagram-point blue" cx="200" cy="110" r="5" />
-                  <text x="142" y="104">O</text>
-                  <text x="206" y="106">T</text>
-                  <text x="208" y="42">L</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide6-title"></h3>
-              <p data-role="slide6-text1"></p>
-              <p class="slide-equation" data-role="slide6-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Tangents from a point diagram">
-                  <circle class="diagram-circle" cx="128" cy="110" r="58" />
-                  <line class="diagram-line blue" x1="250" y1="110" x2="154" y2="58" />
-                  <line class="diagram-line blue" x1="250" y1="110" x2="154" y2="162" />
-                  <line class="diagram-line accent" x1="128" y1="110" x2="154" y2="58" />
-                  <line class="diagram-line accent" x1="128" y1="110" x2="154" y2="162" />
-                  <circle class="diagram-point muted" cx="128" cy="110" r="5" />
-                  <circle class="diagram-point gold" cx="154" cy="58" r="5" />
-                  <circle class="diagram-point gold" cx="154" cy="162" r="5" />
-                  <circle class="diagram-point blue" cx="250" cy="110" r="5" />
-                  <text x="135" y="104">O</text>
-                  <text x="160" y="54">A</text>
-                  <text x="160" y="178">B</text>
-                  <text x="256" y="114">P</text>
-                  <text x="187" y="83" fill="var(--svg-accent-text)">PA</text>
-                  <text x="186" y="149" fill="var(--svg-accent-text)">PB</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide7-title"></h3>
-              <p data-role="slide7-text1"></p>
-              <p class="slide-equation" data-role="slide7-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Angle between tangents diagram">
-                  <circle class="diagram-circle" cx="132" cy="110" r="54" />
-                  <line class="diagram-line blue" x1="250" y1="110" x2="161" y2="64" />
-                  <line class="diagram-line blue" x1="250" y1="110" x2="161" y2="156" />
-                  <line class="diagram-line accent" x1="132" y1="110" x2="161" y2="64" />
-                  <line class="diagram-line accent" x1="132" y1="110" x2="161" y2="156" />
-                  <path id="angle-s7-outer" class="diagram-angle" />
-                  <path id="angle-s7-center" class="diagram-angle" />
-                  <circle class="diagram-point muted" cx="132" cy="110" r="5" />
-                  <circle class="diagram-point gold" cx="161" cy="64" r="5" />
-                  <circle class="diagram-point gold" cx="161" cy="156" r="5" />
-                  <circle class="diagram-point blue" cx="250" cy="110" r="5" />
-                  <text x="138" y="104">O</text>
-                  <text x="166" y="60">A</text>
-                  <text x="166" y="171">B</text>
-                  <text x="256" y="114">P</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide">
-          <div class="slide-layout">
-            <div class="slide-copy">
-              <h3 data-role="slide8-title"></h3>
-              <p data-role="slide8-text1"></p>
-              <p class="slide-equation" data-role="slide8-text2"></p>
-            </div>
-            <div class="slide-visual">
-              <div class="slide-visual-frame" aria-hidden="true">
-                <svg viewBox="0 0 320 220" aria-label="Alternate segment theorem diagram">
-                  <circle class="diagram-circle" cx="130" cy="110" r="58" />
-                  <line class="diagram-line blue" x1="188" y1="36" x2="188" y2="184" />
-                  <line class="diagram-line accent" x1="84" y1="64" x2="188" y2="110" />
-                  <line class="diagram-line green" x1="84" y1="64" x2="70" y2="146" />
-                  <line class="diagram-line green" x1="188" y1="110" x2="70" y2="146" />
-                  <path id="angle-s8-tangent" class="diagram-angle" />
-                  <path id="angle-s8-segment" class="diagram-angle" />
-                  <circle class="diagram-point blue" cx="84" cy="64" r="5" />
-                  <circle class="diagram-point gold" cx="188" cy="110" r="5" />
-                  <circle class="diagram-point green" cx="70" cy="146" r="5" />
-                  <text x="74" y="58">A</text>
-                  <text x="194" y="114">B</text>
-                  <text x="58" y="160">C</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="slider-dots" aria-label="Slide navigation dots">
-          <button class="slider-dot active" type="button" aria-label="Go to slide 1"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 2"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 3"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 4"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 5"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 6"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 7"></button>
-          <button class="slider-dot" type="button" aria-label="Go to slide 8"></button>
-        </div>
-
-        <button class="prev" aria-label="Previous theorem slide">‹</button>
-        <button class="next" aria-label="Next theorem slide">›</button>
+  <nav>
+    <button id="navHomeBtn"></button>
+    <button id="navGameBtn"></button>
+    <button id="navQuizBtn"></button>
+    <button id="settingsBtn"></button>
+    <div class="nav-group">
+      <button class="dropbtn"></button>
+      <div class="dropdown-content">
+        <a href="#" id="contactBtn"></a>
+        <a href="#" id="supportBtn"></a>
+        <a href="#" id="accessibilityBtn"></a>
+        <a href="#" id="privacyBtn">Privacy Policy</a>
       </div>
-
-
-      <div class="ad-container">
-        <p data-role="ad-text"></p>
-      </div>
-
     </div>
+  </nav>
+</header>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="close">&times;</button>
+    <h2 id="modal-title"></h2>
+    <div id="modal-text"></div>
   </div>
+</div>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span data-role="footer-left"></span>
-      <span data-role="footer-right"></span>
+<div class="container">
+  <div class="hero">
+    <h2 data-role="hero-title"></h2>
+    <p data-role="hero-sub"></p>
+    <p data-role="hero-desc"></p>
+  </div>
+  <div class="buttons">
+    <button id="gameMainBtn" data-role="game-btn"></button>
+    <button id="quizMainBtn" data-role="quiz-btn"></button>
+  </div>
+  <div class="content">
+    <!-- Carousel -->
+    <div class="card slider">
+      <div class="slide active">
+        <div class="slide-layout">
+          <div class="slide-copy">
+            <h3 data-role="slide1-title"></h3>
+            <p data-role="slide1-text1"></p>
+            <p class="slide-equation" data-role="slide1-text2"></p>
+          </div>
+          <div class="slide-visual">
+            <div class="slide-visual-frame" aria-hidden="true">
+              <svg viewBox="0 0 320 220" aria-label="Angle at the centre diagram">
+                <circle class="diagram-circle" cx="160" cy="108" r="74" />
+                <line class="diagram-line accent" x1="160" y1="108" x2="105" y2="158" />
+                <line class="diagram-line accent" x1="160" y1="108" x2="226" y2="150" />
+                <line class="diagram-line blue soft" x1="146" y1="35" x2="105" y2="158" />
+                <line class="diagram-line blue soft" x1="146" y1="35" x2="226" y2="150" />
+                <path id="angle-s1-center" class="diagram-angle" />
+                <path id="angle-s1-top" class="diagram-angle" />
+                <circle class="diagram-point muted" cx="160" cy="108" r="5" />
+                <circle class="diagram-point blue" cx="146" cy="35" r="5" />
+                <circle class="diagram-point gold" cx="105" cy="158" r="5" />
+                <circle class="diagram-point gold" cx="226" cy="150" r="5" />
+                <text x="166" y="104">O</text><text x="136" y="30">C</text><text x="94" y="170">A</text><text x="232" y="163">B</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide2-title"></h3><p data-role="slide2-text1"></p><p class="slide-equation" data-role="slide2-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="160" cy="118" r="72"/><line class="diagram-line" x1="88" y1="118" x2="232" y2="118"/><line class="diagram-line blue" x1="160" y1="46" x2="88" y2="118"/><line class="diagram-line blue" x1="160" y1="46" x2="232" y2="118"/><path id="angle-s2-top" class="diagram-angle"/><circle class="diagram-point gold" cx="88" cy="118" r="5"/><circle class="diagram-point gold" cx="232" cy="118" r="5"/><circle class="diagram-point blue" cx="160" cy="46" r="5"/><circle class="diagram-point muted" cx="160" cy="118" r="4"/><text x="80" y="135">A</text><text x="236" y="135">B</text><text x="165" y="40">C</text><text x="166" y="112">O</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide3-title"></h3><p data-role="slide3-text1"></p><p class="slide-equation" data-role="slide3-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="160" cy="110" r="72"/><line class="diagram-line accent" x1="106" y1="154" x2="226" y2="146"/><line class="diagram-line blue" x1="126" y1="52" x2="106" y2="154"/><line class="diagram-line blue" x1="126" y1="52" x2="226" y2="146"/><line class="diagram-line green" x1="198" y1="46" x2="106" y2="154"/><line class="diagram-line green" x1="198" y1="46" x2="226" y2="146"/><path id="angle-s3-left" class="diagram-angle"/><path id="angle-s3-right" class="diagram-angle"/><circle class="diagram-point gold" cx="106" cy="154" r="5"/><circle class="diagram-point gold" cx="226" cy="146" r="5"/><circle class="diagram-point blue" cx="126" cy="52" r="5"/><circle class="diagram-point green" cx="198" cy="46" r="5"/><text x="95" y="168">A</text><text x="231" y="159">B</text><text x="116" y="46">C</text><text x="203" y="40">D</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide4-title"></h3><p data-role="slide4-text1"></p><p class="slide-equation" data-role="slide4-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="160" cy="110" r="72"/><polygon points="118,52 230,91 194,173 101,151" fill="none" class="diagram-line blue"/><path id="angle-s4-right" class="diagram-angle"/><path id="angle-s4-left" class="diagram-angle"/><circle class="diagram-point blue" cx="118" cy="52" r="5"/><circle class="diagram-point gold" cx="230" cy="91" r="5"/><circle class="diagram-point green" cx="194" cy="173" r="5"/><circle class="diagram-point gold" cx="101" cy="151" r="5"/><text x="108" y="46">A</text><text x="236" y="95">B</text><text x="199" y="187">C</text><text x="89" y="165">D</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide5-title"></h3><p data-role="slide5-text1"></p><p class="slide-equation" data-role="slide5-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="136" cy="110" r="64"/><line class="diagram-line accent" x1="136" y1="110" x2="200" y2="110"/><line class="diagram-line blue" x1="200" y1="38" x2="200" y2="182"/><path id="angle-s5" class="diagram-angle"/><circle class="diagram-point muted" cx="136" cy="110" r="5"/><circle class="diagram-point blue" cx="200" cy="110" r="5"/><text x="142" y="104">O</text><text x="206" y="106">T</text><text x="208" y="42">L</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide6-title"></h3><p data-role="slide6-text1"></p><p class="slide-equation" data-role="slide6-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="128" cy="110" r="58"/><line class="diagram-line blue" x1="250" y1="110" x2="154" y2="58"/><line class="diagram-line blue" x1="250" y1="110" x2="154" y2="162"/><line class="diagram-line accent" x1="128" y1="110" x2="154" y2="58"/><line class="diagram-line accent" x1="128" y1="110" x2="154" y2="162"/><circle class="diagram-point muted" cx="128" cy="110" r="5"/><circle class="diagram-point gold" cx="154" cy="58" r="5"/><circle class="diagram-point gold" cx="154" cy="162" r="5"/><circle class="diagram-point blue" cx="250" cy="110" r="5"/><text x="135" y="104">O</text><text x="160" y="54">A</text><text x="160" y="178">B</text><text x="256" y="114">P</text><text x="187" y="83" fill="var(--svg-accent-text)">PA</text><text x="186" y="149" fill="var(--svg-accent-text)">PB</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide7-title"></h3><p data-role="slide7-text1"></p><p class="slide-equation" data-role="slide7-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="132" cy="110" r="54"/><line class="diagram-line blue" x1="250" y1="110" x2="161" y2="64"/><line class="diagram-line blue" x1="250" y1="110" x2="161" y2="156"/><line class="diagram-line accent" x1="132" y1="110" x2="161" y2="64"/><line class="diagram-line accent" x1="132" y1="110" x2="161" y2="156"/><path id="angle-s7-outer" class="diagram-angle"/><path id="angle-s7-center" class="diagram-angle"/><circle class="diagram-point muted" cx="132" cy="110" r="5"/><circle class="diagram-point gold" cx="161" cy="64" r="5"/><circle class="diagram-point gold" cx="161" cy="156" r="5"/><circle class="diagram-point blue" cx="250" cy="110" r="5"/><text x="138" y="104">O</text><text x="166" y="60">A</text><text x="166" y="171">B</text><text x="256" y="114">P</text></svg></div></div></div></div>
+      <div class="slide"><div class="slide-layout"><div class="slide-copy"><h3 data-role="slide8-title"></h3><p data-role="slide8-text1"></p><p class="slide-equation" data-role="slide8-text2"></p></div><div class="slide-visual"><div class="slide-visual-frame"><svg viewBox="0 0 320 220"><circle class="diagram-circle" cx="130" cy="110" r="58"/><line class="diagram-line blue" x1="188" y1="36" x2="188" y2="184"/><line class="diagram-line accent" x1="84" y1="64" x2="188" y2="110"/><line class="diagram-line green" x1="84" y1="64" x2="70" y2="146"/><line class="diagram-line green" x1="188" y1="110" x2="70" y2="146"/><path id="angle-s8-tangent" class="diagram-angle"/><path id="angle-s8-segment" class="diagram-angle"/><circle class="diagram-point blue" cx="84" cy="64" r="5"/><circle class="diagram-point gold" cx="188" cy="110" r="5"/><circle class="diagram-point green" cx="70" cy="146" r="5"/><text x="74" y="58">A</text><text x="194" y="114">B</text><text x="58" y="160">C</text></svg></div></div></div></div>
+
+      <div class="slider-dots" aria-label="Slide navigation dots">
+        <button class="slider-dot active" type="button" aria-label="Go to slide 1"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 2"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 3"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 4"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 5"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 6"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 7"></button>
+        <button class="slider-dot" type="button" aria-label="Go to slide 8"></button>
+      </div>
+      <button class="prev" aria-label="Previous theorem slide">‹</button>
+      <button class="next" aria-label="Next theorem slide">›</button>
     </div>
-  </footer>
+    <div class="ad-container"><p data-role="ad-text"></p></div>
+  </div>
+</div>
+<footer class="site-footer"><div class="footer-inner"><span data-role="footer-left"></span><span data-role="footer-right"></span></div></footer>
 
-  <script>
-    /* ===== Homepage I18N dictionary (保持不变) ===== */
-    const HOMEPAGE_I18N = {
-      en: {
-        breadcrumb: "Home",
-        heroTitle: "Circle Conquer: Play & Learn Geo Theorems",
-        heroSub: "Explore key GCSE rules such as angles at the centre, angles in the same segment, and cyclic quadrilaterals. ",
-        heroDesc: "Play games · Take quizzes · Get instant feedback",
-        gameBtn: "🎮 GAME",
-        quizBtn: "📖 QUIZ",
+<script>
+  const HOMEPAGE_I18N = { /* 内容与原一致，省略保持整洁 */ 
+    en: { breadcrumb: "Home", heroTitle: "Circle Conquer: Play & Learn Geo Theorems", heroSub: "Explore key GCSE rules such as angles at the centre, angles in the same segment, and cyclic quadrilaterals. ", heroDesc: "Play games · Take quizzes · Get instant feedback", gameBtn: "🎮 GAME", quizBtn: "📖 QUIZ", slide1Title: "Angle at the center", slide1Text1: "Angle at the center is twice the angle at the circumference.", slide1Text2: "∠AOB = 2 × ∠ACB", slide2Title: "Angles in a semicircle", slide2Text1: "The angle subtended by any diameter of a circle at its circumference is always 90°", slide2Text2: "∠ACB = 90°", slide3Title: "Angles in the Same Segment", slide3Text1: "Angles subtended by the same arc in the same segment are equal.", slide3Text2: "∠ACB = ∠ADB", slide4Title: "Cyclic Quadrilateral", slide4Text1: "Opposite angles of a cyclic quadrilateral are supplementary.", slide4Text2: "∠ABC + ∠ADC = 180°", slide5Title: "Radius to a Tangent", slide5Text1: "The radius of a circle is perpendicular to the tangent at the point of contact.", slide5Text2: "∠OTL = 90°", slide6Title: "Tangents from a Point", slide6Text1: "Tangents drawn from the same external point to a circle are equal in length, and each tangent is perpendicular to the radius at the point of contact.", slide6Text2: "PA = PB & Tangent ⟂ Radius", slide7Title: "Angle Between Tangents", slide7Text1: "The angle between two tangents drawn from an external point to a circle is supplementary to the central angle subtended by the points of contact, and each tangent is perpendicular to the radius at the point of contact.", slide7Text2: "Sum = 180° & Tangents ⟂ Radius", slide8Title: "Alternate Segment", slide8Text1: "The angle between a tangent and a chord at the point of contact is equal to the angle in the alternate segment.", slide8Text2: "Tangent-chord = ∠ACB", adText: "Advertisement", footerLeft: "© Geometry Escape Lab", footerRight: "Learn with fun" },
+    zh: { breadcrumb: "首页", heroTitle: "Circle Conquer：边玩边学圆定理", heroSub: "探究 GCSE 关键几何定理，例如圆心角定理、同弧所对圆周角相等以及圆内接四边形性质。", heroDesc: "玩游戏・做测验・即时获取反馈", gameBtn: "🎮 游戏", quizBtn: "📖 测验", slide1Title: "圆心角", slide1Text1: "圆心角是同弧所对圆周角的两倍。", slide1Text2: "∠AOB = 2 × ∠ACB", slide2Title: "半圆所对的圆周角", slide2Text1: "半圆所对的圆周角恒为 90°。", slide2Text2: "∠ACB = 90°", slide3Title: "同弧同段角相等", slide3Text1: "同一弧在同一弓形内所对的圆周角相等。", slide3Text2: "∠ACB = ∠ADB", slide4Title: "圆内接四边形", slide4Text1: "圆内接四边形的对角互补。", slide4Text2: "∠ABC + ∠ADC = 180°", slide5Title: "半径与切线", slide5Text1: "圆的半径与过切点的切线互相垂直。", slide5Text2: "∠OTL = 90°", slide6Title: "一点引两条切线", slide6Text1: "从同一个圆外点向圆引出的两条切线长度相等，且切线都垂直于经过切点的半径。", slide6Text2: "PA = PB，且 切线 ⟂ 半径", slide7Title: "两切线所夹角", slide7Text1: "从圆外一点引出的两条切线所夹的角，与两切点对应的圆心角互为补角，且切线都垂直于半径。", slide7Text2: "和为 180°，且 切线 ⟂ 半径", slide8Title: "交替弓形定理", slide8Text1: "切线与弦在切点所成的角，等于弦在对侧弧所对的圆周角。", slide8Text2: "切线-弦角 = ∠ACB", adText: "广告区域", footerLeft: "© 几何逃脱实验室", footerRight: "快乐学习" }
+  };
+  function getLang() { return localStorage.getItem('language') || 'en'; }
+  function tPage(key) { const lang = getLang(); return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key]; }
+  function applyHomepageLanguage() {
+    document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
+    const map = { breadcrumb: '[data-role="breadcrumb-home"]', heroTitle: '[data-role="hero-title"]', heroSub: '[data-role="hero-sub"]', heroDesc: '[data-role="hero-desc"]', gameBtn: '[data-role="game-btn"]', quizBtn: '[data-role="quiz-btn"]', slide1Title: '[data-role="slide1-title"]', slide1Text1: '[data-role="slide1-text1"]', slide1Text2: '[data-role="slide1-text2"]', slide2Title: '[data-role="slide2-title"]', slide2Text1: '[data-role="slide2-text1"]', slide2Text2: '[data-role="slide2-text2"]', slide3Title: '[data-role="slide3-title"]', slide3Text1: '[data-role="slide3-text1"]', slide3Text2: '[data-role="slide3-text2"]', slide4Title: '[data-role="slide4-title"]', slide4Text1: '[data-role="slide4-text1"]', slide4Text2: '[data-role="slide4-text2"]', slide5Title: '[data-role="slide5-title"]', slide5Text1: '[data-role="slide5-text1"]', slide5Text2: '[data-role="slide5-text2"]', slide6Title: '[data-role="slide6-title"]', slide6Text1: '[data-role="slide6-text1"]', slide6Text2: '[data-role="slide6-text2"]', slide7Title: '[data-role="slide7-title"]', slide7Text1: '[data-role="slide7-text1"]', slide7Text2: '[data-role="slide7-text2"]', slide8Title: '[data-role="slide8-title"]', slide8Text1: '[data-role="slide8-text1"]', slide8Text2: '[data-role="slide8-text2"]', adText: '[data-role="ad-text"]', footerLeft: '[data-role="footer-left"]', footerRight: '[data-role="footer-right"]' };
+    Object.entries(map).forEach(([key, selector]) => { const el = document.querySelector(selector); if (el) el.textContent = tPage(key); });
+  }
 
-        slide1Title: "Angle at the center",
-        slide1Text1: "Angle at the center is twice the angle at the circumference.",
-        slide1Text2: "∠AOB = 2 × ∠ACB",
+  function createAnglePath(cx,cy,x1,y1,x2,y2,r=20){ /* 原函数 */ const v1x=x1-cx,v1y=y1-cy,v2x=x2-cx,v2y=y2-cy; const len1=Math.hypot(v1x,v1y),len2=Math.hypot(v2x,v2y); if(!len1||!len2) return ''; const u1x=v1x/len1,u1y=v1y/len1,u2x=v2x/len2,u2y=v2y/len2; const startX=cx+u1x*r,startY=cy+u1y*r,endX=cx+u2x*r,endY=cy+u2y*r; const cross=u1x*u2y-u1y*u2x,dot=Math.max(-1,Math.min(1,u1x*u2x+u1y*u2y)),angle=Math.acos(dot); const largeArcFlag=angle>Math.PI?1:0,sweepFlag=cross>0?1:0; return `M ${cx} ${cy} L ${startX} ${startY} A ${r} ${r} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY} Z`; }
+  function setAnglePath(id,cx,cy,x1,y1,x2,y2,r=20){ const el=document.getElementById(id); if(el) el.setAttribute('d',createAnglePath(cx,cy,x1,y1,x2,y2,r)); }
+  function applyAngleMarkers(){ setAnglePath('angle-s1-center',160,108,105,158,226,150,22); setAnglePath('angle-s1-top',146,35,105,158,226,150,22); setAnglePath('angle-s2-top',160,46,88,118,232,118,22); setAnglePath('angle-s3-left',126,52,106,154,226,146,22); setAnglePath('angle-s3-right',198,46,106,154,226,146,22); setAnglePath('angle-s4-right',230,91,118,52,194,173,16); setAnglePath('angle-s4-left',101,151,118,52,194,173,16); setAnglePath('angle-s5',200,110,136,110,200,182,16); setAnglePath('angle-s7-outer',250,110,161,64,161,156,22); setAnglePath('angle-s7-center',132,110,161,64,161,156,22); setAnglePath('angle-s8-tangent',188,110,188,36,84,64,20); setAnglePath('angle-s8-segment',70,146,84,64,188,110,18); }
 
-        slide2Title: "Angles in a semicircle",
-        slide2Text1: "The angle subtended by any diameter of a circle at its circumference is always 90°",
-        slide2Text2: "∠ACB = 90°",
+  /* 轮播图核心 - 修正动画方向：向前（下一张）新内容从右侧进入，当前向左退出；向后（上一张）新内容从左侧进入，当前向右退出 */
+  const slides = document.querySelectorAll('.slide');
+  const sliderEl = document.querySelector('.slider');
+  const nextBtn = document.querySelector('.next');
+  const prevBtn = document.querySelector('.prev');
+  const dots = document.querySelectorAll('.slider-dot');
+  let autoTimer = null, isHovered = false, isAnimating = false;
+  let currentIdx = 0; // 实际活跃索引从DOM读取并同步
 
-        slide3Title: "Angles in the Same Segment",
-        slide3Text1: "Angles subtended by the same arc in the same segment are equal.",
-        slide3Text2: "∠ACB = ∠ADB",
+  function getActiveIndex() { for(let i=0;i<slides.length;i++) if(slides[i].classList.contains('active')) return i; return 0; }
+  function updateDots(activeIndex) { dots.forEach((dot,i)=> i===activeIndex ? dot.classList.add('active') : dot.classList.remove('active')); }
+  function adjustSliderHeight() { if(!sliderEl) return; const active = slides[getActiveIndex()]; if(active) sliderEl.style.height = active.offsetHeight + 'px'; else sliderEl.style.height = 'auto'; }
+  function cleanupSlideClasses(slide) { slide.classList.remove('active','exit-left','exit-right','enter-from-left','enter-from-right'); }
 
-        slide4Title: "Cyclic Quadrilateral",
-        slide4Text1: "Opposite angles of a cyclic quadrilateral are supplementary.",
-        slide4Text2: "∠ABC + ∠ADC = 180°",
+  function showSlide(targetIndex, direction = 'next') { // direction 'next' 或 'prev'
+    const curActive = getActiveIndex();
+    if(isAnimating || targetIndex === curActive) return false;
+    const curSlide = slides[curActive];
+    const nextSlide = slides[targetIndex];
+    isAnimating = true;
 
-        slide5Title: "Radius to a Tangent",
-        slide5Text1: "The radius of a circle is perpendicular to the tangent at the point of contact.",
-        slide5Text2: "∠OTL = 90°",
+    cleanupSlideClasses(curSlide);
+    cleanupSlideClasses(nextSlide);
 
-        slide6Title: "Tangents from a Point",
-        slide6Text1: "Tangents drawn from the same external point to a circle are equal in length, and each tangent is perpendicular to the radius at the point of contact.",
-        slide6Text2: "PA = PB & Tangent ⟂ Radius",
-
-        slide7Title: "Angle Between Tangents",
-        slide7Text1: "The angle between two tangents drawn from an external point to a circle is supplementary to the central angle subtended by the points of contact, and each tangent is perpendicular to the radius at the point of contact.",
-        slide7Text2: "Sum = 180° & Tangents ⟂ Radius",
-
-        slide8Title: "Alternate Segment",
-        slide8Text1: "The angle between a tangent and a chord at the point of contact is equal to the angle in the alternate segment.",
-        slide8Text2: "Tangent-chord = ∠ACB",
-
-        adText: "Advertisement",
-
-        footerLeft: "© Geometry Escape Lab",
-        footerRight: "Learn with fun"
-      },
-
-      zh: {
-        breadcrumb: "首页",
-        heroTitle: "Circle Conquer：边玩边学圆定理",
-        heroSub: "探究 GCSE 关键几何定理，例如圆心角定理、同弧所对圆周角相等以及圆内接四边形性质。",
-        heroDesc: "玩游戏・做测验・即时获取反馈",
-        gameBtn: "🎮 游戏",
-        quizBtn: "📖 测验",
-
-        slide1Title: "圆心角",
-        slide1Text1: "圆心角是同弧所对圆周角的两倍。",
-        slide1Text2: "∠AOB = 2 × ∠ACB",
-
-        slide2Title: "半圆所对的圆周角",
-        slide2Text1: "半圆所对的圆周角恒为 90°。",
-        slide2Text2: "∠ACB = 90°",
-
-        slide3Title: "同弧同段角相等",
-        slide3Text1: "同一弧在同一弓形内所对的圆周角相等。",
-        slide3Text2: "∠ACB = ∠ADB",
-
-        slide4Title: "圆内接四边形",
-        slide4Text1: "圆内接四边形的对角互补。",
-        slide4Text2: "∠ABC + ∠ADC = 180°",
-
-        slide5Title: "半径与切线",
-        slide5Text1: "圆的半径与过切点的切线互相垂直。",
-        slide5Text2: "∠OTL = 90°",
-
-        slide6Title: "一点引两条切线",
-        slide6Text1: "从同一个圆外点向圆引出的两条切线长度相等，且切线都垂直于经过切点的半径。",
-        slide6Text2: "PA = PB，且 切线 ⟂ 半径",
-
-        slide7Title: "两切线所夹角",
-        slide7Text1: "从圆外一点引出的两条切线所夹的角，与两切点对应的圆心角互为补角，且切线都垂直于半径。",
-        slide7Text2: "和为 180°，且 切线 ⟂ 半径",
-
-        slide8Title: "交替弓形定理",
-        slide8Text1: "切线与弦在切点所成的角，等于弦在对侧弧所对的圆周角。",
-        slide8Text2: "切线-弦角 = ∠ACB",
-
-        adText: "广告区域",
-
-        footerLeft: "© 几何逃脱实验室",
-        footerRight: "快乐学习"
-      }
-    };
-
-    /* ===== Helpers ===== */
-    function getLang() {
-      return localStorage.getItem('language') || 'en';
-    }
-
-    function tPage(key) {
-      const lang = getLang();
-      return HOMEPAGE_I18N[lang]?.[key] || HOMEPAGE_I18N.en[key];
-    }
-
-    /* ===== Apply language ===== */
-    function applyHomepageLanguage() {
-      document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
-
-      const map = {
-        breadcrumb: '[data-role="breadcrumb-home"]',
-        heroTitle: '[data-role="hero-title"]',
-        heroSub: '[data-role="hero-sub"]',
-        heroDesc: '[data-role="hero-desc"]',
-        gameBtn: '[data-role="game-btn"]',
-        quizBtn: '[data-role="quiz-btn"]',
-
-        slide1Title: '[data-role="slide1-title"]',
-        slide1Text1: '[data-role="slide1-text1"]',
-        slide1Text2: '[data-role="slide1-text2"]',
-
-        slide2Title: '[data-role="slide2-title"]',
-        slide2Text1: '[data-role="slide2-text1"]',
-        slide2Text2: '[data-role="slide2-text2"]',
-
-        slide3Title: '[data-role="slide3-title"]',
-        slide3Text1: '[data-role="slide3-text1"]',
-        slide3Text2: '[data-role="slide3-text2"]',
-
-        slide4Title: '[data-role="slide4-title"]',
-        slide4Text1: '[data-role="slide4-text1"]',
-        slide4Text2: '[data-role="slide4-text2"]',
-
-        slide5Title: '[data-role="slide5-title"]',
-        slide5Text1: '[data-role="slide5-text1"]',
-        slide5Text2: '[data-role="slide5-text2"]',
-
-        slide6Title: '[data-role="slide6-title"]',
-        slide6Text1: '[data-role="slide6-text1"]',
-        slide6Text2: '[data-role="slide6-text2"]',
-
-        slide7Title: '[data-role="slide7-title"]',
-        slide7Text1: '[data-role="slide7-text1"]',
-        slide7Text2: '[data-role="slide7-text2"]',
-
-        slide8Title: '[data-role="slide8-title"]',
-        slide8Text1: '[data-role="slide8-text1"]',
-        slide8Text2: '[data-role="slide8-text2"]',
-
-        adText: '[data-role="ad-text"]',
-        footerLeft: '[data-role="footer-left"]',
-        footerRight: '[data-role="footer-right"]'
-      };
-
-      Object.entries(map).forEach(([key, selector]) => {
-        const el = document.querySelector(selector);
-        if (el) el.textContent = tPage(key);
-      });
-    }
-
-
-    function createAnglePath(cx, cy, x1, y1, x2, y2, r = 20) {
-      const v1x = x1 - cx;
-      const v1y = y1 - cy;
-      const v2x = x2 - cx;
-      const v2y = y2 - cy;
-
-      const len1 = Math.hypot(v1x, v1y);
-      const len2 = Math.hypot(v2x, v2y);
-      if (!len1 || !len2) return '';
-
-      const u1x = v1x / len1;
-      const u1y = v1y / len1;
-      const u2x = v2x / len2;
-      const u2y = v2y / len2;
-
-      const startX = cx + u1x * r;
-      const startY = cy + u1y * r;
-      const endX = cx + u2x * r;
-      const endY = cy + u2y * r;
-
-      const cross = u1x * u2y - u1y * u2x;
-      const dot = Math.max(-1, Math.min(1, u1x * u2x + u1y * u2y));
-      const angle = Math.acos(dot);
-      const largeArcFlag = angle > Math.PI ? 1 : 0;
-      const sweepFlag = cross > 0 ? 1 : 0;
-
-      return `M ${cx} ${cy} L ${startX} ${startY} A ${r} ${r} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY} Z`;
-    }
-
-    function setAnglePath(id, cx, cy, x1, y1, x2, y2, r = 20) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.setAttribute('d', createAnglePath(cx, cy, x1, y1, x2, y2, r));
-    }
-
-    function applyAngleMarkers() {
-      setAnglePath('angle-s1-center', 160, 108, 105, 158, 226, 150, 22);
-      setAnglePath('angle-s1-top', 146, 35, 105, 158, 226, 150, 22);
-
-      setAnglePath('angle-s2-top', 160, 46, 88, 118, 232, 118, 22);
-
-      setAnglePath('angle-s3-left', 126, 52, 106, 154, 226, 146, 22);
-      setAnglePath('angle-s3-right', 198, 46, 106, 154, 226, 146, 22);
-
-      setAnglePath('angle-s4-right', 230, 91, 118, 52, 194, 173, 16);
-      setAnglePath('angle-s4-left', 101, 151, 118, 52, 194, 173, 16);
-
-      setAnglePath('angle-s5', 200, 110, 136, 110, 200, 182, 16);
-
-      setAnglePath('angle-s7-outer', 250, 110, 161, 64, 161, 156, 22);
-      setAnglePath('angle-s7-center', 132, 110, 161, 64, 161, 156, 22);
-
-      setAnglePath('angle-s8-tangent', 188, 110, 188, 36, 84, 64, 20);
-      setAnglePath('angle-s8-segment', 70, 146, 84, 64, 188, 110, 18);
-    }
-
-
-    /* ===== Carousel ===== */
-    const slides = document.querySelectorAll('.slide');
-    const slider = document.querySelector('.slider');
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
-    let index = 0;
-    let autoSlideTimer = null;
-    let isHovered = false;
-    let isAnimating = false;
-
-    function cleanupSlideClasses(slide) {
-      slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-from-left', 'enter-from-right');
-    }
-
-    function showSlide(nextIndex, direction = 'next') {
-      if (isAnimating || nextIndex === index) return;
-
-      const currentSlide = slides[index];
-      const nextSlide = slides[nextIndex];
-      isAnimating = true;
-
-      cleanupSlideClasses(currentSlide);
-      cleanupSlideClasses(nextSlide);
-
-      nextSlide.classList.add(direction === 'next' ? 'enter-from-right' : 'enter-from-left');
-
+    // 根据用户期望: 下一张(向前) -> 新内容从右进(enter-from-right)，当前向左退(exit-left)
+    // 上一张(向后) -> 新内容从左进(enter-from-left)，当前向右退(exit-right)
+    if(direction === 'next') {
+      nextSlide.classList.add('enter-from-right');
       requestAnimationFrame(() => {
-        currentSlide.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
-        currentSlide.classList.remove('active');
-
+        curSlide.classList.add('exit-left');
+        curSlide.classList.remove('active');
         nextSlide.classList.add('active');
-        nextSlide.classList.remove('enter-from-right', 'enter-from-left');
+        nextSlide.classList.remove('enter-from-right');
       });
-
-      window.setTimeout(() => {
-        cleanupSlideClasses(currentSlide);
-        cleanupSlideClasses(nextSlide);
+    } else {
+      nextSlide.classList.add('enter-from-left');
+      requestAnimationFrame(() => {
+        curSlide.classList.add('exit-right');
+        curSlide.classList.remove('active');
         nextSlide.classList.add('active');
-        index = nextIndex;
-        isAnimating = false;
-      }, 560);
+        nextSlide.classList.remove('enter-from-left');
+      });
     }
 
-    function nextSlide() {
-      showSlide((index + 1) % slides.length, 'next');
-    }
+    setTimeout(() => {
+      cleanupSlideClasses(curSlide);
+      cleanupSlideClasses(nextSlide);
+      nextSlide.classList.add('active');
+      currentIdx = targetIndex;
+      updateDots(currentIdx);
+      adjustSliderHeight();
+      isAnimating = false;
+    }, 560);
+    return true;
+  }
 
-    function prevSlide() {
-      showSlide((index - 1 + slides.length) % slides.length, 'prev');
-    }
+  function nextSlide() { showSlide((getActiveIndex() + 1) % slides.length, 'next'); }
+  function prevSlide() { showSlide((getActiveIndex() - 1 + slides.length) % slides.length, 'prev'); }
+  function startAutoSlide() { stopAutoSlide(); if(isHovered) return; autoTimer = setInterval(() => { if(!isHovered && !isAnimating) nextSlide(); }, 3000); }
+  function stopAutoSlide() { if(autoTimer) clearInterval(autoTimer); autoTimer = null; }
 
-    function startAutoSlide() {
-      stopAutoSlide();
-      if (isHovered) return;
-      autoSlideTimer = window.setInterval(() => {
-        if (!isHovered && !isAnimating) nextSlide();
-      }, 3000);
-    }
+  nextBtn.onclick = () => { nextSlide(); startAutoSlide(); };
+  prevBtn.onclick = () => { prevSlide(); startAutoSlide(); };
+  sliderEl.addEventListener('mouseenter', () => { isHovered = true; stopAutoSlide(); });
+  sliderEl.addEventListener('mouseleave', () => { isHovered = false; startAutoSlide(); });
+  window.addEventListener('resize', () => adjustSliderHeight());
 
-    function stopAutoSlide() {
-      if (autoSlideTimer) {
-        window.clearInterval(autoSlideTimer);
-        autoSlideTimer = null;
-      }
-    }
+  function bindDotEvents() { dots.forEach((dot, i) => { dot.addEventListener('click', (e) => { e.stopPropagation(); if(isAnimating) return; const cur = getActiveIndex(); if(i === cur) return; const direction = (i > cur) ? 'next' : 'prev'; stopAutoSlide(); showSlide(i, direction); startAutoSlide(); }); }); }
 
-    nextBtn.onclick = () => {
-      nextSlide();
-      startAutoSlide();
-    };
+  document.getElementById('gameMainBtn').onclick = () => location.href = 'gamehome.html';
+  document.getElementById('quizMainBtn').onclick = () => location.href = 'index.html';
 
-    prevBtn.onclick = () => {
-      prevSlide();
-      startAutoSlide();
-    };
-
-    slider.addEventListener('mouseenter', () => {
-      isHovered = true;
-      stopAutoSlide();
-    });
-
-    slider.addEventListener('mouseleave', () => {
-      isHovered = false;
-      startAutoSlide();
-    });
-
-    /* ===== Navigation ===== */
-    document.getElementById('gameMainBtn').onclick = () => location.href = 'gamehome.html';
-    document.getElementById('quizMainBtn').onclick = () => location.href = 'index.html';
-
-    /* ===== Language sync events ===== */
-    window.addEventListener('DOMContentLoaded', () => {
-      applyHomepageLanguage();
-      applyAngleMarkers();
-      startAutoSlide();
-    });
-    window.addEventListener('focus', applyHomepageLanguage);
-    window.addEventListener('storage', applyHomepageLanguage);
-    window.addEventListener('languageChanged', applyHomepageLanguage);
-
-  </script>
-
+  window.addEventListener('DOMContentLoaded', () => {
+    applyHomepageLanguage();
+    applyAngleMarkers();
+    currentIdx = getActiveIndex();
+    updateDots(currentIdx);
+    adjustSliderHeight();
+    bindDotEvents();
+    startAutoSlide();
+  });
+  window.addEventListener('focus', applyHomepageLanguage);
+  window.addEventListener('storage', applyHomepageLanguage);
+  window.addEventListener('languageChanged', applyHomepageLanguage);
+</script>
 </body>
-
 </html>
