@@ -4,114 +4,207 @@ const questionBank = {
   Foundation: [
     {
       id: "F1",
-      title: "Question 1: Circle Basics",
-      topic: "Radius",
-      text: "A circle has radius 6 units. What is its diameter?",
-      hint: "Theorem Reminder: Diameter = 2 × Radius.",
-      options: ["A) 6 units", "B) 12 units", "C) 18 units", "D) 36 units"],
+      title: { en: "Question 1: Circle Basics", zh: "问题 1：圆的基础" },
+      topic: { en: "Radius", zh: "半径" },
+      text: { en: "A circle has radius 6 units. What is its diameter?", zh: "一个圆的半径是 6，求它的直径。" },
+      hint: { en: "Theorem Reminder: Diameter = 2 × Radius.", zh: "定理提醒：直径 = 2 × 半径。" },
+      options: {
+        en: ["A) 6 units", "B) 12 units", "C) 18 units", "D) 36 units"],
+        zh: ["A) 6 单位", "B) 12 单位", "C) 18 单位", "D) 36 单位"]
+      },
       correctIndex: 1,
-      correctAnswer: "12 units",
-      explanation: "直径等于半径的 2 倍，所以 2 × 6 = 12。",
+      correctAnswer: { en: "12 units", zh: "12 单位" },
+      explanation: {
+        en: "The diameter is twice the radius, so 2 × 6 = 12.",
+        zh: "直径等于半径的 2 倍，所以 2 × 6 = 12。"
+      },
       diagramType: "radiusDiameter"
     },
     {
       id: "F2",
-      title: "Question 2: Tangent Properties",
-      topic: "Tangent",
-      text: "In the diagram, PA is tangent to the circle at A. O is the center of the circle. If OA = 5 units and OP = 13 units, find the length of PA.",
-      hint: "Theorem Reminder: Tangent-Radius Theorem: A tangent to a circle is perpendicular to the radius at the point of contact.",
-      options: ["A) 8 units", "B) 10 units", "C) 12 units", "D) 18 units"],
+      title: { en: "Question 2: Tangent Properties", zh: "问题 2：切线性质" },
+      topic: { en: "Tangent", zh: "切线" },
+      text: {
+        en: "In the diagram, PA is tangent to the circle at A. O is the center of the circle. If OA = 5 units and OP = 13 units, find the length of PA.",
+        zh: "如图，PA 在 A 点与圆相切，O 是圆心。若 OA = 5，OP = 13，求 PA 的长度。"
+      },
+      hint: {
+        en: "Theorem Reminder: Tangent-Radius Theorem: A tangent to a circle is perpendicular to the radius at the point of contact.",
+        zh: "定理提醒：切线—半径定理：圆的切线与过切点的半径垂直。"
+      },
+      options: {
+        en: ["A) 8 units", "B) 10 units", "C) 12 units", "D) 18 units"],
+        zh: ["A) 8 单位", "B) 10 单位", "C) 12 单位", "D) 18 单位"]
+      },
       correctIndex: 2,
-      correctAnswer: "12 units",
-      explanation: "因为 OA ⟂ PA，所以 △OAP 是直角三角形。PA = √(13² - 5²) = √144 = 12。",
+      correctAnswer: { en: "12 units", zh: "12 单位" },
+      explanation: {
+        en: "Because OA ⟂ PA, triangle OAP is a right triangle. PA = √(13² - 5²) = √144 = 12.",
+        zh: "因为 OA ⟂ PA，所以 △OAP 是直角三角形。PA = √(13² - 5²) = √144 = 12。"
+      },
       diagramType: "tangent"
     },
     {
       id: "F3",
-      title: "Question 3: Circumference",
-      topic: "Circumference",
-      text: "What is the circumference of a circle with radius 7 units? (Use π = 22/7)",
-      hint: "Theorem Reminder: Circumference = 2πr.",
-      options: ["A) 14", "B) 22", "C) 44", "D) 49"],
+      title: { en: "Question 3: Circumference", zh: "问题 3：圆周长" },
+      topic: { en: "Circumference", zh: "周长" },
+      text: {
+        en: "What is the circumference of a circle with radius 7 units? (Use π = 22/7)",
+        zh: "半径为 7 的圆的周长是多少？（取 π = 22/7）"
+      },
+      hint: { en: "Theorem Reminder: Circumference = 2πr.", zh: "定理提醒：圆周长 = 2πr。" },
+      options: {
+        en: ["A) 14", "B) 22", "C) 44", "D) 49"],
+        zh: ["A) 14", "B) 22", "C) 44", "D) 49"]
+      },
       correctIndex: 2,
-      correctAnswer: "44",
-      explanation: "2 × 22/7 × 7 = 44。",
+      correctAnswer: { en: "44", zh: "44" },
+      explanation: { en: "2 × 22/7 × 7 = 44.", zh: "2 × 22/7 × 7 = 44。" },
       diagramType: "basicCircle"
     }
   ],
   Intermediate: [
     {
       id: "I1",
-      title: "Question 1: Tangent Length",
-      topic: "Tangent",
-      text: "From an external point P, two tangents PA and PB are drawn to a circle. If PA = 9 units, what is PB?",
-      hint: "Theorem Reminder: Tangents from the same external point are equal.",
-      options: ["A) 7 units", "B) 8 units", "C) 9 units", "D) 18 units"],
+      title: { en: "Question 1: Tangent Length", zh: "问题 1：切线长度" },
+      topic: { en: "Tangent", zh: "切线" },
+      text: {
+        en: "From an external point P, two tangents PA and PB are drawn to a circle. If PA = 9 units, what is PB?",
+        zh: "从圆外一点 P 向圆作两条切线 PA 和 PB。若 PA = 9，求 PB。"
+      },
+      hint: {
+        en: "Theorem Reminder: Tangents from the same external point are equal.",
+        zh: "定理提醒：从同一圆外点引出的两条切线长度相等。"
+      },
+      options: {
+        en: ["A) 7 units", "B) 8 units", "C) 9 units", "D) 18 units"],
+        zh: ["A) 7 单位", "B) 8 单位", "C) 9 单位", "D) 18 单位"]
+      },
       correctIndex: 2,
-      correctAnswer: "9 units",
-      explanation: "同一点引出的两条切线长度相等，因此 PB = PA = 9。",
+      correctAnswer: { en: "9 units", zh: "9 单位" },
+      explanation: {
+        en: "Tangents from the same external point are equal, so PB = PA = 9.",
+        zh: "同一点引出的两条切线长度相等，因此 PB = PA = 9。"
+      },
       diagramType: "twoTangents"
     },
     {
       id: "I2",
-      title: "Question 2: Chord Angle",
-      topic: "Angles",
-      text: "An angle subtended by a diameter at the circumference is:",
-      hint: "Theorem Reminder: Angle in a semicircle is 90°.",
-      options: ["A) 45°", "B) 60°", "C) 90°", "D) 180°"],
+      title: { en: "Question 2: Chord Angle", zh: "问题 2：弦所对的角" },
+      topic: { en: "Angles", zh: "角度" },
+      text: {
+        en: "An angle subtended by a diameter at the circumference is:",
+        zh: "直径所对的圆周角是："
+      },
+      hint: { en: "Theorem Reminder: Angle in a semicircle is 90°.", zh: "定理提醒：半圆所对的圆周角是 90°。" },
+      options: {
+        en: ["A) 45°", "B) 60°", "C) 90°", "D) 180°"],
+        zh: ["A) 45°", "B) 60°", "C) 90°", "D) 180°"]
+      },
       correctIndex: 2,
-      correctAnswer: "90°",
-      explanation: "半圆所对的圆周角恒为 90°。",
+      correctAnswer: { en: "90°", zh: "90°" },
+      explanation: {
+        en: "The angle in a semicircle is always 90°.",
+        zh: "半圆所对的圆周角恒为 90°。"
+      },
       diagramType: "semicircle"
     },
     {
       id: "I3",
-      title: "Question 3: Secant Theorem",
-      topic: "Secant",
-      text: "If PA is a tangent and PBC is a secant, then which relation is true?",
-      hint: "Theorem Reminder: Tangent-Secant Theorem: PA² = PB × PC.",
-      options: ["A) PA = PB + PC", "B) PA² = PB × PC", "C) PA × PB = PC", "D) PA = PB × PC"],
+      title: { en: "Question 3: Secant Theorem", zh: "问题 3：割线定理" },
+      topic: { en: "Secant", zh: "割线" },
+      text: {
+        en: "If PA is a tangent and PBC is a secant, then which relation is true?",
+        zh: "若 PA 是切线，PBC 是割线，则下列哪一个关系正确？"
+      },
+      hint: {
+        en: "Theorem Reminder: Tangent-Secant Theorem: PA² = PB × PC.",
+        zh: "定理提醒：切线—割线定理：PA² = PB × PC。"
+      },
+      options: {
+        en: ["A) PA = PB + PC", "B) PA² = PB × PC", "C) PA × PB = PC", "D) PA = PB × PC"],
+        zh: ["A) PA = PB + PC", "B) PA² = PB × PC", "C) PA × PB = PC", "D) PA = PB × PC"]
+      },
       correctIndex: 1,
-      correctAnswer: "PA² = PB × PC",
-      explanation: "切割线定理：切线长的平方等于外部段与整条割线长度的乘积。",
+      correctAnswer: { en: "PA² = PB × PC", zh: "PA² = PB × PC" },
+      explanation: {
+        en: "By the tangent-secant theorem, the square of the tangent length equals the external segment times the whole secant.",
+        zh: "切割线定理：切线长的平方等于外部段与整条割线长度的乘积。"
+      },
       diagramType: "secant"
     }
   ],
   Advanced: [
     {
       id: "A1",
-      title: "Question 1: Cyclic Quadrilateral",
-      topic: "Cyclic Quadrilaterals",
-      text: "In a cyclic quadrilateral, opposite angles are:",
-      hint: "Theorem Reminder: Opposite angles in a cyclic quadrilateral sum to 180°.",
-      options: ["A) Equal", "B) Complementary", "C) Supplementary", "D) Perpendicular"],
+      title: { en: "Question 1: Cyclic Quadrilateral", zh: "问题 1：圆内接四边形" },
+      topic: { en: "Cyclic Quadrilaterals", zh: "圆内接四边形" },
+      text: {
+        en: "In a cyclic quadrilateral, opposite angles are:",
+        zh: "在圆内接四边形中，对角是："
+      },
+      hint: {
+        en: "Theorem Reminder: Opposite angles in a cyclic quadrilateral sum to 180°.",
+        zh: "定理提醒：圆内接四边形的对角和为 180°。"
+      },
+      options: {
+        en: ["A) Equal", "B) Complementary", "C) Supplementary", "D) Perpendicular"],
+        zh: ["A) 相等", "B) 互余", "C) 互补", "D) 垂直"]
+      },
       correctIndex: 2,
-      correctAnswer: "Supplementary",
-      explanation: "圆内接四边形对角互补，和为 180°。",
+      correctAnswer: { en: "Supplementary", zh: "互补" },
+      explanation: {
+        en: "Opposite angles in a cyclic quadrilateral are supplementary and add up to 180°.",
+        zh: "圆内接四边形对角互补，和为 180°。"
+      },
       diagramType: "cyclic"
     },
     {
       id: "A2",
-      title: "Question 2: Exterior Angle",
-      topic: "Cyclic Quadrilaterals",
-      text: "The exterior angle of a cyclic quadrilateral equals:",
-      hint: "Theorem Reminder: Exterior angle equals the interior opposite angle.",
-      options: ["A) Half of opposite angle", "B) The interior opposite angle", "C) Sum of adjacent angles", "D) 90°"],
+      title: { en: "Question 2: Exterior Angle", zh: "问题 2：外角性质" },
+      topic: { en: "Cyclic Quadrilaterals", zh: "圆内接四边形" },
+      text: {
+        en: "The exterior angle of a cyclic quadrilateral equals:",
+        zh: "圆内接四边形的外角等于："
+      },
+      hint: {
+        en: "Theorem Reminder: Exterior angle equals the interior opposite angle.",
+        zh: "定理提醒：外角等于其内对角。"
+      },
+      options: {
+        en: ["A) Half of opposite angle", "B) The interior opposite angle", "C) Sum of adjacent angles", "D) 90°"],
+        zh: ["A) 对角的一半", "B) 内对角", "C) 邻角之和", "D) 90°"]
+      },
       correctIndex: 1,
-      correctAnswer: "The interior opposite angle",
-      explanation: "圆内接四边形的外角等于其内对角。",
+      correctAnswer: { en: "The interior opposite angle", zh: "内对角" },
+      explanation: {
+        en: "The exterior angle of a cyclic quadrilateral equals the interior opposite angle.",
+        zh: "圆内接四边形的外角等于其内对角。"
+      },
       diagramType: "cyclic"
     },
     {
       id: "A3",
-      title: "Question 3: Chord Proof",
-      topic: "Chords",
-      text: "Equal chords in the same circle are:",
-      hint: "Theorem Reminder: Equal chords are equidistant from the center.",
-      options: ["A) Parallel", "B) Tangents", "C) Equidistant from center", "D) Diameters"],
+      title: { en: "Question 3: Chord Proof", zh: "问题 3：弦的性质" },
+      topic: { en: "Chords", zh: "弦" },
+      text: {
+        en: "Equal chords in the same circle are:",
+        zh: "同圆中的等弦："
+      },
+      hint: {
+        en: "Theorem Reminder: Equal chords are equidistant from the center.",
+        zh: "定理提醒：等弦到圆心的距离相等。"
+      },
+      options: {
+        en: ["A) Parallel", "B) Tangents", "C) Equidistant from center", "D) Diameters"],
+        zh: ["A) 平行", "B) 切线", "C) 到圆心距离相等", "D) 直径"]
+      },
       correctIndex: 2,
-      correctAnswer: "Equidistant from center",
-      explanation: "同圆中等弦到圆心的距离相等。",
+      correctAnswer: { en: "Equidistant from center", zh: "到圆心距离相等" },
+      explanation: {
+        en: "Equal chords in the same circle are equidistant from the center.",
+        zh: "同圆中等弦到圆心的距离相等。"
+      },
       diagramType: "basicCircle"
     }
   ]
@@ -133,11 +226,7 @@ const defaultState = {
     Intermediate: { lastScore: "6/10" },
     Advanced: { lastScore: "N/A" }
   },
-  recentActivity: [
-    "Foundation Quiz: 7/10",
-    "Intermediate Quiz: 6/10",
-    "Advanced Quiz: N/A"
-  ]
+ recentActivity: []
 };
 
 let state = loadState();
@@ -235,7 +324,65 @@ const QUIZ_I18N = {
     helpCenter: "Help Center",
     contactUs: "Contact Us",
     privacyPolicy: "Privacy Policy",
-    copyright: "© 2023 Master Circle Geometry. All rights reserved."
+   copyright: "© 2023 Master Circle Geometry. All rights reserved.",
+
+    latestAttempt: "Latest saved attempt",
+    needsReview: "Needs Review",
+    improving: "Improving",
+
+    overallProgress: "Overall Progress",
+
+    foundationQuiz: "Foundation Quiz",
+    intermediateQuiz: "Intermediate Quiz",
+    advancedQuiz: "Advanced Quiz",
+    recentQuizHistoryTitle: "Recent Quiz History",
+  moduleProgressTitle: "Module Progress",
+  bestModule: "Best Module",
+  averageScore: "Average Score",
+
+  learningPathTitle: "Learning Path",
+  learningPathSubtitle: "Choose your next step based on this quiz result.",
+  smartRecommendation: "Smart Recommendation",
+
+  reviewMistakesTitle: "Review Mistakes",
+  reviewMistakesDesc: "Check wrong answers and explanations",
+  practiceWeakTitle: "Practice Weak Problems",
+  practiceWeakDesc: "Retry questions from your weakest topic",
+  nextLevelTitle: "Next Level Quiz",
+  nextLevelDesc: "Move forward to the next module",
+  advancedTopicsTitle: "Explore Advanced Topics",
+  advancedTopicsDesc: "Preview key theorems and challenge content",
+
+  recommendedAction: "Recommended Action",
+  recommendedActionText: "Based on your result, review mistakes first, then practice your weakest topic.",
+
+overallProgressLabel: "Overall Progress:",
+tangentTheoremsLabel: "Tangent Theorems:",
+cyclicQuadrilateralsLabel: "Cyclic Quadrilaterals:",
+
+overviewCardTitle: "Result Overview",
+overviewScoreLabel: "Current Score",
+overviewCorrectLabel: "Correct Answers",
+overviewWeakLabel: "Weakest Topic",
+overviewBestLabel: "Best Module",
+overviewAdviceTitle: "Learning Advice",
+overviewAdviceText: "Review mistakes first, then practise your weakest topic to improve accuracy.",
+quickSettingsTitle: "Quick Settings",
+
+backToHome: "Back to Home",
+reviewErrors: "Review Errors",
+
+overviewCardTitle: "Result Overview",
+overviewScoreLabel: "Current Score",
+overviewCorrectLabel: "Correct Answers",
+overviewWeakLabel: "Weakest Topic",
+overviewBestLabel: "Best Module",
+overviewAdviceTitle: "Learning Advice",
+overviewAdviceText: "Review mistakes first, then practise your weakest topic to improve accuracy.",
+quickSettingsTitle: "Quick Settings",
+
+backToHome: "Back to Home",
+reviewErrors: "Review Errors"
   },
 
   zh: {
@@ -287,28 +434,120 @@ const QUIZ_I18N = {
     learningPath: "学习路径",
     learningSubtitle: "根据本次测验结果选择下一步。",
     smartRecommendation: "智能推荐",
-    recentQuizHistory: "最近测验记录",
     performanceOverview: "表现概览",
-    moduleProgress: "模块进度",
 
     homeFooter: "首页",
     helpCenter: "帮助中心",
     contactUs: "联系我们",
     privacyPolicy: "隐私政策",
-    copyright: "© 2023 Master Circle Geometry. 保留所有权利。"
+    copyright: "© 2023 Master Circle Geometry. 保留所有权利。",
+    // 中文
+    recentQuizHistory: "最近测验记录",
+    latestAttempt: "最近一次记录",
+    needsReview: "需要复习",
+    improving: "正在提升",
+
+    moduleProgress: "模块进度",
+    overallProgress: "总体进度",
+
+    foundationQuiz: "基础测验",
+    intermediateQuiz: "进阶测验",
+    advancedQuiz: "高级测验",
+    recentQuizHistoryTitle: "最近测验记录",
+  performanceOverview: "表现概览",
+  moduleProgressTitle: "模块进度",
+  bestModule: "最佳模块",
+  needsReview: "需要复习",
+  averageScore: "平均分",
+
+  learningPathTitle: "学习路径",
+  learningPathSubtitle: "根据本次测验结果选择下一步。",
+  smartRecommendation: "智能推荐",
+
+  reviewMistakesTitle: "复习错题",
+  reviewMistakesDesc: "查看错题与解析",
+  practiceWeakTitle: "练习薄弱题目",
+  practiceWeakDesc: "重新练习你最薄弱主题的题目",
+  nextLevelTitle: "下一等级测验",
+  nextLevelDesc: "继续进入下一个模块",
+  advancedTopicsTitle: "探索高级主题",
+  advancedTopicsDesc: "预习关键定理与挑战内容",
+
+  recommendedAction: "推荐操作",
+  recommendedActionText: "根据你的结果，建议先复习错题，再练习最薄弱的主题。",
+
+overallProgressLabel: "总体进度：",
+tangentTheoremsLabel: "切线定理：",
+cyclicQuadrilateralsLabel: "圆内接四边形：",
+
+overviewCardTitle: "结果概览",
+overviewScoreLabel: "当前得分",
+overviewCorrectLabel: "答对题数",
+overviewWeakLabel: "最薄弱主题",
+overviewBestLabel: "最佳模块",
+overviewAdviceTitle: "学习建议",
+overviewAdviceText: "建议先复习错题，再针对最薄弱主题进行练习，这样能更快提高正确率。",
+quickSettingsTitle: "快捷设置",
+
+backToHome: "返回首页",
+reviewErrors: "查看错题",
+
+overviewCardTitle: "结果概览",
+overviewScoreLabel: "当前得分",
+overviewCorrectLabel: "答对题数",
+overviewWeakLabel: "最薄弱主题",
+overviewBestLabel: "最佳模块",
+overviewAdviceTitle: "学习建议",
+overviewAdviceText: "建议先复习错题，再针对最薄弱主题进行练习，这样能更快提高正确率。",
+quickSettingsTitle: "快捷设置",
+
+backToHome: "返回首页",
+reviewErrors: "查看错题"
   }
 };
 
-function applyQuizPageLanguage(lang) {
-  console.log("applyQuizPageLanguage called with:", lang);
+function getQuizLang() {
+  return localStorage.getItem("language") || "en";
+}
 
+function getTextByLang(value, lang) {
+  if (typeof value === "string") return value;
+  if (!value) return "";
+  return value[lang] || value.en || "";
+}
+
+function getLocalizedQuestion(question) {
+  const lang = getQuizLang();
+  return {
+    ...question,
+    title: getTextByLang(question.title, lang),
+    topic: getTextByLang(question.topic, lang),
+    text: getTextByLang(question.text, lang),
+    hint: getTextByLang(question.hint, lang),
+    options: Array.isArray(question.options) ? question.options : (question.options?.[lang] || question.options?.en || []),
+    correctAnswer: getTextByLang(question.correctAnswer, lang),
+    explanation: getTextByLang(question.explanation, lang)
+  };
+}
+
+function getModuleDisplayName(moduleKey, lang = getQuizLang()) {
+  const t = QUIZ_I18N[lang] || QUIZ_I18N.en;
+  const map = {
+    Foundation: t.foundation,
+    Intermediate: t.intermediate,
+    Advanced: t.advanced
+  };
+  return map[moduleKey] || moduleKey;
+}
+
+function applyQuizPageLanguage(lang) {
   const t = QUIZ_I18N[lang] || QUIZ_I18N.en;
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
 
-  const setTextById = (id, text) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = text;
-  };
+const setTextById = (id, text) => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+};
 
   // 首页
   setTextById("welcomeBanner", t.welcome);
@@ -372,10 +611,65 @@ function applyQuizPageLanguage(lang) {
   setTextById("mistakeSummaryTitle", t.mistakeSummary);
   setTextById("learningPathTitle", t.learningPath);
   setTextById("learningPathSubtitle", t.learningSubtitle);
-  setTextById("learningPathBadge", t.smartRecommendation);
+  setTextById("smartRecommendationBadge", t.smartRecommendation);
   setTextById("recentQuizHistoryTitle", t.recentQuizHistory);
   setTextById("performanceOverviewBadge", t.performanceOverview);
   setTextById("moduleProgressTitle", t.moduleProgress);
+
+  setTextById("overviewCardTitle", t.overviewCardTitle);
+setTextById("overviewScoreLabel", t.overviewScoreLabel);
+setTextById("overviewCorrectLabel", t.overviewCorrectLabel);
+setTextById("overviewWeakLabel", t.overviewWeakLabel);
+setTextById("overviewBestLabel", t.overviewBestLabel);
+setTextById("overviewAdviceTitle", t.overviewAdviceTitle);
+setTextById("overviewAdviceText", t.overviewAdviceText);
+setTextById("quickSettingsTitle", t.quickSettingsTitle);
+
+setTextById("backHomeFromResultBtn", t.backToHome);
+setTextById("reviewErrorsFromResultBtn", t.reviewErrors);
+
+  setTextById("recentQuizHistoryTitle", t.recentQuizHistoryTitle);
+setTextById("performanceOverviewBadge", t.performanceOverview);
+setTextById("moduleProgressTitle", t.moduleProgressTitle);
+setTextById("bestModuleLabel", t.bestModule);
+setTextById("needsReviewLabel", t.needsReview);
+setTextById("averageScoreLabel", t.averageScore);
+
+setTextById("learningPathTitle", t.learningPathTitle);
+setTextById("learningPathSubtitle", t.learningPathSubtitle);
+setTextById("smartRecommendationBadge", t.smartRecommendation);
+
+setTextById("reviewMistakesTitle", t.reviewMistakesTitle);
+setTextById("reviewMistakesDesc", t.reviewMistakesDesc);
+setTextById("practiceWeakTitle", t.practiceWeakTitle);
+setTextById("practiceWeakDesc", t.practiceWeakDesc);
+setTextById("nextLevelTitle", t.nextLevelTitle);
+setTextById("nextLevelDesc", t.nextLevelDesc);
+setTextById("advancedTopicsTitle", t.advancedTopicsTitle);
+setTextById("advancedTopicsDesc", t.advancedTopicsDesc);
+
+setTextById("learningDetailTitle", t.recommendedAction);
+setTextById("learningDetailText", t.recommendedActionText);
+
+setTextById("overallProgressLabel", t.overallProgressLabel);
+setTextById("tangentTheoremsLabel", t.tangentTheoremsLabel);
+setTextById("cyclicQuadrilateralsLabel", t.cyclicQuadrilateralsLabel);
+
+setTextById("greatWorkTitle", t.greatWork);
+setTextById("theoremMasteryTitle", t.theoremMastery);
+setTextById("mistakeSummaryTitle", t.mistakeSummary);
+
+setTextById("learningPathTitle", t.learningPathTitle);
+setTextById("learningPathSubtitle", t.learningPathSubtitle);
+setTextById("smartRecommendationBadge", t.smartRecommendation);
+
+setTextById("recentQuizHistoryTitle", t.recentQuizHistoryTitle);
+setTextById("performanceOverviewBadge", t.performanceOverview);
+setTextById("moduleProgressTitle", t.moduleProgressTitle);
+
+setTextById("bestModuleLabel", t.bestModule);
+setTextById("needsReviewLabel", t.needsReview);
+setTextById("averageScoreLabel", t.averageScore);
 
   // footer
   document.querySelectorAll(".footer").forEach(footer => {
@@ -387,6 +681,38 @@ function applyQuizPageLanguage(lang) {
       divs[1].textContent = t.copyright;
     }
   });
+
+  if (pages.quiz && pages.quiz.classList.contains("active")) {
+    if (reviewMode) {
+      renderReviewScreen();
+    } else {
+      renderQuizQuestion();
+    }
+  }
+
+  if (pages.result && pages.result.classList.contains("active")) {
+    const finishedScreens = currentAttemptScreens.filter(Boolean);
+    const correctCount = finishedScreens.filter(item => item.isCorrect).length;
+    const total = currentQuestions.length || 1;
+    const percent = Math.round((correctCount / total) * 100);
+    renderResultPage(correctCount, total, percent);
+   }
+  // ⭐ 强制刷新当前页面内容
+  if (pages.home.classList.contains("active")) {
+    refreshHome();
+   }
+
+  if (pages.home.classList.contains("active")) {
+  refreshHome();
+}
+
+if (pages.result && pages.result.classList.contains("active")) {
+  const finishedScreens = currentAttemptScreens.filter(Boolean);
+  const correctCount = finishedScreens.filter(item => item.isCorrect).length;
+  const total = currentQuestions.length || 1;
+  const percent = Math.round((correctCount / total) * 100);
+  renderResultPage(correctCount, total, percent);
+}
 }
 
 function bindEvents() {
@@ -533,27 +859,36 @@ async function startQuizFlow(moduleName) {
   timeLeft = 165;
   clearTimer();
   startTimer();
-  await api.startQuiz(moduleName);
+
+  try {
+    if (window.api && api.startQuiz) {
+      await api.startQuiz(moduleName);
+    }
+  } catch (err) {
+    console.error("startQuiz 接口失败：", err);
+  }
+
   renderQuizQuestion();
   showPage("quiz");
 }
 
 function openAttemptChooser(moduleName) {
   currentModule = moduleName;
-  document.getElementById("attemptChooserModule").textContent = moduleName;
+  document.getElementById("attemptChooserModule").textContent = getModuleDisplayName(moduleName);
   showPage("chooser");
 }
 
 async function openPastAttempt(type) {
   reviewAttemptType = type;
-  await api.fetchPastAttempt(currentModule, type);
+  if (window.api && api.fetchPastAttempt) await api.fetchPastAttempt(currentModule, type);
   reviewMode = true;
   reviewScreens = state.history[currentModule][type] || [];
   reviewScreenIndex = 0;
   clearTimer();
 
   if (!reviewScreens.length) {
-    alert(`${currentModule} 的 ${type === "last" ? "last time" : "the time before last"} 暂无记录。`);
+    const lang = getQuizLang();
+    alert(lang === "zh" ? `${getModuleDisplayName(currentModule, lang)} 的${type === "last" ? "上一次" : "上上次"}记录为空。` : `No ${type === "last" ? "last" : "previous"} record found for ${getModuleDisplayName(currentModule, lang)}.`);
     return;
   }
 
@@ -562,8 +897,9 @@ async function openPastAttempt(type) {
 }
 
 function renderQuizQuestion() {
-  const q = currentQuestions[currentQuestionIndex];
-  if (!q) return;
+  const rawQ = currentQuestions[currentQuestionIndex];
+  if (!rawQ) return;
+  const q = getLocalizedQuestion(rawQ);
 
   selectedOptionIndex = null;
   document.getElementById("questionTitle").textContent = q.title;
@@ -597,7 +933,8 @@ function renderReviewScreen() {
   const snapshot = reviewScreens[reviewScreenIndex];
   if (!snapshot) return;
 
-  document.getElementById("questionTitle").textContent = snapshot.title + "（历史测验）";
+  const lang = getQuizLang();
+  document.getElementById("questionTitle").textContent = snapshot.title + (lang === "zh" ? "（历史测验）" : " (Past Attempt)");
   document.getElementById("questionText").textContent = snapshot.text;
   document.getElementById("questionHint").textContent = snapshot.hint;
   document.getElementById("questionsAnswered").textContent = `${reviewScreenIndex + 1}/${reviewScreens.length}`;
@@ -673,72 +1010,86 @@ function renderReviewNav() {
 
 async function submitCurrentAnswer() {
   if (reviewMode) return;
+
   if (selectedOptionIndex === null) {
-    alert("请先选择一个答案。");
+    alert(getQuizLang() === "zh" ? "请先选择一个答案。" : "Please choose an answer first.");
     return;
   }
 
-  const q = currentQuestions[currentQuestionIndex];
-  const isCorrect = selectedOptionIndex === q.correctIndex;
+  const rawQ = currentQuestions[currentQuestionIndex];
+  const q = getLocalizedQuestion(rawQ);
+  const isCorrect = selectedOptionIndex === rawQ.correctIndex;
   answeredCount = Math.max(answeredCount, currentQuestionIndex + 1);
 
   const snapshot = {
-    id: q.id,
+    id: rawQ.id,
     title: q.title,
     topic: q.topic,
     text: q.text,
     hint: q.hint,
     options: [...q.options],
-    correctIndex: q.correctIndex,
+    correctIndex: rawQ.correctIndex,
     userAnswerIndex: selectedOptionIndex,
     userAnswer: q.options[selectedOptionIndex],
     correctAnswer: q.correctAnswer,
     explanation: q.explanation,
     isCorrect,
-    diagramType: q.diagramType
+    diagramType: rawQ.diagramType
   };
 
   currentAttemptScreens[currentQuestionIndex] = snapshot;
 
-  if (!isCorrect) {
-    currentMistakes.push(snapshot);
-    state.errors[currentModule].push({
-      ...snapshot,
-      module: currentModule,
-      createdAt: new Date().toISOString()
-    });
-    await api.saveErrors(snapshot);
-  }
+  try {
+    if (!isCorrect) {
+      currentMistakes.push(snapshot);
+      state.errors[currentModule].push({
+        ...snapshot,
+        module: currentModule,
+        createdAt: new Date().toISOString()
+      });
 
-  await api.submitAnswer({
-    module: currentModule,
-    questionId: q.id,
-    selectedOptionIndex,
-    isCorrect
-  });
+      if (window.api && api.saveErrors) {
+        await api.saveErrors(snapshot);
+      }
+    }
+
+    if (window.api && api.submitAnswer) {
+      await api.submitAnswer({
+        module: currentModule,
+        questionId: rawQ.id,
+        selectedOptionIndex,
+        isCorrect
+      });
+    }
+  } catch (err) {
+    console.error("submitAnswer 接口失败：", err);
+  }
 
   showFeedback(snapshot);
   persistState();
 }
 
 function showFeedback(snapshot) {
+  const lang = getQuizLang();
   document.getElementById("answerPanel").classList.add("hidden");
   document.getElementById("feedbackPanel").classList.remove("hidden");
   const feedbackText = document.getElementById("feedbackText");
-  feedbackText.textContent = snapshot.isCorrect ? "Correct" : "Incorrect";
+  feedbackText.textContent = snapshot.isCorrect
+    ? (lang === "zh" ? "回答正确" : "Correct")
+    : (lang === "zh" ? "回答错误" : "Incorrect");
   feedbackText.className = `feedback-text ${snapshot.isCorrect ? "correct" : "incorrect"}`;
 
   const actions = document.getElementById("feedbackActions");
   actions.innerHTML = "";
 
   if (snapshot.isCorrect) {
-    actions.appendChild(makeButton("Next Question", "btn btn-primary", () => {
+    actions.appendChild(makeButton(lang === "zh" ? "下一题" : "Next Question", "btn btn-primary", () => {
       moveToNextAfterFeedback();
     }));
   } else {
-    actions.appendChild(makeButton("Review Error", "btn btn-secondary", () => openErrors(currentModule)));
-    actions.appendChild(makeButton("Next Question", "btn btn-primary", () => moveToNextAfterFeedback()));
-    actions.appendChild(makeButton("Try Again", "btn btn-secondary", () => {
+    actions.appendChild(makeButton(lang === "zh" ? "查看错题" : "Review Error", "btn btn-secondary", () => openErrors(currentModule)));
+    actions.appendChild(makeButton(lang === "zh" ? "下一题" : "Next Question", "btn btn-primary", () => moveToNextAfterFeedback()));
+    actions.appendChild(makeButton(lang === "zh" ? "再试一次" : "Try Again", "btn btn-secondary", () => {
       document.getElementById("feedbackPanel").classList.add("hidden");
       document.getElementById("answerPanel").classList.remove("hidden");
     }));
@@ -766,15 +1117,32 @@ async function finishQuiz() {
   const percent = Math.round((correctCount / total) * 100);
 
   state.moduleStats[currentModule].lastScore = `${correctCount}/${total}`;
-  state.recentActivity.unshift(`${currentModule} Quiz: ${correctCount}/${total}`);
+  const lang = localStorage.getItem("language") || "en";
+const t = QUIZ_I18N[lang];
+
+const moduleNameMap = {
+  Foundation: t.foundationQuiz,
+  Intermediate: t.intermediateQuiz,
+  Advanced: t.advancedQuiz
+};
+
+state.recentActivity.unshift(
+  `${moduleNameMap[currentModule]}: ${correctCount}/${total}`
+);
   state.recentActivity = state.recentActivity.slice(0, 8);
 
-  await api.saveAttempt({
-    module: currentModule,
-    last: state.history[currentModule].last,
-    previous: state.history[currentModule].previous,
-    score: `${correctCount}/${total}`
-  });
+  try {
+    if (window.api && api.saveAttempt) {
+      await api.saveAttempt({
+        module: currentModule,
+        last: state.history[currentModule].last,
+        previous: state.history[currentModule].previous,
+        score: `${correctCount}/${total}`
+      });
+    }
+  } catch (err) {
+    console.error("saveAttempt 接口失败：", err);
+  }
 
   persistState();
   refreshHome();
@@ -783,13 +1151,19 @@ async function finishQuiz() {
 }
 
 function renderResultPage(correctCount, total, percent) {
+  const lang = getQuizLang();
+  const moduleName = getModuleDisplayName(currentModule, lang);
   document.getElementById("resultPercent").textContent = percent;
-  document.getElementById("resultSummaryText").textContent = `${correctCount}/${total} Correct, ${total - correctCount} Mistakes`;
-  document.getElementById("resultBadge").textContent = percent >= 80 ? `${currentModule} Proficient` : `${currentModule} In Progress`;
+  document.getElementById("resultSummaryText").textContent = lang === "zh"
+    ? `答对 ${correctCount}/${total} 题，错题 ${total - correctCount} 题`
+    : `${correctCount}/${total} Correct, ${total - correctCount} Mistakes`;
+  document.getElementById("resultBadge").textContent = percent >= 80
+    ? (lang === "zh" ? `${moduleName} 已掌握` : `${moduleName} Proficient`)
+    : (lang === "zh" ? `${moduleName} 进行中` : `${moduleName} In Progress`);
   document.getElementById("resultMessage").textContent =
     percent >= 80
-      ? `Great job in ${currentModule}! Keep strengthening weak topics for full mastery.`
-      : `You are improving in ${currentModule}. Review your mistakes and try again.`;
+      ? (lang === "zh" ? `${moduleName} 模块完成得很好，继续巩固薄弱知识点。` : `Great job in ${moduleName}! Keep strengthening weak topics for full mastery.`)
+      : (lang === "zh" ? `你正在逐步掌握 ${moduleName}，建议复习错题后再练习一次。` : `You are improving in ${moduleName}. Review your mistakes and try again.`);
 
   const starsEl = document.getElementById("resultStars");
   let starCount = 0;
@@ -810,8 +1184,9 @@ function renderResultPage(correctCount, total, percent) {
 
   const byTopic = {};
   currentQuestions.forEach(q => {
-    if (!byTopic[q.topic]) byTopic[q.topic] = { total: 0, correct: 0 };
-    byTopic[q.topic].total += 1;
+    const topic = getTextByLang(q.topic, getQuizLang());
+    if (!byTopic[topic]) byTopic[topic] = { total: 0, correct: 0 };
+    byTopic[topic].total += 1;
   });
 
   currentAttemptScreens.forEach(s => {
@@ -841,13 +1216,17 @@ function renderResultPage(correctCount, total, percent) {
   )[0];
 
   document.getElementById("nextStepsText").textContent = nextWeak
-    ? `Next Steps: Focus on ${nextWeak[0]} to reach 100% mastery`
-    : "Next Steps: Keep practicing";
+  ? (lang === "zh"
+      ? `下一步：重点提升 ${nextWeak[0]}，向 100% 掌握前进`
+      : `Next Steps: Focus on ${nextWeak[0]} to reach 100% mastery`)
+  : (lang === "zh" ? "下一步：继续练习" : "Next Steps: Keep practicing");
 
   const mistakeSummaryList = document.getElementById("mistakeSummaryList");
   mistakeSummaryList.innerHTML = currentMistakes.length
-    ? ""
-    : '<div class="mistake-row"><span>No mistakes this time.</span><span>Excellent!</span></div>';
+  ? ""
+  : (lang === "zh"
+      ? '<div class="mistake-row"><span>本次没有错题。</span><span>非常棒！</span></div>'
+      : '<div class="mistake-row"><span>No mistakes this time.</span><span>Excellent!</span></div>');
 
   currentMistakes.forEach(item => {
     const row = document.createElement("div");
@@ -873,15 +1252,15 @@ function renderResultPage(correctCount, total, percent) {
     const percentValue = parseScore(scoreText);
 
     let statusClass = "low";
-    let statusText = "Needs Review";
+let statusText = lang === "zh" ? "需要复习" : "Needs Review";
 
-    if (percentValue >= 80) {
-      statusClass = "good";
-      statusText = "Strong";
-    } else if (percentValue >= 50) {
-      statusClass = "mid";
-      statusText = "Improving";
-    }
+if (percentValue >= 80) {
+  statusClass = "good";
+  statusText = lang === "zh" ? "掌握良好" : "Strong";
+} else if (percentValue >= 50) {
+  statusClass = "mid";
+  statusText = lang === "zh" ? "正在提升" : "Improving";
+}
 
     return {
       moduleName,
@@ -897,24 +1276,24 @@ function renderResultPage(correctCount, total, percent) {
       const row = document.createElement("div");
       row.className = "history-item";
       row.innerHTML = `
-        <div class="history-item-left">
-          <div class="history-module">${item.moduleName}</div>
-          <div class="history-subtext">Latest saved attempt</div>
-        </div>
-        <div class="history-score">${item.scoreText}</div>
-        <div class="history-status ${item.statusClass}">${item.statusText}</div>
-      `;
+  <div class="history-item-left">
+    <div class="history-module">${getModuleDisplayName(item.moduleName, lang)}</div>
+    <div class="history-subtext">${lang === "zh" ? "最近一次记录" : "Latest saved attempt"}</div>
+  </div>
+  <div class="history-score">${item.scoreText}</div>
+  <div class="history-status ${item.statusClass}">${item.statusText}</div>
+`;
       historyBox.appendChild(row);
 
       const progressRow = document.createElement("div");
       progressRow.className = "progress-row";
       progressRow.innerHTML = `
-        <div class="module-name">${item.moduleName}</div>
-        <div class="bar">
-          <div class="bar-fill" style="width:${item.percentValue}%"></div>
-        </div>
-        <div class="module-percent">${item.percentValue}%</div>
-      `;
+  <div class="module-name">${getModuleDisplayName(item.moduleName, lang)}</div>
+  <div class="bar">
+    <div class="bar-fill" style="width:${item.percentValue}%"></div>
+  </div>
+  <div class="module-percent">${item.percentValue}%</div>
+`;
       progressBarsBox.appendChild(progressRow);
     });
   }
@@ -925,9 +1304,9 @@ function renderResultPage(correctCount, total, percent) {
     moduleData.reduce((sum, item) => sum + item.percentValue, 0) / moduleData.length
   );
 
-  if (bestModuleText) bestModuleText.textContent = sortedByBest[0].moduleName;
-  if (needsReviewText) needsReviewText.textContent = sortedByWeak[0].moduleName;
-  if (averageScoreText) averageScoreText.textContent = `${avgPercent}%`;
+if (bestModuleText) bestModuleText.textContent = getModuleDisplayName(sortedByBest[0].moduleName, lang);
+if (needsReviewText) needsReviewText.textContent = getModuleDisplayName(sortedByWeak[0].moduleName, lang);
+if (averageScoreText) averageScoreText.textContent = `${avgPercent}%`;
 
   updateLearningPanel("review");
 }
@@ -1016,12 +1395,15 @@ function goNextModuleQuiz() {
   startQuizFlow(next);
 }
 
+
 function updateLearningPanel(type) {
   const titleEl = document.getElementById("learningDetailTitle");
   const textEl = document.getElementById("learningDetailText");
   const tagsEl = document.getElementById("learningDetailTags");
 
   if (!titleEl || !textEl || !tagsEl) return;
+
+  const lang = getQuizLang();
 
   document.querySelectorAll(".learning-btn").forEach(btn => {
     btn.classList.remove("active-learning");
@@ -1039,24 +1421,32 @@ function updateLearningPanel(type) {
 
   const config = {
     review: {
-      title: "Review Mistakes",
-      text: "You will open your mistake collection to review incorrect answers, compare your answer with the correct one, and read the explanation step by step.",
-      tags: ["Wrong Questions", "Explanation", "Retry"]
+      title: lang === "zh" ? "复习错题" : "Review Mistakes",
+      text: lang === "zh"
+        ? "你将打开错题集，查看错误答案、对比正确答案，并逐步阅读解析。"
+        : "You will open your mistake collection to review incorrect answers, compare your answer with the correct one, and read the explanation step by step.",
+      tags: lang === "zh" ? ["错题", "解析", "重做"] : ["Wrong Questions", "Explanation", "Retry"]
     },
     practice: {
-      title: "Practice Weak Problems",
-      text: "You will restart practice for the current module and focus on weak topics from this quiz result. This is the fastest way to improve your accuracy.",
-      tags: ["Weak Topic", "Practice", "Accuracy"]
+      title: lang === "zh" ? "练习薄弱题目" : "Practice Weak Problems",
+      text: lang === "zh"
+        ? "你将重新开始当前模块练习，并重点训练本次测验中的薄弱主题，这是提高正确率最快的方法。"
+        : "You will restart practice for the current module and focus on weak topics from this quiz result. This is the fastest way to improve your accuracy.",
+      tags: lang === "zh" ? ["薄弱主题", "练习", "正确率"] : ["Weak Topic", "Practice", "Accuracy"]
     },
     next: {
-      title: "Next Level Quiz",
-      text: "You will move to the next module in order: Foundation → Intermediate → Advanced. This helps you continue learning with increasing difficulty.",
-      tags: ["Next Module", "Challenge", "Progress"]
+      title: lang === "zh" ? "下一等级测验" : "Next Level Quiz",
+      text: lang === "zh"
+        ? "你将按顺序进入下一个模块：基础 → 进阶 → 高级，帮助你逐步挑战更高难度内容。"
+        : "You will move to the next module in order: Foundation → Intermediate → Advanced. This helps you continue learning with increasing difficulty.",
+      tags: lang === "zh" ? ["下一模块", "挑战", "进步"] : ["Next Module", "Challenge", "Progress"]
     },
     advanced: {
-      title: "Explore Advanced Topics",
-      text: "Suggested advanced content: cyclic quadrilateral theorems, tangent-secant relationships, chord properties, and proof-based geometry questions.",
-      tags: ["Theorems", "Proof", "Challenge"]
+      title: lang === "zh" ? "探索高级主题" : "Explore Advanced Topics",
+      text: lang === "zh"
+        ? "推荐高级内容：圆内接四边形定理、切线与割线关系、弦的性质，以及证明题训练。"
+        : "Suggested advanced content: cyclic quadrilateral theorems, tangent-secant relationships, chord properties, and proof-based geometry questions.",
+      tags: lang === "zh" ? ["定理", "证明", "挑战"] : ["Theorems", "Proof", "Challenge"]
     }
   };
 
@@ -1119,14 +1509,19 @@ function refreshHome() {
 
   const tangentMastery = calculateTopicMastery("Tangent");
   const cyclicMastery = calculateTopicMastery("Cyclic Quadrilaterals");
-  document.getElementById("tangentProgressText").textContent = `${tangentMastery}% Mastered`;
-  document.getElementById("tangentProgressBar").style.width = `${tangentMastery}%`;
-  document.getElementById("cyclicProgressText").textContent = `${cyclicMastery}% Mastered`;
-  document.getElementById("cyclicProgressBar").style.width = `${cyclicMastery}%`;
+const lang = getQuizLang();
 
-  const foundationScore = state.moduleStats.Foundation.lastScore;
-  document.getElementById("recommendTip").textContent =
-    `Recommended Next Step: Your last Foundation score: ${foundationScore} → Review key concepts or move to Intermediate.`;
+document.getElementById("tangentProgressText").textContent =
+  lang === "zh" ? `${tangentMastery}% 已掌握` : `${tangentMastery}% Mastered`;
+
+document.getElementById("cyclicProgressText").textContent =
+  lang === "zh" ? `${cyclicMastery}% 已掌握` : `${cyclicMastery}% Mastered`;
+
+const foundationScore = state.moduleStats.Foundation.lastScore;
+document.getElementById("recommendTip").textContent =
+  lang === "zh"
+    ? `推荐下一步：你上次基础模块得分 ${foundationScore} → 建议复习关键概念或进入进阶模块。`
+    : `Recommended Next Step: Your last Foundation score: ${foundationScore} → Review key concepts or move to Intermediate.`;
 }
 
 function parseScore(text) {

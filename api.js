@@ -26,3 +26,5 @@ const api = {
     return Promise.resolve({ success: true, payload });
   }
 };
+
+window.api = api;
