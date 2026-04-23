@@ -78,7 +78,7 @@ Major updates are developed in individual branches before being merged into the 
 ## Development Progress
 - **V1**: Initial development version. In this version, each team member built the basic framework for their own section separately. The three sections had not yet been fully connected.
 - **V2**: Added bilingual switching between English and Chinese, completed navigation links across the Homepage, Game, and Quiz sections, and deployed the AI assistant across all pages as a floating widget in the bottom right corner.  
-- **V3**: Premium UI & Game Feel Enhancement**
+- **V3**: Premium UI & Game Feel Enhancement
   * **Settings Persistence:** Added `localStorage` (cookies) to automatically save language, theme, and accessibility preferences across all pages.
   * **Apple-esque UI:** Redesigned the Settings modal with iOS-style glassmorphism, smooth segmented controls, and animated toggle switches.
   * **Game Audio:** Introduced a dynamic Web Audio API engine with sound effects for dragging, success, errors, and system lockdown.
