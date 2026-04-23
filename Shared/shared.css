@@ -79,8 +79,8 @@ function ensureCookieBannerExists() {
 
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
-  navGameBtn: 'index.html',
-  navQuizBtn: 'quiz.html'
+  navGameBtn: 'gamehome.html',
+  navQuizBtn: 'index.html'
 };
 
 const I18N = {
@@ -1054,15 +1054,29 @@ function updateAssistantPanelDirection() {
   if (!assistantWidget) return;
   const panel = assistantWidget.querySelector('.assistant-panel');
   if (!panel) return;
-  assistantWidget.classList.remove('expand-up', 'expand-down');
+
+  assistantWidget.classList.remove('expand-up', 'expand-down', 'expand-left', 'expand-right');
+
   const widgetRect = assistantWidget.getBoundingClientRect();
   const estimatedPanelHeight = Math.min(panel.scrollHeight || 260, window.innerHeight * 0.7);
+  const estimatedPanelWidth = Math.min(panel.offsetWidth || 340, window.innerWidth * 0.88);
+  const gap = 12;
+
   const spaceAbove = widgetRect.top;
   const spaceBelow = window.innerHeight - widgetRect.bottom;
-  if (spaceAbove >= estimatedPanelHeight + 12 || spaceAbove >= spaceBelow) {
+  const spaceLeft = widgetRect.left;
+  const spaceRight = window.innerWidth - widgetRect.right;
+
+  if (spaceAbove >= estimatedPanelHeight + gap || spaceAbove >= spaceBelow) {
     assistantWidget.classList.add('expand-up');
   } else {
     assistantWidget.classList.add('expand-down');
+  }
+
+  if (spaceLeft >= estimatedPanelWidth - widgetRect.width + gap || spaceLeft >= spaceRight) {
+    assistantWidget.classList.add('expand-left');
+  } else {
+    assistantWidget.classList.add('expand-right');
   }
 }
 

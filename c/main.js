@@ -117,31 +117,6 @@ const questionBank = {
   ]
 };
 
-const api = {
-  baseUrl: "/api",
-  async startQuiz(moduleName) {
-    // 示例接口：POST /api/quiz/start
-    // return fetch(`${this.baseUrl}/quiz/start`, {...})
-    return Promise.resolve({ success: true, moduleName });
-  },
-  async saveAttempt(payload) {
-    // 示例接口：POST /api/attempts/save
-    return Promise.resolve({ success: true, payload });
-  },
-  async fetchPastAttempt(moduleName, type) {
-    // 示例接口：GET /api/attempts?module=Foundation&type=last
-    return Promise.resolve({ success: true, moduleName, type });
-  },
-  async saveErrors(payload) {
-    // 示例接口：POST /api/errors/save
-    return Promise.resolve({ success: true, payload });
-  },
-  async submitAnswer(payload) {
-    // 示例接口：POST /api/quiz/submit
-    return Promise.resolve({ success: true, payload });
-  }
-};
-
 const defaultState = {
   history: {
     Foundation: { last: [], previous: [] },
@@ -192,7 +167,227 @@ document.addEventListener("DOMContentLoaded", () => {
   bindEvents();
   refreshHome();
   showPage("home");
+  bindSharedNavForQuizApp();
+
+  const savedLang = localStorage.getItem("language") || "en";
+  applyQuizPageLanguage(savedLang);
+
+  window.addEventListener("languageChanged", (e) => {
+    applyQuizPageLanguage(e.detail.lang);
+  });
 });
+
+const QUIZ_I18N = {
+  en: {
+    welcome: "Welcome back! Ready to master circle geometry today?",
+    foundation: "Foundation",
+    foundationDesc: "Radius, diameter, circumference, basic circle properties.",
+    intermediate: "Intermediate",
+    intermediateDesc: "Tangent & Secant Theorems, angles in circles.",
+    advanced: "Advanced",
+    advancedDesc: "Cyclic Quadrilaterals & Complex Proofs.",
+
+    startQuiz: "Start Quiz",
+    reviewPastAttempts: "Review Past Attempts",
+
+    progressOverview: "Progress Overview",
+    recentActivity: "Recent Activity",
+    helpResources: "Help & Resources",
+    keyTheorems: "Key Geometry Theorems",
+    formulaSheets: "Formula Cheat Sheets",
+    videoTutorials: "Video Tutorials",
+
+    quickStart: "Quick Start / Learning Path",
+    quick1: "· Start with Foundation to master circle basics",
+    quick2: "· Move to Intermediate for tangent theorems",
+    quick3: "· Challenge Advanced for complex proofs",
+    recommend: "Recommended Next Step: Your last Foundation score: 7/10 → Review key concepts or move to Intermediate.",
+
+    quizProgress: "Quiz Progress:",
+    timeRemaining: "Time Remaining:",
+    questionsAnswered: "Questions Answered:",
+    selectAnswer: "Select your answer:",
+    quizNavigation: "Quiz Navigation",
+    additionalTools: "Additional Tools",
+    submitAnswer: "Submit Answer",
+    previousQuestion: "← Previous Question",
+    nextQuestion: "Next Question →",
+    quizSummary: "Quiz Summary",
+    stepSolution: "Step-by-Step Solution",
+    formulaSheet: "Formula Sheet",
+    videoTutorial: "Video Tutorial",
+
+    lastTime: "last time",
+    previousTime: "the time before last",
+    exit: "Exit",
+
+    greatWork: "Great Work!",
+    theoremMastery: "Theorem Mastery",
+    mistakeSummary: "Mistake Summary",
+    learningPath: "Learning Path",
+    learningSubtitle: "Choose your next step based on this quiz result.",
+    smartRecommendation: "Smart Recommendation",
+    recentQuizHistory: "Recent Quiz History",
+    performanceOverview: "Performance Overview",
+    moduleProgress: "Module Progress",
+
+    homeFooter: "Home",
+    helpCenter: "Help Center",
+    contactUs: "Contact Us",
+    privacyPolicy: "Privacy Policy",
+    copyright: "© 2023 Master Circle Geometry. All rights reserved."
+  },
+
+  zh: {
+    welcome: "欢迎回来！准备好今天掌握圆几何了吗？",
+    foundation: "基础",
+    foundationDesc: "半径、直径、周长和基础圆性质。",
+    intermediate: "进阶",
+    intermediateDesc: "切线与割线定理、圆中的角。",
+    advanced: "高级",
+    advancedDesc: "圆内接四边形与复杂证明。",
+
+    startQuiz: "开始测验",
+    reviewPastAttempts: "查看历史测验",
+
+    progressOverview: "学习进度",
+    recentActivity: "最近活动",
+    helpResources: "帮助与资源",
+    keyTheorems: "核心几何定理",
+    formulaSheets: "公式速查表",
+    videoTutorials: "视频教程",
+
+    quickStart: "快速开始 / 学习路径",
+    quick1: "· 从基础模块开始掌握圆的基本概念",
+    quick2: "· 进入进阶模块学习切线定理",
+    quick3: "· 挑战高级模块中的复杂证明",
+    recommend: "推荐下一步：你上次基础模块得分 7/10 → 建议复习关键概念或进入进阶模块。",
+
+    quizProgress: "测验进度：",
+    timeRemaining: "剩余时间：",
+    questionsAnswered: "已答题数：",
+    selectAnswer: "请选择答案：",
+    quizNavigation: "题目导航",
+    additionalTools: "辅助工具",
+    submitAnswer: "提交答案",
+    previousQuestion: "← 上一题",
+    nextQuestion: "下一题 →",
+    quizSummary: "测验总结",
+    stepSolution: "分步讲解",
+    formulaSheet: "公式表",
+    videoTutorial: "视频教程",
+
+    lastTime: "上一次",
+    previousTime: "上上次",
+    exit: "退出",
+
+    greatWork: "做得很好！",
+    theoremMastery: "定理掌握度",
+    mistakeSummary: "错题总结",
+    learningPath: "学习路径",
+    learningSubtitle: "根据本次测验结果选择下一步。",
+    smartRecommendation: "智能推荐",
+    recentQuizHistory: "最近测验记录",
+    performanceOverview: "表现概览",
+    moduleProgress: "模块进度",
+
+    homeFooter: "首页",
+    helpCenter: "帮助中心",
+    contactUs: "联系我们",
+    privacyPolicy: "隐私政策",
+    copyright: "© 2023 Master Circle Geometry. 保留所有权利。"
+  }
+};
+
+function applyQuizPageLanguage(lang) {
+  console.log("applyQuizPageLanguage called with:", lang);
+
+  const t = QUIZ_I18N[lang] || QUIZ_I18N.en;
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+
+  const setTextById = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  };
+
+  // 首页
+  setTextById("welcomeBanner", t.welcome);
+  setTextById("foundationTitle", t.foundation);
+  setTextById("foundationDesc", t.foundationDesc);
+  setTextById("intermediateTitle", t.intermediate);
+  setTextById("intermediateDesc", t.intermediateDesc);
+  setTextById("advancedTitle", t.advanced);
+  setTextById("advancedDesc", t.advancedDesc);
+
+  document.querySelectorAll(".start-btn").forEach(btn => {
+    btn.textContent = t.startQuiz;
+  });
+
+  document.querySelectorAll(".review-btn").forEach(btn => {
+    btn.textContent = t.reviewPastAttempts;
+  });
+
+  setTextById("progressOverviewTitle", t.progressOverview);
+  setTextById("recentActivityTitle", t.recentActivity);
+  setTextById("helpResourcesTitle", t.helpResources);
+  setTextById("keyTheoremsLink", t.keyTheorems);
+  setTextById("formulaSheetsLink", t.formulaSheets);
+  setTextById("videoTutorialsLink", t.videoTutorials);
+
+  setTextById("quickStartTitle", t.quickStart);
+  setTextById("quickLine1", t.quick1);
+  setTextById("quickLine2", t.quick2);
+  setTextById("quickLine3", t.quick3);
+  setTextById("recommendTip", t.recommend);
+
+  // 题目页
+  setTextById("quizProgressTitle", t.quizProgress);
+  setTextById("selectAnswerTitle", t.selectAnswer);
+  setTextById("quizNavigationTitle", t.quizNavigation);
+  setTextById("additionalToolsTitle", t.additionalTools);
+  setTextById("submitAnswerBtn", t.submitAnswer);
+  setTextById("prevQuestionBtn", t.previousQuestion);
+  setTextById("nextQuestionBtn", t.nextQuestion);
+  setTextById("quizSummaryBtn", t.quizSummary);
+  setTextById("stepSolutionBtn", t.stepSolution);
+  setTextById("formulaBtn", t.formulaSheet);
+  setTextById("videoBtn", t.videoTutorial);
+
+  const progressRightSpans = document.querySelectorAll(".quiz-progress-right > span");
+  if (progressRightSpans[0]) {
+    progressRightSpans[0].childNodes[0].nodeValue = t.timeRemaining + " ";
+  }
+  if (progressRightSpans[1]) {
+    progressRightSpans[1].childNodes[0].nodeValue = t.questionsAnswered + " ";
+  }
+
+  // 历史记录页
+  setTextById("openLastAttemptBtn", t.lastTime);
+  setTextById("openPreviousAttemptBtn", t.previousTime);
+  setTextById("exitChooserBtn", t.exit);
+
+  // 结果页
+  setTextById("greatWorkTitle", t.greatWork);
+  setTextById("theoremMasteryTitle", t.theoremMastery);
+  setTextById("mistakeSummaryTitle", t.mistakeSummary);
+  setTextById("learningPathTitle", t.learningPath);
+  setTextById("learningPathSubtitle", t.learningSubtitle);
+  setTextById("learningPathBadge", t.smartRecommendation);
+  setTextById("recentQuizHistoryTitle", t.recentQuizHistory);
+  setTextById("performanceOverviewBadge", t.performanceOverview);
+  setTextById("moduleProgressTitle", t.moduleProgress);
+
+  // footer
+  document.querySelectorAll(".footer").forEach(footer => {
+    const divs = footer.querySelectorAll("div");
+    if (divs[0]) {
+      divs[0].innerHTML = `${t.homeFooter} &nbsp;&nbsp; ${t.helpCenter} &nbsp;&nbsp; ${t.contactUs} &nbsp;&nbsp; ${t.privacyPolicy}`;
+    }
+    if (divs[1]) {
+      divs[1].textContent = t.copyright;
+    }
+  });
+}
 
 function bindEvents() {
   document.querySelectorAll(".start-btn").forEach(btn => {
@@ -203,48 +398,107 @@ function bindEvents() {
     btn.addEventListener("click", () => openAttemptChooser(btn.dataset.module));
   });
 
-  document.getElementById("submitAnswerBtn").addEventListener("click", submitCurrentAnswer);
-  document.getElementById("prevQuestionBtn").addEventListener("click", goPrevQuestion);
-  document.getElementById("nextQuestionBtn").addEventListener("click", goNextQuestion);
-  document.getElementById("quizSummaryBtn").addEventListener("click", () => alert("答题中无法提前查看最终总结。"));
-  document.getElementById("quizHomeBtn").addEventListener("click", () => safeBackHome());
-  document.getElementById("quizBackBtn").addEventListener("click", () => safeBackHome());
-  document.getElementById("topBackBtn").addEventListener("click", () => showPage("home"));
+  const submitAnswerBtn = document.getElementById("submitAnswerBtn");
+  if (submitAnswerBtn) submitAnswerBtn.addEventListener("click", submitCurrentAnswer);
 
-  document.getElementById("openLastAttemptBtn").addEventListener("click", () => openPastAttempt("last"));
-  document.getElementById("openPreviousAttemptBtn").addEventListener("click", () => openPastAttempt("previous"));
-  document.getElementById("exitChooserBtn").addEventListener("click", () => showPage("home"));
+  const prevQuestionBtn = document.getElementById("prevQuestionBtn");
+  if (prevQuestionBtn) prevQuestionBtn.addEventListener("click", goPrevQuestion);
 
-  document.getElementById("backHomeFromResultBtn").addEventListener("click", () => showPage("home"));
-  document.getElementById("reviewErrorsFromResultBtn").addEventListener("click", () => openErrors(currentModule));
+  const nextQuestionBtn = document.getElementById("nextQuestionBtn");
+  if (nextQuestionBtn) nextQuestionBtn.addEventListener("click", goNextQuestion);
 
-  document.getElementById("reviewMistakesBtn").addEventListener("click", () => {
-  updateLearningPanel("review");
-  openErrors(currentModule);
-});
+  const quizSummaryBtn = document.getElementById("quizSummaryBtn");
+  if (quizSummaryBtn) {
+    quizSummaryBtn.addEventListener("click", () => alert("答题中无法提前查看最终总结。"));
+  }
 
-document.getElementById("practiceWeakBtn").addEventListener("click", () => {
-  updateLearningPanel("practice");
-  startQuizFlow(currentModule);
-});
+  const openLastAttemptBtn = document.getElementById("openLastAttemptBtn");
+  if (openLastAttemptBtn) {
+    openLastAttemptBtn.addEventListener("click", () => openPastAttempt("last"));
+  }
 
-document.getElementById("nextLevelBtn").addEventListener("click", () => {
-  updateLearningPanel("next");
-  goNextModuleQuiz();
-});
+  const openPreviousAttemptBtn = document.getElementById("openPreviousAttemptBtn");
+  if (openPreviousAttemptBtn) {
+    openPreviousAttemptBtn.addEventListener("click", () => openPastAttempt("previous"));
+  }
 
-document.getElementById("advancedTopicsBtn").addEventListener("click", () => {
-  updateLearningPanel("advanced");
-});
+  const exitChooserBtn = document.getElementById("exitChooserBtn");
+  if (exitChooserBtn) {
+    exitChooserBtn.addEventListener("click", () => showPage("home"));
+  }
 
-  document.getElementById("errorHomeBtn").addEventListener("click", () => showPage("home"));
-  document.getElementById("errorBackBtn").addEventListener("click", () => showPage("result"));
-  document.getElementById("backHomeFromErrorBtn").addEventListener("click", () => showPage("home"));
+  const backHomeFromResultBtn = document.getElementById("backHomeFromResultBtn");
+  if (backHomeFromResultBtn) {
+    backHomeFromResultBtn.addEventListener("click", () => showPage("home"));
+  }
 
-  document.getElementById("stepSolutionBtn").addEventListener("click", showCurrentExplanation);
-  document.getElementById("formulaBtn").addEventListener("click", () => alert("这里预留 Formula Sheet 接口/跳转。"));
-  document.getElementById("videoBtn").addEventListener("click", () => alert("这里预留 Video Tutorial 接口/跳转。"));
+  const reviewErrorsFromResultBtn = document.getElementById("reviewErrorsFromResultBtn");
+  if (reviewErrorsFromResultBtn) {
+    reviewErrorsFromResultBtn.addEventListener("click", () => openErrors(currentModule));
+  }
+
+  const reviewMistakesBtn = document.getElementById("reviewMistakesBtn");
+  if (reviewMistakesBtn) {
+    reviewMistakesBtn.addEventListener("click", () => {
+      updateLearningPanel("review");
+      openErrors(currentModule);
+    });
+  }
+
+  const practiceWeakBtn = document.getElementById("practiceWeakBtn");
+  if (practiceWeakBtn) {
+    practiceWeakBtn.addEventListener("click", () => {
+      updateLearningPanel("practice");
+      startQuizFlow(currentModule);
+    });
+  }
+
+  const nextLevelBtn = document.getElementById("nextLevelBtn");
+  if (nextLevelBtn) {
+    nextLevelBtn.addEventListener("click", () => {
+      updateLearningPanel("next");
+      goNextModuleQuiz();
+    });
+  }
+
+  const advancedTopicsBtn = document.getElementById("advancedTopicsBtn");
+  if (advancedTopicsBtn) {
+    advancedTopicsBtn.addEventListener("click", () => {
+      updateLearningPanel("advanced");
+    });
+  }
+
+  const errorHomeBtn = document.getElementById("errorHomeBtn");
+  if (errorHomeBtn) {
+    errorHomeBtn.addEventListener("click", () => showPage("home"));
+  }
+
+  const errorBackBtn = document.getElementById("errorBackBtn");
+  if (errorBackBtn) {
+    errorBackBtn.addEventListener("click", () => showPage("result"));
+  }
+
+  const backHomeFromErrorBtn = document.getElementById("backHomeFromErrorBtn");
+  if (backHomeFromErrorBtn) {
+    backHomeFromErrorBtn.addEventListener("click", () => showPage("home"));
+  }
+
+  const stepSolutionBtn = document.getElementById("stepSolutionBtn");
+  if (stepSolutionBtn) {
+    stepSolutionBtn.addEventListener("click", showCurrentExplanation);
+  }
+
+  const formulaBtn = document.getElementById("formulaBtn");
+  if (formulaBtn) {
+    formulaBtn.addEventListener("click", () => alert("这里预留 Formula Sheet 接口/跳转。"));
+  }
+
+  const videoBtn = document.getElementById("videoBtn");
+  if (videoBtn) {
+    videoBtn.addEventListener("click", () => alert("这里预留 Video Tutorial 接口/跳转。"));
+  }
 }
+
 
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -991,4 +1245,50 @@ function renderDiagram(type) {
   };
 
   diagram.innerHTML = map[type] || map.basicCircle;
+}
+function bindSharedNavForQuizApp() {
+  const navHomeBtn = document.getElementById("navHomeBtn");
+  const navGameBtn = document.getElementById("navGameBtn");
+  const navQuizBtn = document.getElementById("navQuizBtn");
+  const pageBreadcrumb = document.getElementById("pageBreadcrumb");
+
+  if (navHomeBtn) {
+    navHomeBtn.addEventListener("click", () => {
+      showPage("home");
+      if (pageBreadcrumb) pageBreadcrumb.textContent = "Home";
+      setActiveSharedNav("home");
+    });
+  }
+
+  if (navGameBtn) {
+    navGameBtn.addEventListener("click", () => {
+      showPage("home");
+      if (pageBreadcrumb) pageBreadcrumb.textContent = "Game";
+      setActiveSharedNav("game");
+    });
+  }
+
+  if (navQuizBtn) {
+    navQuizBtn.addEventListener("click", () => {
+      showPage("quiz");
+      if (pageBreadcrumb) pageBreadcrumb.textContent = "Quiz";
+      setActiveSharedNav("quiz");
+    });
+  }
+
+  setActiveSharedNav("quiz");
+}
+
+function setActiveSharedNav(type) {
+  const navHomeBtn = document.getElementById("navHomeBtn");
+  const navGameBtn = document.getElementById("navGameBtn");
+  const navQuizBtn = document.getElementById("navQuizBtn");
+
+  [navHomeBtn, navGameBtn, navQuizBtn].forEach(btn => {
+    if (btn) btn.classList.remove("active-nav");
+  });
+
+  if (type === "home" && navHomeBtn) navHomeBtn.classList.add("active-nav");
+  if (type === "game" && navGameBtn) navGameBtn.classList.add("active-nav");
+  if (type === "quiz" && navQuizBtn) navQuizBtn.classList.add("active-nav");
 }

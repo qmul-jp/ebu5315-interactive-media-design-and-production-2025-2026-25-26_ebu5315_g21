@@ -4,36 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Master Circle Geometry Quiz</title>
-  <link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="shared.css" />
+<link rel="stylesheet" href="main.css" />
 </head>
 <body>
+<header>
+  <div class="header-left">
+    <h1>Geometry Escape Lab</h1>
+    <div class="breadcrumb">
+      <span id="pageBreadcrumb">Quiz</span>
+    </div>
+  </div>
+
+  <nav>
+    <button id="navHomeBtn">Home</button>
+    <button id="navGameBtn">Game</button>
+    <button id="navQuizBtn">Quiz</button>
+    <button id="settingsBtn">Settings</button>
+
+    <div class="nav-group">
+      <button>About ▼</button>
+      <div class="dropdown-content">
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="close">&times;</button>
+    <h2 id="modal-title"></h2>
+    <div id="modal-text"></div>
+  </div>
+</div>
   <div id="app">
     <!-- 首页 -->
     <section id="homePage" class="page active">
-      <header class="topbar">
-        <div class="topbar-left">
-          <span class="top-link">⌂ Home</span>
-          <span class="top-link" id="topBackBtn">← Back</span>
-          <span class="top-link">🔖Bookmark</span>
-          <span class="top-link">❓Help</span>
-        </div>
-        <div class="topbar-right">EN / 中</div>
-      </header>
-
-      <div class="welcome-banner">Welcome back! Ready to master circle geometry today?</div>
-
+  <div class="welcome-banner" id="welcomeBanner">
+  Welcome back! Ready to master circle geometry today?
+</div>
 <div class="home-grid">
-  <div class="card module-card foundation-card" data-module="Foundation">
-    <div class="module-icon"></div>
-    <div class="module-badge" id="badge-Foundation">Last: 7/10</div>
-    <h2>Foundation</h2>
-    <p>Radius, diameter, circumference, basic circle properties.</p>
-    <button class="btn btn-primary start-btn" data-module="Foundation">Start Quiz</button>
-    <button class="btn btn-secondary review-btn" data-module="Foundation">Review Past Attempts</button>
-  </div>
+<div class="card module-card foundation-card" data-module="Foundation">
+  <div class="module-icon"></div>
+  <div class="module-badge" id="badge-Foundation">Last: 7/10</div>
+
+  <h2 id="foundationTitle">Foundation</h2>
+  <p id="foundationDesc">Radius, diameter, circumference, basic circle properties.</p>
+
+  <!-- ✅ 补上这个按钮 -->
+<button class="btn btn-primary start-btn" data-module="Foundation" data-role="startQuizBtn">
+  Start Quiz
+</button>
+
+  <!-- 原来的按钮保留 -->
+  <button class="btn btn-secondary review-btn" data-module="Foundation" data-role="reviewPastBtn">
+    Review Past Attempts
+  </button>
+</div>
 
   <div class="card side-card progress-card">
-    <h3>Progress Overview</h3>
+    <h3 id="progressOverviewTitle">Progress Overview</h3>
     <div class="progress-label">Overall Progress: <span id="overallProgressText">65%</span></div>
     <div class="bar"><div class="bar-fill" id="overallProgressBar" style="width:65%"></div></div>
 
@@ -47,14 +81,18 @@
   <div class="card module-card intermediate-card" data-module="Intermediate">
     <div class="module-icon"></div>
     <div class="module-badge" id="badge-Intermediate">Last: 6/10</div>
-    <h2>Intermediate</h2>
-    <p>Tangent &amp; Secant Theorems, angles in circles.</p>
-    <button class="btn btn-primary start-btn" data-module="Intermediate">Start Quiz</button>
-    <button class="btn btn-secondary review-btn" data-module="Intermediate">Review Past Attempts</button>
+<h2 id="intermediateTitle">Intermediate</h2>
+<p id="intermediateDesc">Tangent & Secant Theorems, angles in circles.</p>
+<button class="btn btn-primary start-btn" data-module="Intermediate" data-role="startQuizBtn">
+  Start Quiz
+</button>
+<button class="btn btn-secondary review-btn" data-module="Intermediate" data-role="reviewPastBtn">
+  Review Past Attempts
+</button>
   </div>
 
   <div class="card side-card recent-card">
-    <h3>Recent Activity</h3>
+    <h3 id="recentActivityTitle">Recent Activity</h3>
     <div id="recentActivityList">
       <p>Foundation Quiz: 7/10</p>
       <p>Intermediate Quiz: 6/10</p>
@@ -65,24 +103,28 @@
   <div class="card module-card advanced-card" data-module="Advanced">
     <div class="module-icon"></div>
     <div class="module-badge" id="badge-Advanced">Last: N/A</div>
-    <h2>Advanced</h2>
-    <p>Cyclic Quadrilaterals &amp; Complex Proofs.</p>
-    <button class="btn btn-primary start-btn" data-module="Advanced">Start Quiz</button>
-    <button class="btn btn-secondary review-btn" data-module="Advanced">Review Past Attempts</button>
+<h2 id="advancedTitle">Advanced</h2>
+<p id="advancedDesc">Cyclic Quadrilaterals & Complex Proofs.</p>
+<button class="btn btn-primary start-btn" data-module="Advanced" data-role="startQuizBtn">
+  Start Quiz
+</button>
+<button class="btn btn-secondary review-btn" data-module="Advanced" data-role="reviewPastBtn">
+  Review Past Attempts
+</button>
   </div>
 
   <div class="card side-card help-card">
-    <h3>Help &amp; Resources</h3>
-    <a href="javascript:void(0)">Key Geometry Theorems</a>
-    <a href="javascript:void(0)">Formula Cheat Sheets</a>
-    <a href="javascript:void(0)">Video Tutorials</a>
+<h3 id="helpResourcesTitle">Help &amp; Resources</h3>
+<a href="javascript:void(0)" id="keyTheoremsLink">Key Geometry Theorems</a>
+<a href="javascript:void(0)" id="formulaSheetsLink">Formula Cheat Sheets</a>
+<a href="javascript:void(0)" id="videoTutorialsLink">Video Tutorials</a>
   </div>
 
   <div class="card quick-start quick-card">
-    <h3>Quick Start / Learning Path</h3>
-    <p>· Start with Foundation to master circle basics</p>
-    <p>· Move to Intermediate for tangent theorems</p>
-    <p>· Challenge Advanced for complex proofs</p>
+<h3 id="quickStartTitle">Quick Start / Learning Path</h3>
+<p id="quickLine1">· Start with Foundation to master circle basics</p>
+<p id="quickLine2">· Move to Intermediate for tangent theorems</p>
+<p id="quickLine3">· Challenge Advanced for complex proofs</p>
     <div class="recommend-tip" id="recommendTip">
       Recommended Next Step: Your last Foundation score: 7/10 → Review key concepts or move to Intermediate.
     </div>
@@ -97,19 +139,9 @@
 
     <!-- 题目页 -->
 <section id="quizPage" class="page">
-  <header class="topbar">
-    <div class="topbar-left">
-      <span class="top-link" id="quizHomeBtn">⌂ Home</span>
-      <span class="top-link" id="quizBackBtn">← Back</span>
-      <span class="top-link">🔖Bookmark</span>
-      <span class="top-link">❓Help</span>
-    </div>
-    <div class="topbar-right">EN / 中</div>
-  </header>
-
   <div class="quiz-progress-wrap">
     <div class="quiz-progress-left">
-      <span class="quiz-progress-title">Quiz Progress:</span>
+      <span class="quiz-progress-title" id="quizProgressTitle">Quiz Progress:</span>
       <div class="bar quiz-top-bar">
         <div id="quizTopProgress" class="bar-fill" style="width:10%"></div>
       </div>
@@ -143,11 +175,11 @@
         </div>
 
         <div class="question-card-body">
-          <div id="answerPanel">
-            <h3>Select your answer:</h3>
-            <div id="optionsList"></div>
-            <button id="submitAnswerBtn" class="btn btn-primary full-btn">Submit Answer</button>
-          </div>
+<div id="answerPanel">
+  <h3 id="selectAnswerTitle">Select your answer:</h3>
+  <div id="optionsList"></div>
+  <button id="submitAnswerBtn" class="btn btn-primary full-btn">Submit Answer</button>
+</div>
 
           <div id="feedbackPanel" class="hidden">
             <div id="feedbackText" class="feedback-text"></div>
@@ -159,24 +191,23 @@
 
     <!-- 右侧功能区 -->
     <div class="quiz-right">
-      <div class="card side-card nav-card">
-        <h3>Quiz Navigation</h3>
-        <div id="quizNavGrid" class="nav-grid"></div>
-        <div class="nav-btn-group">
-          <button id="prevQuestionBtn" class="btn btn-secondary">← Previous Question</button>
-          <button id="nextQuestionBtn" class="btn btn-secondary">Next Question →</button>
-          <button id="quizSummaryBtn" class="btn btn-primary">Quiz Summary</button>
-        </div>
-      </div>
-
-      <div class="card side-card tools-card">
-        <h3>Additional Tools</h3>
-        <div class="tool-btn-group">
-          <button class="btn btn-secondary tool-btn" id="stepSolutionBtn">Step-by-Step Solution</button>
-          <button class="btn btn-secondary tool-btn" id="formulaBtn">Formula Sheet</button>
-          <button class="btn btn-secondary tool-btn" id="videoBtn">Video Tutorial</button>
-        </div>
-      </div>
+ <div class="card side-card nav-card">
+  <h3 id="quizNavigationTitle">Quiz Navigation</h3>
+  <div id="quizNavGrid" class="nav-grid"></div>
+  <div class="nav-btn-group">
+    <button id="prevQuestionBtn" class="btn btn-secondary">← Previous Question</button>
+    <button id="nextQuestionBtn" class="btn btn-secondary">Next Question →</button>
+    <button id="quizSummaryBtn" class="btn btn-primary">Quiz Summary</button>
+  </div>
+</div>
+<div class="card side-card tools-card">
+  <h3 id="additionalToolsTitle">Additional Tools</h3>
+  <div class="tool-btn-group">
+    <button class="btn btn-secondary tool-btn" id="stepSolutionBtn">Step-by-Step Solution</button>
+    <button class="btn btn-secondary tool-btn" id="formulaBtn">Formula Sheet</button>
+    <button class="btn btn-secondary tool-btn" id="videoBtn">Video Tutorial</button>
+  </div>
+</div>
     </div>
   </div>
 
@@ -188,11 +219,6 @@
 
     <!-- 历史测验入口 -->
     <section id="attemptChooserPage" class="page">
-      <header class="simple-header">
-        <div class="simple-left">◻ ← 🔖 ❓</div>
-        <div class="simple-right">Home &gt; Quiz &nbsp; EN / 中</div>
-      </header>
-
       <div class="chooser-wrap">
         <h1>Review Past Attempts</h1>
         <div class="chooser-subtitle" id="attemptChooserModule">Foundation</div>
@@ -206,11 +232,6 @@
 
     <!-- 成绩页 -->
     <section id="resultPage" class="page">
-      <header class="simple-header">
-        <div class="simple-left">◻ ← 🔖 ❓</div>
-        <div class="simple-right">Home &gt; Quiz &nbsp; EN / 中</div>
-      </header>
-
       <div class="result-wrap">
         <h1>Great Work!</h1>
 
@@ -337,16 +358,6 @@
 
     <!-- 错题集页 -->
     <section id="errorPage" class="page">
-      <header class="topbar">
-        <div class="topbar-left">
-          <span class="top-link" id="errorHomeBtn">⌂ Home</span>
-          <span class="top-link" id="errorBackBtn">← Back</span>
-          <span class="top-link">🔖Bookmark</span>
-          <span class="top-link">❓Help</span>
-        </div>
-        <div class="topbar-right">EN / 中</div>
-      </header>
-
       <div class="error-wrap">
         <h1>错题集 / Review Errors</h1>
         <div id="errorList" class="error-list"></div>
@@ -362,6 +373,8 @@
     </section>
   </div>
 
-  <script src="main.js"></script>
+ <script src="shared.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
+   
