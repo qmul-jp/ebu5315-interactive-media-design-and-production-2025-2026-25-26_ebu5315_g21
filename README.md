@@ -82,27 +82,6 @@ Major updates are developed in individual branches before being merged into the 
   * **Settings Persistence:** Added `localStorage` (cookies) to automatically save language, theme, and accessibility preferences across all pages.
   * **Apple-esque UI:** Redesigned the Settings modal with iOS-style glassmorphism, smooth segmented controls, and animated toggle switches.
   * **Game Audio:** Introduced a dynamic Web Audio API engine with sound effects for dragging, success, errors, and system lockdown.
-- **V4**: To be updated
-
-### Shared Files
-
-The project includes two shared files used across Homepage, Game, and Quiz.
-
-**`shared.css`**
-Provides common visual styles for the whole website, including:
-* CSS Colour variables & Typography.
-* Premium Apple-esque design (Glassmorphism & deep shadows).
-* Appearance Themes (Light, Dark, Eye-Care).
-* Accessibility Overrides (Brutal High Contrast, Enhanced Legibility, Reduced Motion).
-
-**`shared.js`**
-Provides common interactive functions for the whole website, including:
-* Navigation routing and dropdown logic.
-* UI engine for the Apple-style Settings modal (smooth sliding animations).
-* `localStorage` management for persisting user preferences.
-* Global event dispatcher (`languageChanged`) for seamless, no-reload bilingual switching and AI assistant integration.
-Pages in each section should include both files:
-
-```html
-<link rel="stylesheet" href="shared.css" />
-<script src="shared.js"></script>
+- **V4**: Final Integration & Polish
+  * **Seamless Routing:** Comprehensive system adjustments to ensure smooth, instantaneous transitions and consistent navigation states across the Homepage, Game, and Quiz sections.
+  * **Overall Optimization:** Final codebase refactoring, alignment of UI details across all modules, and overall performance optimization for a cohesive user experience.
