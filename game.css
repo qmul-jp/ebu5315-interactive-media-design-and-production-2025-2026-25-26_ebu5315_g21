@@ -1894,3 +1894,28 @@ body.is-dragging .diagram-card {
 .hero-panel-centered {
   overflow-x: hidden; 
 }
+
+@media (max-width: 760px) {
+  /* 调整游戏主容器边距 */
+  .game-container {
+    padding: 15px 10px;
+  }
+
+  /* 压缩标题框的内边距，给文字留出更多横向空间 */
+  .header-box {
+    padding: 24px 16px; 
+    margin-bottom: 20px;
+    border-radius: var(--radius-md);
+  }
+
+  /* 稍微缩小副标题文字 */
+  .header-box p {
+    font-size: 0.95rem; 
+  }
+
+  /* 如果你有房间列表网格，确保在手机上强制单列显示 */
+  .room-grid {
+    grid-template-columns: 1fr; 
+    gap: 16px;
+  }
+}
