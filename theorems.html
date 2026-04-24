@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theorem Collection</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>Geometry Escape Lab</h1>
+      <div class="breadcrumb">
+        <a href="homepage.html">Home</a> &nbsp;›&nbsp;
+        <a href="gamehome.html">Game</a> &nbsp;›&nbsp;
+        <span id="archiveBreadcrumb">Theorem Collection</span>
+      </div>
+    </div>
+    <nav>
+      <button id="navHomeBtn">Home</button>
+      <button id="navGameBtn" class="active-nav">Game</button>
+      <button id="navQuizBtn">Quiz</button>
+      <button type="button" id="settingsBtn">Settings</button>
+
+      <div class="nav-group">
+        <button type="button" class="dropbtn">About ▼</button>
+        <div class="dropdown-content">
+          <a href="#" id="contactBtn">Contact us</a>
+          <a href="#" id="supportBtn">About this project</a>
+          <a href="#" id="accessibilityBtn">Accessibility help</a>
+          <a href="#" id="privacyBtn">Privacy Policy</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card theorem-hero center">
+      <span class="eyebrow" id="archiveEyebrow">Archive</span>
+      <h1 id="archiveTitle">Theorem Collection</h1>
+      <p class="small-text" id="archiveIntro">Collected properties unlock room by room, so the archive grows with your progress.</p>
+    </section>
+
+    <section class="card archive-summary">
+      <div class="archive-topline">
+        <h3 style="margin:0;" id="archiveProgressTitle">Archive Progress</h3>
+        <span id="archiveCount" class="archive-count">0 / 8 unlocked</span>
+      </div>
+      <div class="archive-meter" aria-hidden="true">
+        <div id="archiveFill" class="archive-fill"></div>
+      </div>
+      <p id="archiveNote" class="archive-note">Clear more rooms to complete the full theorem archive.</p>
+    </section>
+
+    <section class="card theorem-list-wrap">
+      <div id="theoremList"></div>
+    </section>
+
+    <div class="center" style="margin-top:18px;">
+      <button class="btn primary" onclick="location.href='gamehome.html'" id="backToGameBtn">Back to Game</button>
+    </div>
+  </main>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="Close">&times;</button>
+      <h2 id="modal-title">Settings</h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>Interactive Geometry Learning Platform</span>
+      <span id="archiveFooter">Theorem Collection</span>
+    </div>
+  </footer>
+
+  <script>
+    const ARCHIVE_I18N = {
+      en: {
+        archiveBreadcrumb: "Theorem Collection",
+        archiveEyebrow: "Archive",
+        archiveTitle: "Theorem Collection",
+        archiveIntro: "Collected properties unlock room by room, so the archive grows with your progress.",
+        archiveProgressTitle: "Archive Progress",
+        archiveCount: "{n} / 8 unlocked",
+        archiveNoteLocked: "Clear more rooms to complete the full theorem archive.",
+        archiveNoteFull: "Full archive completed. Every theorem has been unlocked.",
+        backToGameBtn: "Back to Game",
+        archiveFooter: "Theorem Collection",
+        unlockedTheorem: "Unlocked theorem",
+        lockedTheorem: "Locked theorem",
+        unlockedBtn: "Unlocked",
+        lockedBtn: "Locked",
+        lockedDesc: "Clear the corresponding room to unlock this theorem.",
+        theorems: [
+          { icon: "🌀", title: "Angle at the Centre", property: "The angle at the centre is twice the angle at the circumference standing on the same arc." },
+          { icon: "🌙", title: "Angles in a Semicircle", property: "The angle in a semicircle is 90°." },
+          { icon: "🪞", title: "Angles in the Same Segment", property: "Angles in the same segment are equal." },
+          { icon: "🔷", title: "Cyclic Quadrilateral", property: "Opposite angles in a cyclic quadrilateral sum to 180°." },
+          { icon: "📏", title: "Radius to a Tangent", property: "A radius to the point of tangency is perpendicular to the tangent." },
+          { icon: "🗝️", title: "Tangents from a Point are Equal", property: "Tangents drawn from the same external point are equal in length." },
+          { icon: "⚡", title: "Angle Between Two Tangents", property: "The angle between two tangents and the central angle sum to 180°." },
+          { icon: "👑", title: "Alternate Segment Theorem", property: "The angle between a tangent and a chord equals the angle in the alternate segment." }
+        ]
+      },
+      zh: {
+        archiveBreadcrumb: "定理档案",
+        archiveEyebrow: "档案",
+        archiveTitle: "定理档案",
+        archiveIntro: "定理会随着通关进度逐步解锁，因此你的档案会不断扩充。",
+        archiveProgressTitle: "档案进度",
+        archiveCount: "已解锁 {n} / 8",
+        archiveNoteLocked: "继续通关更多房间，即可完成完整定理档案。",
+        archiveNoteFull: "完整档案已集齐，所有定理均已解锁。",
+        backToGameBtn: "返回游戏",
+        archiveFooter: "定理档案",
+        unlockedTheorem: "已解锁定理",
+        lockedTheorem: "未解锁定理",
+        unlockedBtn: "已解锁",
+        lockedBtn: "未解锁",
+        lockedDesc: "通关对应房间后即可解锁该定理。",
+        theorems: [
+          { icon: "🌀", title: "圆心角", property: "同弧所对的圆心角等于圆周角的两倍。" },
+          { icon: "🌙", title: "半圆所对的角", property: "半圆所对的圆周角是 90°。" },
+          { icon: "🪞", title: "同弧所对的圆周角", property: "同弧所对的圆周角相等。" },
+          { icon: "🔷", title: "圆内接四边形", property: "圆内接四边形的对角和为 180°。" },
+          { icon: "📏", title: "半径与切线", property: "经过切点的半径垂直于切线。" },
+          { icon: "🗝️", title: "同一点引切线长度相等", property: "从同一圆外点引出的两条切线长度相等。" },
+          { icon: "⚡", title: "两切线夹角", property: "两条切线所成的角与对应圆心角之和为 180°。" },
+          { icon: "👑", title: "交替弧定理", property: "切线与弦所夹的角等于交替弧中的圆周角。" }
+        ]
+      }
+    };
+
+    function getArchiveLang() {
+      return localStorage.getItem("language") || "en";
+    }
+
+    function at(key) {
+      const lang = getArchiveLang();
+      return ARCHIVE_I18N[lang]?.[key] || ARCHIVE_I18N.en[key] || key;
+    }
+
+    function atf(key, vars = {}) {
+      let text = at(key);
+      Object.keys(vars).forEach((k) => {
+        text = text.replace(`{${k}}`, vars[k]);
+      });
+      return text;
+    }
+
+    function renderArchive() {
+      const lang = getArchiveLang();
+      document.documentElement.lang = lang === "zh" ? "zh" : "en";
+
+      const highestCleared = parseInt(localStorage.getItem("highestCleared") || "0", 10);
+
+      document.getElementById("archiveBreadcrumb").textContent = at("archiveBreadcrumb");
+      document.getElementById("archiveEyebrow").textContent = at("archiveEyebrow");
+      document.getElementById("archiveTitle").textContent = at("archiveTitle");
+      document.getElementById("archiveIntro").textContent = at("archiveIntro");
+      document.getElementById("archiveProgressTitle").textContent = at("archiveProgressTitle");
+      document.getElementById("archiveCount").textContent = atf("archiveCount", { n: highestCleared });
+      document.getElementById("archiveNote").textContent = highestCleared >= 8 ? at("archiveNoteFull") : at("archiveNoteLocked");
+      document.getElementById("backToGameBtn").textContent = at("backToGameBtn");
+      document.getElementById("archiveFooter").textContent = at("archiveFooter");
+
+      const archiveFill = document.getElementById("archiveFill");
+      if (archiveFill) {
+        archiveFill.style.width = `${(highestCleared / 8) * 100}%`;
+      }
+
+      const theoremList = document.getElementById("theoremList");
+      theoremList.innerHTML = "";
+
+      const theoremData = at("theorems");
+
+      theoremData.forEach((item, index) => {
+        const unlocked = index + 1 <= highestCleared;
+        const box = document.createElement("div");
+        box.className = `theorem-item panel-box ${unlocked ? "unlocked" : "locked"}`;
+
+        // --- 已添加 onclick 按钮跳转功能 ---
+        box.innerHTML = `
+          <div class="theorem-item-main">
+            <div class="theorem-icon">${item.icon}</div>
+            <div class="theorem-copy">
+              <span class="theorem-badge">${unlocked ? at("unlockedTheorem") : at("lockedTheorem")}</span>
+              <h3>${unlocked ? "✓ " : "🔒 "}${item.title}</h3>
+              <p>${unlocked ? item.property : at("lockedDesc")}</p>
+            </div>
+          </div>
+          <button class="btn ${unlocked ? "primary" : "secondary"}" ${unlocked ? `onclick="location.href='play.html?level=${index + 1}'"` : "disabled"}>
+            ${unlocked ? at("unlockedBtn") : at("lockedBtn")}
+          </button>
+        `;
+
+        theoremList.appendChild(box);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", renderArchive);
+    window.addEventListener("storage", renderArchive);
+    window.addEventListener("focus", renderArchive);
+    window.addEventListener("languageChanged", renderArchive);
+  </script>
+
+  <script src="shared.js"></script>
+</body>
+</html>
