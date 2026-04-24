@@ -246,6 +246,15 @@ header h1 {
   font-weight: 600;
 }
 
+.breadcrumb-separator {
+  color: var(--text-soft);
+}
+
+.breadcrumb-current {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
 nav {
   display: flex;
   align-items: center;

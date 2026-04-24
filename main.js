@@ -252,10 +252,35 @@ const pages = {
   error: document.getElementById("errorPage")
 };
 
+let currentQuizPage = "home";
+
+function setQuizBreadcrumb(page = currentQuizPage, moduleName = currentModule) {
+  currentQuizPage = page;
+  const lang = getQuizLang();
+  const moduleLabel = getModuleDisplayName(moduleName, lang);
+  const labels = {
+    home: lang === "zh" ? "测验首页" : "Quiz Home",
+    quiz: moduleLabel ? (lang === "zh" ? `${moduleLabel} 测验` : `${moduleLabel} Quiz`) : (lang === "zh" ? "测验" : "Quiz"),
+    chooser: lang === "zh" ? "查看历史记录" : "Review Past Attempts",
+    result: lang === "zh" ? "成绩" : "Result",
+    error: lang === "zh" ? "错题复习" : "Error Review"
+  };
+
+  if (window.renderBreadcrumb) {
+    window.renderBreadcrumb([
+      { label: lang === "zh" ? "首页" : "Home", href: "homepage.html" },
+      { label: lang === "zh" ? "测验" : "Quiz", href: "index.html" },
+      { label: labels[page] || labels.home }
+    ]);
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
   bindEvents();
   refreshHome();
   showPage("home");
+  setQuizBreadcrumb("home");
   bindSharedNavForQuizApp();
 
   const savedLang = localStorage.getItem("language") || "en";
@@ -263,6 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("languageChanged", (e) => {
     applyQuizPageLanguage(e.detail.lang);
+    setQuizBreadcrumb(currentQuizPage);
   });
 });
 
@@ -843,6 +869,7 @@ function persistState() {
 function showPage(name) {
   Object.values(pages).forEach(p => p.classList.remove("active"));
   pages[name].classList.add("active");
+  setQuizBreadcrumb(name);
 }
 
 async function startQuizFlow(moduleName) {
@@ -1645,29 +1672,22 @@ function bindSharedNavForQuizApp() {
   const navHomeBtn = document.getElementById("navHomeBtn");
   const navGameBtn = document.getElementById("navGameBtn");
   const navQuizBtn = document.getElementById("navQuizBtn");
-  const pageBreadcrumb = document.getElementById("pageBreadcrumb");
 
   if (navHomeBtn) {
     navHomeBtn.addEventListener("click", () => {
-      showPage("home");
-      if (pageBreadcrumb) pageBreadcrumb.textContent = "Home";
-      setActiveSharedNav("home");
+      window.location.href = "homepage.html";
     });
   }
 
   if (navGameBtn) {
     navGameBtn.addEventListener("click", () => {
-      showPage("home");
-      if (pageBreadcrumb) pageBreadcrumb.textContent = "Game";
-      setActiveSharedNav("game");
+      window.location.href = "gamehome.html";
     });
   }
 
   if (navQuizBtn) {
     navQuizBtn.addEventListener("click", () => {
-      showPage("quiz");
-      if (pageBreadcrumb) pageBreadcrumb.textContent = "Quiz";
-      setActiveSharedNav("quiz");
+      window.location.href = "index.html";
     });
   }
 

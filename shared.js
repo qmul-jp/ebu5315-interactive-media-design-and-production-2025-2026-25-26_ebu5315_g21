@@ -77,6 +77,23 @@ function ensureCookieBannerExists() {
   return banner;
 }
 
+
+function renderBreadcrumb(items) {
+  const breadcrumb = document.getElementById('breadcrumb') || document.querySelector('.breadcrumb[data-dynamic="true"]');
+  if (!breadcrumb || !Array.isArray(items)) return;
+
+  breadcrumb.innerHTML = items.map((item, index) => {
+    const label = String(item.label || '');
+    const isLast = index === items.length - 1;
+    if (isLast || !item.href) {
+      return `<span class="breadcrumb-current">${label}</span>`;
+    }
+    return `<a href="${item.href}">${label}</a>`;
+  }).join(' <span class="breadcrumb-separator">›</span> ');
+}
+
+window.renderBreadcrumb = renderBreadcrumb;
+
 const NAV_TARGETS = {
   navHomeBtn: 'homepage.html',
   navGameBtn: 'gamehome.html',
